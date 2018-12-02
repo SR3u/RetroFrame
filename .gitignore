@@ -71,3 +71,4 @@ StoredCredentials
 mediaItems.db
 displayServers.json
 *.iml
+dependency-reduced-pom.xml
