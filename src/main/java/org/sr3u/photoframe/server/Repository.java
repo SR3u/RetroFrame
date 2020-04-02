@@ -18,15 +18,15 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
-import java.util.*;
 import java.util.List;
+import java.util.*;
 
 import static com.google.photos.library.v1.proto.ContentCategory.*;
 
 public class Repository {
     private static final int MAX_ATTEMPTS = 16;
     private final PhotosLibraryClient gClient;
-    private final BufferedImage defaultImage;
+    private final Image defaultImage;
     private final Dao<Item, String> dao;
     private Dimension defaultSize = new Dimension(1024, 1024);
 
@@ -50,7 +50,10 @@ public class Repository {
         }
         for (int i = 0; i < MAX_ATTEMPTS; i++) {
             try {
-                Item random = dao.queryBuilder().orderByRaw("RANDOM()").queryForFirst();
+                Item random;
+                synchronized (this) {
+                    random = dao.queryBuilder().orderByRaw("RANDOM()").queryForFirst();
+                }
                 MediaItem mediaItem = gClient.getMediaItem(random.getGoogleID());
                 BufferedImage image = ImageIO.read(new URL(mediaItem.getBaseUrl() + googlePhotoSize(size)));
                 MediaMetadata metadata = mediaItem.getMediaMetadata();
@@ -76,7 +79,9 @@ public class Repository {
             try {
                 DeleteBuilder<Item, String> deleteBuilder = dao.deleteBuilder();
                 deleteBuilder.where().lt("validUntil", cleanupTimestamp);
-                deleteBuilder.delete();
+                synchronized (this) {
+                    deleteBuilder.delete();
+                }
             } catch (SQLException e) {
                 e.printStackTrace();
             }
@@ -98,11 +103,13 @@ public class Repository {
                 MediaItem next = iterator.next();
                 try {
                     System.out.println("processing item " + next.getId());
-                    List<Item> item = dao.queryForEq("googleID", next.getId());
-                    if (item.isEmpty()) {
-                        dao.create(new Item(next));
-                    } else {
-                        item.get(0).setValidUntil(validUntil);
+                    synchronized (this) {
+                        List<Item> item = dao.queryForEq("googleID", next.getId());
+                        if (item.isEmpty()) {
+                            dao.create(new Item(next));
+                        } else {
+                            item.get(0).setValidUntil(validUntil);
+                        }
                     }
                 } catch (SQLException e) {
                     e.printStackTrace();

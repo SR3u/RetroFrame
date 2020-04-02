@@ -7,6 +7,7 @@ import com.google.photos.library.v1.PhotosLibraryClient;
 import com.j256.ormlite.logger.LocalLog;
 import lombok.Builder;
 import lombok.Data;
+import org.sr3u.photoframe.client.ClientThread;
 import org.sr3u.photoframe.server.data.ImageWithMetadata;
 
 import javax.imageio.ImageIO;
@@ -15,14 +16,18 @@ import java.awt.image.BufferedImage;
 import java.io.*;
 import java.lang.reflect.Type;
 import java.net.Socket;
-import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 public class Server {
+
+    public static final String DISPLAY_SERVERS_JSON = "displayServers.json";
+    public static final int PORT = 4242;
 
     static { // HIDE DOCK ICON (if any)
         System.setProperty("java.awt.headless", "true");
@@ -34,8 +39,13 @@ public class Server {
 
     private static List<DisplayServer> displayServers = new ArrayList<>();
 
-    public static void main(String[] args) throws FileNotFoundException {
-        displayServers = readServersFromFile("displayServers.json");
+    public static void main(String[] args) {
+        try {
+            displayServers = readServersFromFile(DISPLAY_SERVERS_JSON);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+            displayServers = Collections.emptyList();
+        }
         System.setProperty(LocalLog.LOCAL_LOG_LEVEL_PROPERTY, "ERROR");
         System.setProperty("com.j256.ormlite.*", "ERROR");
         System.setProperty("log4j.com.j256.ormlite.*", "ERROR");
@@ -50,8 +60,8 @@ public class Server {
             Repository repository = new Repository(client);
             scheduleRefresh(repository);
             scheduleSending(repository);
-
-
+            new ServerThread(repository, PORT).start();
+            new ClientThread("localhost", PORT).start();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -78,15 +88,15 @@ public class Server {
         Socket socket = new Socket(server.getAddress(), server.getPort());
         PrintStream out = new PrintStream(socket.getOutputStream());
         out.flush();
-        ImageWithMetadata random = repository.getRandom();
+        ImageWithMetadata random = repository.getRandom(server.getScreenSize());
         sendMetadata(out, random);
         sendImage(server, out, random);
         socket.close();
     }
 
-    private static void sendMetadata(PrintStream out, ImageWithMetadata random) throws IOException {
+    public static void sendMetadata(PrintStream out, ImageWithMetadata random) throws IOException {
         String json = random.jsonMetadata();
-        byte[] jsonBytes = json.getBytes(Charset.forName("UTF-8"));
+        byte[] jsonBytes = json.getBytes(StandardCharsets.UTF_8);
         out.write(intToByteArray(jsonBytes.length));
         out.flush();
         out.write(jsonBytes);
@@ -94,7 +104,11 @@ public class Server {
     }
 
     private static void sendImage(DisplayServer server, PrintStream out, ImageWithMetadata random) throws IOException {
-        BufferedImage image = ImageUtil.scaledImage(random.getImage(), server.getScreenSize());
+        sendImage(server.getScreenSize(), out, random);
+    }
+
+    public static void sendImage(Dimension size, PrintStream out, ImageWithMetadata random) throws IOException {
+        BufferedImage image = ImageUtil.buffer(ImageUtil.scaledImage(random.getImage(), size));
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         ImageIO.write(image, "png", baos);
         baos.flush();
@@ -117,6 +131,10 @@ public class Server {
                 (byte) (value >>> 16),
                 (byte) (value >>> 8),
                 (byte) value};
+    }
+
+    public static int intFromByteArray(byte[] bytes) {
+        return bytes[0] << 24 | (bytes[1] & 0xFF) << 16 | (bytes[2] & 0xFF) << 8 | (bytes[3] & 0xFF);
     }
 
     public static List<DisplayServer> readServersFromFile(String filePath) throws FileNotFoundException {

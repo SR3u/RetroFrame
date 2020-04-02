@@ -6,8 +6,9 @@ import com.google.gson.GsonBuilder;
 import com.google.photos.library.v1.proto.MediaMetadata;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import org.sr3u.photoframe.server.ImageUtil;
 
-import java.awt.image.BufferedImage;
+import java.awt.*;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.HashMap;
@@ -20,7 +21,7 @@ public class ImageWithMetadata {
     public static final Gson GSON = new GsonBuilder()
             .setFieldNamingStrategy(new ImageWithMetadataFieldNamingStrategy())
             .create();
-    private BufferedImage image;
+    private Image image;
     private Map<String, Object> metadata;
 
     public String jsonMetadata() {
@@ -50,6 +51,7 @@ public class ImageWithMetadata {
     }
 
     static class ImageWithMetadataFieldNamingStrategy implements FieldNamingStrategy {
+        @Override
         public String translateName(Field field) {
             String fieldName = field.getName();
             if (fieldName.endsWith("_") && fieldName.length() > 1) {
@@ -57,5 +59,17 @@ public class ImageWithMetadata {
             }
             return fieldName;
         }
+    }
+
+    public boolean tall() {
+        return ImageUtil.isTall(image);
+    }
+
+    public boolean wide() {
+        return ImageUtil.isWide(image);
+    }
+
+    public boolean square() {
+        return ImageUtil.isSquare(image);
     }
 }
