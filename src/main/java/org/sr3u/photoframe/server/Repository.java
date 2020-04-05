@@ -11,11 +11,11 @@ import com.j256.ormlite.table.TableUtils;
 import lombok.SneakyThrows;
 import org.sr3u.photoframe.server.data.ImageWithMetadata;
 import org.sr3u.photoframe.server.data.Item;
+import org.sr3u.photoframe.server.data.MediaType;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
 import java.util.List;
@@ -52,13 +52,13 @@ public class Repository {
             try {
                 Item random;
                 synchronized (this) {
-                    random = dao.queryBuilder().orderByRaw("RANDOM()").queryForFirst();
+                    random = dao.queryBuilder().orderByRaw("RANDOM()").where().eq("mediaType", MediaType.IMAGE).queryForFirst();
                 }
                 MediaItem mediaItem = gClient.getMediaItem(random.getGoogleID());
                 BufferedImage image = ImageIO.read(new URL(mediaItem.getBaseUrl() + googlePhotoSize(size)));
                 MediaMetadata metadata = mediaItem.getMediaMetadata();
                 return new ImageWithMetadata(image, ImageWithMetadata.convert(metadata));
-            } catch (SQLException | IOException e) {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }

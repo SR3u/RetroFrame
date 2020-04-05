@@ -10,7 +10,7 @@ import java.util.Map;
 
 public class ClientThread extends Thread {
     public static final Gson GSON = new Gson();
-    private ImageWindow imageWindow = new ImageWindow();
+    private ImageWindow imageWindow;
 
     private static Socket clientSocket;
     private static InputStream in;
@@ -22,6 +22,7 @@ public class ClientThread extends Thread {
     public ClientThread(String host, int port) {
         this.port = port;
         this.host = host;
+        imageWindow = new ImageWindow(Server.settings.getClient().isFullScreen());
     }
 
     @Override

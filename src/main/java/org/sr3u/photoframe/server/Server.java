@@ -9,6 +9,7 @@ import lombok.Builder;
 import lombok.Data;
 import org.sr3u.photoframe.client.ClientThread;
 import org.sr3u.photoframe.server.data.ImageWithMetadata;
+import org.sr3u.photoframe.settings.Settings;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -27,10 +28,11 @@ import java.util.concurrent.TimeUnit;
 public class Server {
 
     public static final String DISPLAY_SERVERS_JSON = "displayServers.json";
-    public static final int PORT = 4242;
+    public static final Settings settings;
 
     static { // HIDE DOCK ICON (if any)
-        System.setProperty("java.awt.headless", "true");
+        settings = Settings.load("settings.properties");
+        System.setProperty("java.awt.headless", String.valueOf(settings.isJava_awt_headless()));
         System.out.println("java.awt.headless: " + java.awt.GraphicsEnvironment.isHeadless());
     }
 
@@ -60,8 +62,10 @@ public class Server {
             Repository repository = new Repository(client);
             scheduleRefresh(repository);
             scheduleSending(repository);
-            new ServerThread(repository, PORT).start();
-            new ClientThread("localhost", PORT).start();
+            new ServerThread(repository, settings.getServer().getPort()).start();
+            if (settings.isClientEnabled()) {
+                new ClientThread("localhost", settings.getServer().getPort()).start();
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }

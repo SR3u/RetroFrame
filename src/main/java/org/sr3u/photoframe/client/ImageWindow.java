@@ -1,5 +1,7 @@
 package org.sr3u.photoframe.client;
 
+import com.google.common.base.Preconditions;
+
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
@@ -9,6 +11,7 @@ import java.awt.image.BufferedImage;
 import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.reflect.Method;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Map;
@@ -19,11 +22,14 @@ public class ImageWindow {
     ImagePanel imagePanel;
     OutlineLabel metadataLabel;
 
-    public ImageWindow() {
+    public ImageWindow(boolean fullScreen) {
         frame = new JFrame();
         //frame.setLayout(new GridLayout(1, 1, 0, 0));
         frame.setLayout(new BorderLayout());
         frame.setSize(320, 240);
+        if (fullScreen) {
+            enableOSXFullscreen(frame);
+        }
         imagePanel = new ImagePanel();
         imagePanel.setLayout(new BorderLayout());
         frame.add(imagePanel, BorderLayout.CENTER);
@@ -98,5 +104,22 @@ public class ImageWindow {
                 return number.doubleValue() * multiplier;
             }
         };
+    }
+
+    @SuppressWarnings({"unchecked", "rawtypes"})
+    public static void enableOSXFullscreen(JFrame window) {
+        Preconditions.checkNotNull(window);
+        try {
+            Class util = Class.forName("com.apple.eawt.FullScreenUtilities");
+            Class params[] = new Class[]{Window.class, Boolean.TYPE};
+            Method method = util.getMethod("setWindowCanFullScreen", params);
+            method.invoke(util, window, true);
+        } catch (ClassNotFoundException e1) {
+            window.setExtendedState(JFrame.MAXIMIZED_BOTH);
+            window.setUndecorated(true);
+            window.setVisible(true);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

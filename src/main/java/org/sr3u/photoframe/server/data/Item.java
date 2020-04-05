@@ -30,8 +30,6 @@ public class Item {
     @DatabaseField
     private String fileName;
     @DatabaseField
-    private Date creationDate;
-    @DatabaseField
     private String mimeType;
     @DatabaseField
     private long width;
@@ -39,6 +37,8 @@ public class Item {
     private long height;
     @DatabaseField
     private double aspectRatio;
+    @DatabaseField
+    private MediaType mediaType;
 
 
     public Item(MediaItem mediaItem) {
@@ -50,6 +50,13 @@ public class Item {
         this.width = mediaItem.getMediaMetadata().getWidth();
         this.height = mediaItem.getMediaMetadata().getHeight();
         this.aspectRatio = ImageUtil.aspectRatio(width, height);
+        if (mimeType.toLowerCase().startsWith("image")) {
+            mediaType = MediaType.IMAGE;
+        } else if (mimeType.toLowerCase().startsWith("video")) {
+            mediaType = MediaType.VIDEO;
+        } else {
+            mediaType = MediaType.UNKNOWN;
+        }
     }
 
     public static long defaultCleanupTimestamp() {
