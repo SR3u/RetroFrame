@@ -23,6 +23,7 @@ public class Event {
     public void refreshMediaItem() {
         if (mediaItem == null || isMediaItemExpired(new Date())) {
             mediaItem = gClient.getMediaItem(item.getGoogleID());
+            System.out.println("MediaItem refreshed");
         }
         eventQueryTimestamp = new Date();
     }
