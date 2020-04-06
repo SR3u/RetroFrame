@@ -36,6 +36,7 @@ public class Server {
         settings = Settings.load("settings.properties");
         System.setProperty("java.awt.headless", String.valueOf(settings.isJava_awt_headless()));
         System.out.println("java.awt.headless: " + java.awt.GraphicsEnvironment.isHeadless());
+        System.setProperty(LocalLog.LOCAL_LOG_LEVEL_PROPERTY, "ERROR");
     }
 
     private static final Type REVIEW_TYPE = new TypeToken<List<DisplayServer>>() {

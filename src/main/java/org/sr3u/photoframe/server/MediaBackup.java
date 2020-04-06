@@ -18,12 +18,14 @@ import java.io.IOException;
 import java.net.URL;
 import java.nio.channels.Channels;
 import java.nio.channels.ReadableByteChannel;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Objects;
 
 public class MediaBackup implements Consumerex<Event> {
     public static final String DELETED = "deleted";
@@ -79,10 +81,14 @@ public class MediaBackup implements Consumerex<Event> {
     private void saveMetadataFile(Event event, String backupPath) throws IOException {
         File metadataFile = getMetadataFile(backupPath, event.getItem());
         if (!metadataFile.exists()) {
-            FileWriter fileWriter = new FileWriter(metadataFile);
-            GSON.toJson(event.getMediaItem().getMediaMetadata(), fileWriter);
-            fileWriter.flush();
-            System.out.println("Saved item " + metadataFile.getAbsolutePath());
+            String newJson = GSON.toJson(event.getMediaItem().getMediaMetadata());
+            String oldJson = Files.readString(Path.of(metadataFile.getAbsolutePath()), StandardCharsets.UTF_8);
+            if (!Objects.equals(oldJson, newJson)) {
+                FileWriter fileWriter = new FileWriter(metadataFile, StandardCharsets.UTF_8);
+                fileWriter.write(newJson);
+                fileWriter.flush();
+                System.out.println("Saved item metadata " + metadataFile.getAbsolutePath());
+            }
         }
     }
 
