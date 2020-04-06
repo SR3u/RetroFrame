@@ -21,15 +21,15 @@ public class Event {
     MediaItem mediaItem;
 
     public void refreshMediaItem() {
-        if (mediaItem == null || isMediaItemExpired(new Date())) {
+        if (mediaItem == null || isMediaItemExpired()) {
             mediaItem = gClient.getMediaItem(item.getGoogleID());
             System.out.println("MediaItem refreshed");
         }
         eventQueryTimestamp = new Date();
     }
 
-    private boolean isMediaItemExpired(Date now) {
-        return DateUtil.isDateExpiredForMediaItem(now, eventQueryTimestamp);
+    private boolean isMediaItemExpired() {
+        return DateUtil.isDateExpiredForMediaItem(eventQueryTimestamp);
     }
 
     public MediaItem getMediaItem() {

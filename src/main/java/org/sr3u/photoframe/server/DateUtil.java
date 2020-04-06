@@ -18,8 +18,8 @@ public class DateUtil {
         return d.getTime() / 1000;
     }
 
-    public static boolean isDateExpiredForMediaItem(Date now, Date eventQueryTimestamp) {
-        return eventQueryTimestamp == null || (((now.getTime() - eventQueryTimestamp.getTime()) / 1000) > Server.settings.getMedia().mediaItemExpiryTime);
+    public static boolean isDateExpiredForMediaItem(Date eventQueryTimestamp) {
+        return eventQueryTimestamp == null || (((new Date().getTime() - eventQueryTimestamp.getTime()) / 1000) > Server.settings.getMedia().mediaItemExpiryTime);
     }
 
     public static com.google.type.Date toProtobuf(Date date) {

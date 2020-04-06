@@ -78,26 +78,30 @@ public class Repository {
                 return;
             }
             System.out.println(getClass().getName() + " Refresh: STARTED");
-            long cleanupTimestamp = DateUtil.timestamp(new Date());
-            try {
-                Streamex.ofStream(dao.queryBuilder().where().lt("validUntil", cleanupTimestamp).query().stream())
-                        .forEach(item -> eventSystem.fireEvent(new DeletedItemEvent(item, gClient, dao)));
-                DeleteBuilder<Item, String> deleteBuilder = dao.deleteBuilder();
-                deleteBuilder.where().lt("validUntil", cleanupTimestamp);
-                synchronized (this) {
-                    deleteBuilder.delete();
-                }
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
             Date refreshStartDate = new Date();
             while (refreshStartDate != null) {
                 refreshStartDate = refresh(refreshStartDate);
             }
+            cleanup();
         } catch (Throwable e) {
             e.printStackTrace();
         }
         System.out.println(getClass().getName() + " Refresh: DONE");
+    }
+
+    private void cleanup() {
+        long cleanupTimestamp = DateUtil.timestamp(new Date());
+        try {
+            Streamex.ofStream(dao.queryBuilder().where().lt("validUntil", cleanupTimestamp).query().stream())
+                    .forEach(item -> eventSystem.fireEvent(new DeletedItemEvent(item, gClient, dao)));
+            DeleteBuilder<Item, String> deleteBuilder = dao.deleteBuilder();
+            deleteBuilder.where().lt("validUntil", cleanupTimestamp);
+            synchronized (this) {
+                deleteBuilder.delete();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     private Date refresh(Date refreshStartDate) {
@@ -108,7 +112,7 @@ public class Repository {
         long validUntil = Item.defaultCleanupTimestamp();
         while (iterator.hasNext()) {
             MediaItem next = iterator.next();
-            if (DateUtil.isDateExpiredForMediaItem(new Date(), refreshStarted)) {
+            if (DateUtil.isDateExpiredForMediaItem(refreshStarted)) {
                 Date refreshDate = DateUtil.addDays(DateUtil.getCreationDate(next.getMediaMetadata().getCreationTime()), 1);
                 System.out.println("Refresh restarted from date " + refreshDate);
                 return refreshDate;
