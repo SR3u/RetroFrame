@@ -90,45 +90,75 @@ public class Repository {
             } catch (SQLException e) {
                 e.printStackTrace();
             }
-            MediaTypeFilter mediaTypeFilter = MediaTypeFilter.newBuilder()
-                    .addMediaTypes(MediaTypeFilter.MediaType.ALL_MEDIA)
-                    .build();
-            ContentFilter contentFilter = ContentFilter.newBuilder()
-                    .addAllExcludedContentCategories(Arrays.asList(RECEIPTS, DOCUMENTS, SCREENSHOTS))
-                    .build();
-            Filters filters = Filters.newBuilder()
-                    .setMediaTypeFilter(mediaTypeFilter)
-                    .setContentFilter(contentFilter)
-                    .setIncludeArchivedMedia(false)
-                    .build();
-            Date refreshStarted = new Date();
-            InternalPhotosLibraryClient.SearchMediaItemsPagedResponse listMediaItems = gClient.searchMediaItems(filters);
-            Iterator<MediaItem> iterator = listMediaItems.iterateAll().iterator();
-            long validUntil = Item.defaultCleanupTimestamp();
-            while (iterator.hasNext()) {
-                MediaItem next = iterator.next();
-                try {
-                    System.out.println("processing item " + next.getId());
-                    synchronized (this) {
-                        List<Item> item = dao.queryForEq("googleID", next.getId());
-                        if (item.isEmpty()) {
-                            Item newItem = new Item(next);
-                            dao.create(newItem);
-                            eventSystem.fireEvent(new NewItemEvent(refreshStarted, newItem, next, gClient, dao));
-                        } else {
-                            Item item1 = item.get(0);
-                            item1.setValidUntil(validUntil);
-                            eventSystem.fireEvent(new UpdatedItemEvent(refreshStarted, item1, next, gClient, dao));
-                        }
-                    }
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
+            Date refreshStartDate = new Date();
+            while (refreshStartDate != null) {
+                refreshStartDate = refresh(refreshStartDate);
             }
         } catch (Throwable e) {
             e.printStackTrace();
         }
         System.out.println(getClass().getName() + " Refresh: DONE");
+    }
+
+    private Date refresh(Date refreshStartDate) {
+        Filters filters = getFilters(refreshStartDate);
+        Date refreshStarted = new Date();
+        InternalPhotosLibraryClient.SearchMediaItemsPagedResponse listMediaItems = gClient.searchMediaItems(filters);
+        Iterator<MediaItem> iterator = listMediaItems.iterateAll().iterator();
+        long validUntil = Item.defaultCleanupTimestamp();
+        while (iterator.hasNext()) {
+            MediaItem next = iterator.next();
+            if (DateUtil.isDateExpiredForMediaItem(new Date(), refreshStarted)) {
+                Date refreshDate = DateUtil.addDays(DateUtil.getCreationDate(next.getMediaMetadata().getCreationTime()), 1);
+                System.out.println("Refresh restarted from date " + refreshDate);
+                return refreshDate;
+            }
+            try {
+                System.out.println("processing item " + next.getId());
+                synchronized (this) {
+                    List<Item> item = dao.queryForEq("googleID", next.getId());
+                    if (item.isEmpty()) {
+                        Item newItem = new Item(next);
+                        dao.create(newItem);
+                        eventSystem.fireEvent(new NewItemEvent(refreshStarted, newItem, next, gClient, dao));
+                    } else {
+                        Item item1 = item.get(0);
+                        item1.setValidUntil(validUntil);
+                        eventSystem.fireEvent(new UpdatedItemEvent(refreshStarted, item1, next, gClient, dao));
+                    }
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return null;
+    }
+
+    private Filters getFilters(Date endDate) {
+        MediaTypeFilter mediaTypeFilter = MediaTypeFilter.newBuilder()
+                .addMediaTypes(MediaTypeFilter.MediaType.ALL_MEDIA)
+                .build();
+        ContentFilter contentFilter = ContentFilter.newBuilder()
+                .addAllExcludedContentCategories(Arrays.asList(RECEIPTS, DOCUMENTS, SCREENSHOTS))
+                .build();
+        com.google.type.Date earliest = com.google.type.Date.newBuilder()
+                .setDay(1)
+                .setMonth(1)
+                .setYear(1)
+                .build();
+        com.google.type.Date endDateP = DateUtil.toProtobuf(endDate);
+        DateFilter dateFilter = DateFilter.newBuilder()
+                .addRanges(DateRange.newBuilder()
+                        .setStartDate(earliest)
+                        .setEndDate(endDateP)
+                        .build())
+                .build();
+        return Filters.newBuilder()
+                .setMediaTypeFilter(mediaTypeFilter)
+                .setContentFilter(contentFilter)
+                .setIncludeArchivedMedia(false)
+                .setDateFilter(dateFilter)
+                .build();
     }
 
 }

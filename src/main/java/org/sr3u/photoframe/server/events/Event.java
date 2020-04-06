@@ -4,7 +4,7 @@ import com.google.photos.library.v1.PhotosLibraryClient;
 import com.google.photos.library.v1.proto.MediaItem;
 import com.j256.ormlite.dao.Dao;
 import lombok.Getter;
-import org.sr3u.photoframe.server.Server;
+import org.sr3u.photoframe.server.DateUtil;
 import org.sr3u.photoframe.server.data.Item;
 import sr3u.streamz.functionals.Consumerex;
 
@@ -29,7 +29,7 @@ public class Event {
     }
 
     private boolean isMediaItemExpired(Date now) {
-        return eventQueryTimestamp == null || (((now.getTime() - eventQueryTimestamp.getTime()) / 1000) > Server.settings.getMedia().mediaItemExpiryTime);
+        return DateUtil.isDateExpiredForMediaItem(now, eventQueryTimestamp);
     }
 
     public MediaItem getMediaItem() {
