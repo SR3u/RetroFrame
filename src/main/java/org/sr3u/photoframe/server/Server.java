@@ -30,13 +30,14 @@ public class Server {
 
     public static final String DISPLAY_SERVERS_JSON = "displayServers.json";
     public static final Settings settings;
-    private static final EventSystem eventsSystem = new EventSystem();
+    private static final EventSystem eventsSystem;
 
     static { // HIDE DOCK ICON (if any)
+        System.setProperty(LocalLog.LOCAL_LOG_LEVEL_PROPERTY, "ERROR");
         settings = Settings.load("settings.properties");
         System.setProperty("java.awt.headless", String.valueOf(settings.isJava_awt_headless()));
         System.out.println("java.awt.headless: " + java.awt.GraphicsEnvironment.isHeadless());
-        System.setProperty(LocalLog.LOCAL_LOG_LEVEL_PROPERTY, "ERROR");
+        eventsSystem = new EventSystem();
     }
 
     private static final Type REVIEW_TYPE = new TypeToken<List<DisplayServer>>() {
