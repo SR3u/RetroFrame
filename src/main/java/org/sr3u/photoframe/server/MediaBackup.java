@@ -122,7 +122,7 @@ public class MediaBackup implements Consumerex<Event> {
             MediaMetadata mediaMetadata = mediaItem.getMediaMetadata();
             String itemUrlString = mediaItem.getBaseUrl();
             if (item.getMediaType() == MediaType.IMAGE) {
-                itemUrlString += ImageUtil.googlePhotoSize(mediaMetadata.getWidth(), mediaMetadata.getHeight());
+                itemUrlString += "=d";
             } else if (item.getMediaType() == MediaType.VIDEO) {
                 itemUrlString += "=dv";
             }
