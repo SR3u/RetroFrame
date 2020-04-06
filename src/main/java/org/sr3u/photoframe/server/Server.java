@@ -9,6 +9,7 @@ import lombok.Builder;
 import lombok.Data;
 import org.sr3u.photoframe.client.ClientThread;
 import org.sr3u.photoframe.server.data.ImageWithMetadata;
+import org.sr3u.photoframe.server.events.EventSystem;
 import org.sr3u.photoframe.settings.Settings;
 
 import javax.imageio.ImageIO;
@@ -29,6 +30,7 @@ public class Server {
 
     public static final String DISPLAY_SERVERS_JSON = "displayServers.json";
     public static final Settings settings;
+    private static final EventSystem eventsSystem = new EventSystem();
 
     static { // HIDE DOCK ICON (if any)
         settings = Settings.load("settings.properties");
@@ -52,6 +54,9 @@ public class Server {
         System.setProperty("com.j256.ormlite.*", "ERROR");
         System.setProperty("log4j.com.j256.ormlite.*", "ERROR");
         String credentialsPath = new File("credentials/credentials.json").getAbsolutePath();
+        if (settings.getMedia().isBackup()) {
+            eventsSystem.registerHandler(new MediaBackup());
+        }
         try {
             PhotosLibraryClient client = PhotosLibraryClientFactory.createClient(credentialsPath, Resources.REQUIRED_SCOPES);
                /* InternalPhotosLibraryClient.ListMediaItemsPagedResponse response = client.listMediaItems();
@@ -59,7 +64,7 @@ public class Server {
                     // Get some properties of a media item
                     System.out.println(item);
                 }*/
-            Repository repository = new Repository(client);
+            Repository repository = new Repository(client, eventsSystem);
             scheduleRefresh(repository);
             scheduleSending(repository);
             new ServerThread(repository, settings.getServer().getPort()).start();

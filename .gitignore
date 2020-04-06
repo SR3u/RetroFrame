@@ -73,3 +73,6 @@ displayServers.json
 *.iml
 dependency-reduced-pom.xml
 /settings.properties
+/target/classes/
+/credentials/
+/.idea/

@@ -70,4 +70,12 @@ public class ImageUtil {
     public static boolean isSquare(Image image) {
         return !isTall(image) && !isWide(image);
     }
+
+    public static String googlePhotoSize(Dimension size) {
+        return googlePhotoSize(size.width, size.height);
+    }
+
+    public static String googlePhotoSize(Number width, Number height) {
+        return "=w" + width + "-h" + height;
+    }
 }

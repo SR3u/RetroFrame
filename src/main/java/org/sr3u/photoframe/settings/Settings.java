@@ -73,6 +73,9 @@ public class Settings implements Fillable {
         @PropertyMap("media.backupPath")
         @Builder.Default
         String backupPath = null;
+        @Builder.Default
+        @PropertyMap("media.databasePath")
+        String databasePath = "mediaItems.db";
 
         public boolean isBackup() {
             return backup && backupPath != null;
