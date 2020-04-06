@@ -105,7 +105,7 @@ public class Settings implements Fillable {
         boolean fullScreen = false;
         @Builder.Default
         @PropertyMap("client.refreshDelay")
-        int refreshDelay = 10000;
+        int refreshDelay = 60000;
 
         public static Client load(Properties properties) {
             Client build = builder().build();
