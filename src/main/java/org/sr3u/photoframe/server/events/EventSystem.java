@@ -10,7 +10,7 @@ import java.util.concurrent.Executors;
 
 public class EventSystem {
     Set<Consumerex<Event>> eventHandlers = new HashSet<>();
-    ExecutorService executor = Executors.newFixedThreadPool(2);
+    ExecutorService executor = Executors.newFixedThreadPool(1);
 
     public void registerHandler(Consumerex<Event> eventHandler) {
         executor.submit(() -> eventHandlers.add(eventHandler));

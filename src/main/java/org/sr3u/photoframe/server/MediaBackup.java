@@ -2,7 +2,6 @@ package org.sr3u.photoframe.server;
 
 import com.google.gson.Gson;
 import com.google.photos.library.v1.proto.MediaItem;
-import com.google.photos.library.v1.proto.MediaMetadata;
 import org.sr3u.photoframe.server.data.Item;
 import org.sr3u.photoframe.server.data.MediaType;
 import org.sr3u.photoframe.server.events.DeletedItemEvent;
@@ -119,7 +118,6 @@ public class MediaBackup implements Consumerex<Event> {
         File file = getItemFile(backupPath, item);
         if (!file.exists()) {
             MediaItem mediaItem = event.getMediaItem();
-            MediaMetadata mediaMetadata = mediaItem.getMediaMetadata();
             String itemUrlString = mediaItem.getBaseUrl();
             if (item.getMediaType() == MediaType.IMAGE) {
                 itemUrlString += "=d";
