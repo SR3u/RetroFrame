@@ -76,6 +76,9 @@ public class Settings implements Fillable {
         @Builder.Default
         @PropertyMap("media.databasePath")
         String databasePath = "mediaItems.db";
+        @Builder.Default
+        @PropertyMap("media.mediaItemExpiryTime")
+        public long mediaItemExpiryTime = 3000;
 
         public boolean isBackup() {
             return backup && backupPath != null;

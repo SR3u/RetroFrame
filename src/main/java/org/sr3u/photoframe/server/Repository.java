@@ -81,7 +81,7 @@ public class Repository {
             long cleanupTimestamp = DateUtil.timestamp(new Date());
             try {
                 Streamex.ofStream(dao.queryBuilder().where().lt("validUntil", cleanupTimestamp).query().stream())
-                        .forEach(item -> eventSystem.fireEvent(new DeletedItemEvent(item, null, gClient, dao)));
+                        .forEach(item -> eventSystem.fireEvent(new DeletedItemEvent(item, gClient, dao)));
                 DeleteBuilder<Item, String> deleteBuilder = dao.deleteBuilder();
                 deleteBuilder.where().lt("validUntil", cleanupTimestamp);
                 synchronized (this) {
@@ -101,6 +101,7 @@ public class Repository {
                     .setContentFilter(contentFilter)
                     .setIncludeArchivedMedia(false)
                     .build();
+            Date refreshStarted = new Date();
             InternalPhotosLibraryClient.SearchMediaItemsPagedResponse listMediaItems = gClient.searchMediaItems(filters);
             Iterator<MediaItem> iterator = listMediaItems.iterateAll().iterator();
             long validUntil = Item.defaultCleanupTimestamp();
@@ -113,11 +114,11 @@ public class Repository {
                         if (item.isEmpty()) {
                             Item newItem = new Item(next);
                             dao.create(newItem);
-                            eventSystem.fireEvent(new NewItemEvent(newItem, next, gClient, dao));
+                            eventSystem.fireEvent(new NewItemEvent(refreshStarted, newItem, next, gClient, dao));
                         } else {
                             Item item1 = item.get(0);
                             item1.setValidUntil(validUntil);
-                            eventSystem.fireEvent(new UpdatedItemEvent(item1, next, gClient, dao));
+                            eventSystem.fireEvent(new UpdatedItemEvent(refreshStarted, item1, next, gClient, dao));
                         }
                     }
                 } catch (SQLException e) {
