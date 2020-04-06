@@ -81,6 +81,7 @@ public class MediaBackup implements Consumerex<Event> {
         if (!metadataFile.exists()) {
             FileWriter fileWriter = new FileWriter(metadataFile);
             GSON.toJson(event.getMediaItem().getMediaMetadata(), fileWriter);
+            fileWriter.flush();
             System.out.println("Saved item " + metadataFile.getAbsolutePath());
         }
     }
