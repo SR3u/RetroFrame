@@ -80,15 +80,16 @@ public class MediaBackup implements Consumerex<Event> {
 
     private void saveMetadataFile(Event event, String backupPath) throws IOException {
         File metadataFile = getMetadataFile(backupPath, event.getItem());
-        if (!metadataFile.exists()) {
-            String newJson = GSON.toJson(event.getMediaItem().getMediaMetadata());
-            String oldJson = Files.readString(Path.of(metadataFile.getAbsolutePath()), StandardCharsets.UTF_8);
-            if (!Objects.equals(oldJson, newJson)) {
-                FileWriter fileWriter = new FileWriter(metadataFile, StandardCharsets.UTF_8);
-                fileWriter.write(newJson);
-                fileWriter.flush();
-                System.out.println("Saved item metadata " + metadataFile.getAbsolutePath());
-            }
+        String newJson = GSON.toJson(event.getMediaItem().getMediaMetadata());
+        String oldJson = "";
+        if (metadataFile.exists()) {
+            oldJson = Files.readString(Path.of(metadataFile.getAbsolutePath()), StandardCharsets.UTF_8);
+        }
+        if (!Objects.equals(oldJson, newJson)) {
+            FileWriter fileWriter = new FileWriter(metadataFile, StandardCharsets.UTF_8);
+            fileWriter.write(newJson);
+            fileWriter.flush();
+            System.out.println("Saved item metadata " + metadataFile.getAbsolutePath());
         }
     }
 
