@@ -21,8 +21,8 @@ public class Event {
     MediaItem mediaItem;
 
     public void refreshMediaItem() {
-        if (isMediaItemExpired(new Date())) {
-            mediaItem = gClient.getMediaItem(mediaItem.getId());
+        if (mediaItem == null || isMediaItemExpired(new Date())) {
+            mediaItem = gClient.getMediaItem(item.getGoogleID());
         }
         eventQueryTimestamp = new Date();
     }
@@ -32,9 +32,7 @@ public class Event {
     }
 
     public MediaItem getMediaItem() {
-        if (mediaItem == null || isMediaItemExpired(new Date())) {
-            refreshMediaItem();
-        }
+        refreshMediaItem();
         return mediaItem;
     }
 
