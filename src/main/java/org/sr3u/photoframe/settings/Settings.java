@@ -13,6 +13,9 @@ public class Settings implements Fillable {
     @PropertyMap("java.awt.headless")
     boolean java_awt_headless = true;
     @Builder.Default
+    @PropertyMap("processingThreads")
+    int processingTreads = (Runtime.getRuntime().availableProcessors() / 2) + 1;
+    @Builder.Default
     Client client = Client.builder().build();
     @Builder.Default
     Server server = Server.builder().build();

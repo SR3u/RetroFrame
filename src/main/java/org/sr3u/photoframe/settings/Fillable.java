@@ -7,11 +7,12 @@ public interface Fillable {
     default void fill(Properties properties) {
         Field[] fields = this.getClass().getDeclaredFields();
         for (Field field : fields) {
-            try {
-                if (field.isAnnotationPresent(PropertyMap.class)) {
-                    field.setAccessible(true);
-                    PropertyMap annotation = field.getAnnotation(PropertyMap.class);
-                    String s = (String) properties.get(annotation.value());
+            if (field.isAnnotationPresent(PropertyMap.class)) {
+                field.setAccessible(true);
+                PropertyMap annotation = field.getAnnotation(PropertyMap.class);
+                String propertyName = annotation.value();
+                try {
+                    String s = (String) properties.get(propertyName);
                     if (s != null) {
                         Class<?> type = field.getType();
                         if (Boolean.class.equals(type) || boolean.class.equals(type)) {
@@ -28,10 +29,9 @@ public interface Fillable {
                             throw new Exception("Unsupported type: " + type);
                         }
                     }
+                } catch (Exception e) {
+                    System.out.println("Failed to fill property " + getClass().getName() + "." + field.getName() + " with setting " + propertyName);
                 }
-            } catch (Exception e) {
-                System.out.println(getClass().getName() + "." + field.getName());
-                throw new RuntimeException(e);
             }
         }
     }
