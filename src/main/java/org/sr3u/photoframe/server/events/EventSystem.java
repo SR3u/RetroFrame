@@ -18,7 +18,13 @@ public class EventSystem {
 
     public void fireEvent(Event event) {
         executor.submit(() -> Streamex.ofStream(eventHandlers.stream())
-                .forEach(e -> e.accept(event)));
+                .forEach(e -> {
+                    try {
+                        e.accept(event);
+                    } catch (Exception ex) {
+                        ex.printStackTrace();
+                    }
+                }));
     }
 
 }
