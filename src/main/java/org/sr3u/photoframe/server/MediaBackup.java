@@ -1,5 +1,6 @@
 package org.sr3u.photoframe.server;
 
+import com.google.gson.Gson;
 import com.google.photos.library.v1.proto.MediaItem;
 import com.google.photos.library.v1.proto.MediaMetadata;
 import org.sr3u.photoframe.server.data.Item;
@@ -12,6 +13,7 @@ import sr3u.streamz.functionals.Consumerex;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.net.URL;
 import java.nio.channels.Channels;
@@ -26,6 +28,7 @@ import java.util.Date;
 public class MediaBackup implements Consumerex<Event> {
     public static final String DELETED = "deleted";
     private static final String ITEMS = "items";
+    private static final Gson GSON = new Gson();
     DateFormat YYYY_MM_DD = new SimpleDateFormat("yyyy-MM-dd");
 
     @Override
@@ -39,24 +42,72 @@ public class MediaBackup implements Consumerex<Event> {
     }
 
     private void moveToTrash(String backupPath, DeletedItemEvent event) throws IOException {
+        moveMediaToTrash(backupPath, event);
+        moveMetadataToTrash(backupPath, event);
+    }
+
+    private void moveMetadataToTrash(String backupPath, DeletedItemEvent event) throws IOException {
         Item item = event.getItem();
-        String dateStr = YYYY_MM_DD.format(new Date(item.getCreationTimestamp() * 1000));
-        Path fullFolderPath = Paths.get(backupPath, ITEMS, dateStr, item.getGoogleID());
+        Path fullFolderPath = getFullFolderPath(backupPath, item);
+        Path filePath = Paths.get(fullFolderPath.toAbsolutePath().toString(), item.getFileName() + ".json");
+        Path fullTrashFolderPath = getTrashFolderPath(backupPath, item);
+        Path trashFilePath = Paths.get(fullTrashFolderPath.toString(), item.getFileName() + ".json");
+        Files.move(filePath, trashFilePath);
+    }
+
+    private void moveMediaToTrash(String backupPath, DeletedItemEvent event) throws IOException {
+        Item item = event.getItem();
+        Path fullFolderPath = getFullFolderPath(backupPath, item);
         Path filePath = Paths.get(fullFolderPath.toAbsolutePath().toString(), item.getFileName());
-        Files.createDirectories(fullFolderPath);
-        Path fullTrashFolderPath = Paths.get(backupPath, DELETED, dateStr, item.getGoogleID());
-        Files.createDirectories(fullTrashFolderPath);
+        Path fullTrashFolderPath = getTrashFolderPath(backupPath, item);
         Path trashFilePath = Paths.get(fullTrashFolderPath.toString(), item.getFileName());
         Files.move(filePath, trashFilePath);
     }
 
-    private void saveIfNeeded(String backupPath, Event event) throws IOException {
-        Item item = event.getItem();
+    private Path getTrashFolderPath(String backupPath, Item item) throws IOException {
         String dateStr = YYYY_MM_DD.format(new Date(item.getCreationTimestamp() * 1000));
-        Path fullFolderPath = Paths.get(backupPath, ITEMS, dateStr, item.getGoogleID());
+        Path fullTrashFolderPath = Paths.get(backupPath, DELETED, dateStr, item.getGoogleID());
+        Files.createDirectories(fullTrashFolderPath);
+        return fullTrashFolderPath;
+    }
+
+    private void saveIfNeeded(String backupPath, Event event) throws IOException {
+        saveItemFile(event, backupPath);
+        saveMetadataFile(event, backupPath);
+    }
+
+    private void saveMetadataFile(Event event, String backupPath) throws IOException {
+        File metadataFile = getMetadataFile(backupPath, event.getItem());
+        if (!metadataFile.exists()) {
+            FileWriter fileWriter = new FileWriter(metadataFile);
+            GSON.toJson(event.getMediaItem().getMediaMetadata(), fileWriter);
+        }
+    }
+
+    private File getMetadataFile(String backupPath, Item item) throws IOException {
+        Path fullFolderPath = getFullFolderPath(backupPath, item);
+        Path filePath = Paths.get(fullFolderPath.toAbsolutePath().toString(), item.getFileName() + ".json");
+        Files.createDirectories(fullFolderPath);
+        return new File(filePath.toAbsolutePath().toString());
+    }
+
+    private File getItemFile(String backupPath, Item item) throws IOException {
+        Path fullFolderPath = getFullFolderPath(backupPath, item);
         Path filePath = Paths.get(fullFolderPath.toAbsolutePath().toString(), item.getFileName());
         Files.createDirectories(fullFolderPath);
-        File file = new File(filePath.toAbsolutePath().toString());
+        return new File(filePath.toAbsolutePath().toString());
+    }
+
+    private Path getFullFolderPath(String backupPath, Item item) throws IOException {
+        String dateStr = YYYY_MM_DD.format(new Date(item.getCreationTimestamp() * 1000));
+        Path path = Paths.get(backupPath, ITEMS, dateStr, item.getGoogleID());
+        Files.createDirectories(path);
+        return path;
+    }
+
+    private void saveItemFile(Event event, String backupPath) throws IOException {
+        Item item = event.getItem();
+        File file = getItemFile(backupPath, item);
         if (!file.exists()) {
             MediaItem mediaItem = event.getMediaItem();
             MediaMetadata mediaMetadata = mediaItem.getMediaMetadata();
