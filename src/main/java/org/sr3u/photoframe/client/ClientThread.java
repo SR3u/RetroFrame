@@ -62,7 +62,7 @@ public class ClientThread extends Thread {
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
-                    Thread.sleep(1000);
+                    Thread.sleep(Server.settings.getClient().getRefreshDelay());
                 }
             } catch (InterruptedException e) {
                 e.printStackTrace();

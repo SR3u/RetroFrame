@@ -103,6 +103,9 @@ public class Settings implements Fillable {
         @Builder.Default
         @PropertyMap("client.fullscreen")
         boolean fullScreen = false;
+        @Builder.Default
+        @PropertyMap("client.refreshDelay")
+        int refreshDelay = 10000;
 
         public static Client load(Properties properties) {
             Client build = builder().build();

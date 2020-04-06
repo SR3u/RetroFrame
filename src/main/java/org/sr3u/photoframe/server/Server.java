@@ -33,6 +33,7 @@ public class Server {
     private static final EventSystem eventsSystem;
 
     static { // HIDE DOCK ICON (if any)
+        System.setProperty("com.j256.ormlite.logger.type", "ERROR");
         System.setProperty(LocalLog.LOCAL_LOG_LEVEL_PROPERTY, "ERROR");
         settings = Settings.load("settings.properties");
         System.setProperty("java.awt.headless", String.valueOf(settings.isJava_awt_headless()));
