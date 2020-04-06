@@ -129,6 +129,8 @@ public class MediaBackup implements Consumerex<Event> {
             FileOutputStream fos = new FileOutputStream(file);
             fos.getChannel().transferFrom(rbc, 0, Long.MAX_VALUE);
             System.out.println("Saved item " + file.getAbsolutePath());
+        } else {
+            System.out.println("Item already saved " + file.getAbsolutePath());
         }
     }
 }
