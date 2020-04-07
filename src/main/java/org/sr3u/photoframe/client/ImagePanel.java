@@ -22,6 +22,9 @@ class ImagePanel extends JComponent {
     BufferedImageOp blur = createBlurOp();
     private ExecutorService executorService;
 
+    int previousWidth = 0;
+    int previousHeight = 0;
+
 
     public ImagePanel(Image image) {
         this();
@@ -50,9 +53,14 @@ class ImagePanel extends JComponent {
     }
 
     private void adjustSize(double width, double height) {
-        if (originalImage != null) {
+        if (originalImage != null &&
+                previousWidth != width &&
+                previousHeight != height) {
             applyFiltersAsync(width, height);
+            previousWidth = (int) width;
+            previousHeight = (int) height;
         }
+
     }
 
     private Image blur(double width, double height, Image img) {
