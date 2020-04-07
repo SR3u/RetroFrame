@@ -13,7 +13,6 @@ import java.awt.image.Kernel;
 import java.util.Arrays;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.concurrent.atomic.AtomicLong;
 
 class ImagePanel extends JComponent {
     private final ImageFilter imageFilter;
@@ -22,7 +21,6 @@ class ImagePanel extends JComponent {
     private Image blurryBackgroundImage;
     BufferedImageOp blur = createBlurOp();
     private ExecutorService executorService;
-    private AtomicLong seq = new AtomicLong(0);
 
 
     public ImagePanel(Image image) {
@@ -53,10 +51,6 @@ class ImagePanel extends JComponent {
 
     private void adjustSize(double width, double height) {
         if (originalImage != null) {
-            if (image == null) {
-                image = ImageUtil.scaledImage(originalImage, width, height);
-                blurryBackgroundImage = blur(width, height, image);
-            }
             applyFiltersAsync(width, height);
         }
     }
@@ -67,29 +61,23 @@ class ImagePanel extends JComponent {
     }
 
     private void applyFiltersAsync(double width, double height) {
-        final long mySeq = seq.incrementAndGet();
         executorService.submit(() -> {
             if (originalImage == null) {
                 return;
             }
             Image newImage = imageFilter.wrap().apply(ImageUtil.scaledImage(originalImage, width, height));
-            if (seq.get() != mySeq) {
-                return;
-            }
             Image newBackground = blur(width, height, newImage);
-            if (seq.get() != mySeq) {
-                return;
-            }
             newBackground = imageFilter.wrap().apply(newBackground);
-            if (seq.get() != mySeq) {
-                return;
-            }
             image = newImage;
             blurryBackgroundImage = newBackground;
-            invalidate();
-            validate();
-            repaint();
+            forceRedraw();
         });
+    }
+
+    private void forceRedraw() {
+        invalidate();
+        validate();
+        repaint();
     }
 
     public Image getImage() {
