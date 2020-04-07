@@ -6,18 +6,19 @@
 package org.sr3u.photoframe.client.filters.dither;
 
 import org.sr3u.photoframe.client.filters.utils.Palette;
+import org.sr3u.photoframe.client.filters.utils.PaletteParser;
 import org.sr3u.photoframe.misc.util.ImageUtil;
 
 import java.awt.image.BufferedImage;
 
 /**
- * Performs no actual dithering... just replaces each
- * pixel with the nearest match, ignoring any error
- * accumulation that a "real" dither would do.
+ * Just replaces each pixel with the nearest match,
+ * ignoring any error accumulation that a dither would do.
  *
- * @author Richard Todd
+ * @see PaletteParser
+ * @see Palette
  */
-public final class NaiveDither implements Ditherer, PaletteParser {
+public final class ApplyPalette implements Ditherer, PaletteParser {
 
     private Palette palette;
 

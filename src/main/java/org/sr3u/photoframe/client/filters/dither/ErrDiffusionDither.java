@@ -6,6 +6,7 @@
 package org.sr3u.photoframe.client.filters.dither;
 
 import org.sr3u.photoframe.client.filters.utils.Palette;
+import org.sr3u.photoframe.client.filters.utils.PaletteParser;
 import org.sr3u.photoframe.misc.util.ImageUtil;
 
 import java.awt.*;
@@ -14,8 +15,10 @@ import java.util.Arrays;
 
 /**
  * A class to do the work of a typical error diffusion ditherer...
+ * <p>
+ * All dither filters have Palette as parameter
  *
- * @author richa
+ * @see PaletteParser
  */
 public abstract class ErrDiffusionDither implements Ditherer, PaletteParser {
     protected Palette palette = Palette.BNW;
