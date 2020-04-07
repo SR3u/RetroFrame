@@ -24,7 +24,10 @@ Filters are be applied from left to right.
            *Examples:*<br> `scale 0.5`<br> `scale 0.95 1.25`<br>
 * `resize` -- resize image to certain width and height in pixels, keeping the proportions.<br>
             Has 2 parameters: `width` and `height`, both in pixels and both are required.<br>
-            Example: `resize 512 256`<br>
+            *Example:* `resize 512 256`<br>
+* `brightness` -- make images brighter (or darker) with clipping.<br>
+            Has 1 parameter: `factor` --brightness multiplier. <br>
+            *Examples:*<br>`brightness 0.75`<br>`brightness 1.2`<br>
 * `grayscale` -- convert image to grayscale. Has 3 parameters `grayscale redWeight greenWeight blueWeight`:<br>
             * `redWeight` -- weight of red channel, default: `0.299`<br>
             * `greenWeight` -- weight of green channel, default `0.587`<br>
