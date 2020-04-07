@@ -7,7 +7,6 @@ package org.sr3u.photoframe.client.filters.dither;
 
 import org.sr3u.photoframe.client.filters.utils.Palette;
 import org.sr3u.photoframe.client.filters.utils.PaletteParser;
-import org.sr3u.photoframe.misc.util.ImageUtil;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -69,66 +68,76 @@ public abstract class ErrDiffusionDither implements Ditherer, PaletteParser {
     }
 
     @Override
-    public Image dither(Image input) {
-        final BufferedImage output = ImageUtil.bufferedCopy(input);
+    public Object createContext(BufferedImage image) {
+        return new Context(image, matrix);
+    }
 
-        final int width = output.getWidth();
-        final int height = output.getHeight();
-        double[][] error = new double[matrix.length][width * 3];
+    @Override
+    public void apply(BufferedImage image, Object contextObject, int x, int y) {
 
-        for (int y = 0; y < height; y++) {
-            for (int x = 0; x < width; x++) {
-                final int x3 = x * 3;
-                final Color orig = new Color(output.getRGB(x, y));
-                final Color adapted = new Color(intClip(doubleComponent(orig.getRed()) + error[0][x3]),
-                        intClip(doubleComponent(orig.getGreen()) + error[0][x3 + 1]),
-                        intClip(doubleComponent(orig.getBlue()) + error[0][x3 + 2]),
-                        255);
-                final Color nearest = palette.closestColor(adapted);
-                output.setRGB(x, y, nearest.getRGB());
+        Context context = (Context) contextObject;
 
-                // calculate the error
-                double rdiff = doubleComponent(adapted.getRed() - nearest.getRed());
-                double gdiff = doubleComponent(adapted.getGreen() - nearest.getGreen());
-                double bdiff = doubleComponent(adapted.getBlue() - nearest.getBlue());
+        final int x3 = x * 3;
+        final Color orig = new Color(image.getRGB(x, y));
+        final Color adapted = new Color(intClip(doubleComponent(orig.getRed()) + context.error[0][x3]),
+                intClip(doubleComponent(orig.getGreen()) + context.error[0][x3 + 1]),
+                intClip(doubleComponent(orig.getBlue()) + context.error[0][x3 + 2]),
+                255);
+        final Color nearest = palette.closestColor(adapted);
+        image.setRGB(x, y, nearest.getRGB());
 
-                // propagate the error
+        // calculate the error
+        double rdiff = doubleComponent(adapted.getRed() - nearest.getRed());
+        double gdiff = doubleComponent(adapted.getGreen() - nearest.getGreen());
+        double bdiff = doubleComponent(adapted.getBlue() - nearest.getBlue());
 
-                // First row...
-                for (int ex = x3 + 3, mIdx = 0;
-                     (mIdx < matrix[0].length) && (ex < error[0].length);
-                     ex += 3, mIdx++) {
-                    error[0][ex] += rdiff * matrix[0][mIdx] / denominator;
-                    error[0][ex + 1] += gdiff * matrix[0][mIdx] / denominator;
-                    error[0][ex + 2] += bdiff * matrix[0][mIdx] / denominator;
-                }
+        // propagate the error
 
-                // Remaining rows ... calculate initial mIdx...
-                // x = 0    xoffs = 2   so  initm = 2, initx = 0
-                // x = 1    xoffs = 2   so  initm = 1, initx = 0
-                // x = 2    xoffs = 2   so  initm = 0  initx = 0
-                // x = 3    xoffs = 2   so  initm = 0  initx3 = 3
-                final int initMatrixIndex = Math.max(0, xoffs - x);
-                final int initX3 = Math.max(0, x - xoffs) * 3;
-                for (int row = 1; row < matrix.length; row++) {
-                    for (int ex = initX3, mIdx = initMatrixIndex;
-                         (mIdx < matrix[row].length) && (ex < error[row].length);
-                         ex += 3, mIdx++) {
-                        error[row][ex] += rdiff * matrix[row][mIdx] / denominator;
-                        error[row][ex + 1] += gdiff * matrix[row][mIdx] / denominator;
-                        error[row][ex + 2] += bdiff * matrix[row][mIdx] / denominator;
-                    }
-                }
-
-            }
-            rotateErrors(error);
+        // First row...
+        for (int ex = x3 + 3, mIdx = 0;
+             (mIdx < matrix[0].length) && (ex < context.error[0].length);
+             ex += 3, mIdx++) {
+            context.error[0][ex] += rdiff * matrix[0][mIdx] / denominator;
+            context.error[0][ex + 1] += gdiff * matrix[0][mIdx] / denominator;
+            context.error[0][ex + 2] += bdiff * matrix[0][mIdx] / denominator;
         }
 
-        return output;
+        // Remaining rows ... calculate initial mIdx...
+        // x = 0    xoffs = 2   so  initm = 2, initx = 0
+        // x = 1    xoffs = 2   so  initm = 1, initx = 0
+        // x = 2    xoffs = 2   so  initm = 0  initx = 0
+        // x = 3    xoffs = 2   so  initm = 0  initx3 = 3
+        final int initMatrixIndex = Math.max(0, xoffs - x);
+        final int initX3 = Math.max(0, x - xoffs) * 3;
+        for (int row = 1; row < matrix.length; row++) {
+            for (int ex = initX3, mIdx = initMatrixIndex;
+                 (mIdx < matrix[row].length) && (ex < context.error[row].length);
+                 ex += 3, mIdx++) {
+                context.error[row][ex] += rdiff * matrix[row][mIdx] / denominator;
+                context.error[row][ex + 1] += gdiff * matrix[row][mIdx] / denominator;
+                context.error[row][ex + 2] += bdiff * matrix[row][mIdx] / denominator;
+            }
+        }
+
+        if (x == context.width - 1) {
+            rotateErrors(context.error);
+        }
     }
 
     private double doubleComponent(int c) {
         return c / 255.0;
+    }
+
+    private static class Context {
+        final int width;
+        final int height;
+        final double[][] error;
+
+        public Context(BufferedImage image, double[][] matrix) {
+            width = image.getWidth();
+            height = image.getHeight();
+            error = new double[matrix.length][width * 3];
+        }
     }
 
     @Override

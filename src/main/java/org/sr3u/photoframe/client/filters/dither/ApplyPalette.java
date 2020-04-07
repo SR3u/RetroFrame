@@ -7,7 +7,6 @@ package org.sr3u.photoframe.client.filters.dither;
 
 import org.sr3u.photoframe.client.filters.utils.Palette;
 import org.sr3u.photoframe.client.filters.utils.PaletteParser;
-import org.sr3u.photoframe.misc.util.ImageUtil;
 
 import java.awt.image.BufferedImage;
 
@@ -23,18 +22,13 @@ public final class ApplyPalette implements Ditherer, PaletteParser {
     private Palette palette;
 
     @Override
-    public java.awt.Image dither(java.awt.Image input) {
-        final BufferedImage output = ImageUtil.bufferedCopy(input);
-        final int width = output.getWidth();
-        final int height = output.getHeight();
+    public Object createContext(BufferedImage image) {
+        return null;
+    }
 
-        for (int y = 0; y < height; y++) {
-            for (int x = 0; x < width; x++) {
-                output.setRGB(x, y, palette.closestColor(output.getRGB(x, y)).getRGB());
-            }
-        }
-
-        return output;
+    @Override
+    public void apply(BufferedImage image, Object contextObject, int x, int y) throws Exception {
+        image.setRGB(x, y, palette.closestColor(image.getRGB(x, y)).getRGB());
     }
 
     @Override

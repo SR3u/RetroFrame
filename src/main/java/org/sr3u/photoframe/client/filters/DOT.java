@@ -29,15 +29,19 @@ public class DOT implements FastImageFilter {
         return this;
     }
 
-    @Override
-    public void apply(BufferedImage image, int x, int y) throws Exception {
-        int rgb = image.getRGB(x, y);
-        image.setRGB(x, y, function(x, y).apply(rgb));
-    }
-
     private IntFunctionex<Integer> function(int x, int y) {
         List<IntFunctionex<Integer>> row = masks.get(y % masks.size());
         return row.get(x % row.size());
     }
 
+    @Override
+    public Object createContext(BufferedImage image) {
+        return null;
+    }
+
+    @Override
+    public void apply(BufferedImage image, Object contextObject, int x, int y) throws Exception {
+        int rgb = image.getRGB(x, y);
+        image.setRGB(x, y, function(x, y).apply(rgb));
+    }
 }

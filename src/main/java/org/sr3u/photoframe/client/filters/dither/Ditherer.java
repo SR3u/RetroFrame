@@ -5,9 +5,7 @@
  */
 package org.sr3u.photoframe.client.filters.dither;
 
-import org.sr3u.photoframe.client.filters.ImageFilter;
-
-import java.awt.*;
+import org.sr3u.photoframe.client.filters.FastImageFilter;
 
 /**
  * As there are many dithering algorithms, the Ditherer interface
@@ -15,11 +13,5 @@ import java.awt.*;
  *
  * @author Richard Todd
  */
-public interface Ditherer extends ImageFilter {
-    Image dither(Image input);
-
-    @Override
-    default Image apply(Image image) throws Exception {
-        return dither(image);
-    }
+public interface Ditherer extends FastImageFilter {
 }
