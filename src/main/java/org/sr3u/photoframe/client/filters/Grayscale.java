@@ -2,38 +2,34 @@ package org.sr3u.photoframe.client.filters;
 
 import lombok.Getter;
 import org.sr3u.photoframe.client.filters.utils.ArgParser;
-import org.sr3u.photoframe.misc.util.ImageUtil;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
 @Getter
-public class Grayscale implements ImageFilter {
+public class Grayscale implements FastImageFilter {
     private double redC = 0.299;
     private double greenC = 0.587;
     private double blueC = 0.114;
     private double alphaC = 1.0;
 
     @Override
-    public Image apply(Image img) throws Exception {
-        BufferedImage image = ImageUtil.bufferedCopy(img);
-        int width = image.getWidth();
-        int height = image.getHeight();
-        for (int i = 0; i < height; i++) {
-            for (int j = 0; j < width; j++) {
-                Color c = new Color(image.getRGB(j, i));
-                int red = (int) (c.getRed() * redC);
-                int green = (int) (c.getGreen() * greenC);
-                int blue = (int) (c.getBlue() * blueC);
-                int a = (int) (c.getAlpha() * alphaC);
-                Color newColor = new Color(red + green + blue,
-                        red + green + blue,
-                        red + green + blue,
-                        a);
-                image.setRGB(j, i, newColor.getRGB());
-            }
-        }
-        return image;
+    public Object createContext(BufferedImage image) {
+        return null;
+    }
+
+    @Override
+    public void apply(BufferedImage image, Object contextObject, int x, int y) throws Exception {
+        Color c = new Color(image.getRGB(x, y));
+        int red = (int) (c.getRed() * redC);
+        int green = (int) (c.getGreen() * greenC);
+        int blue = (int) (c.getBlue() * blueC);
+        int a = (int) (c.getAlpha() * alphaC);
+        Color newColor = new Color(red + green + blue,
+                red + green + blue,
+                red + green + blue,
+                a);
+        image.setRGB(x, y, newColor.getRGB());
     }
 
     @Override
