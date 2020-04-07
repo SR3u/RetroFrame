@@ -17,12 +17,15 @@ public enum ImageFilters {
     private Map<String, Class<? extends ImageFilter>> bySimpleName = new HashMap<>();
     private Map<String, Class<? extends ImageFilter>> byFullName = new HashMap<>();
     private Map<String, Supplierex<ImageFilter>> byAlias = new HashMap<>();
+    private Set<Class<? extends ImageFilter>> excludedClasses = new HashSet<>(Arrays.asList(
+            ImageFilterChain.class, FastImageFilterChain.class
+    ));
 
     ImageFilters() {
         Reflections reflections = new Reflections(new ConfigurationBuilder().setUrls(ClasspathHelper.forJavaClassPath()));
         Set<Class<? extends ImageFilter>> subTypesOf = reflections.getSubTypesOf(ImageFilter.class);
         for (Class<? extends ImageFilter> c : subTypesOf) {
-            if (!c.equals(ImageFilterChain.class) && !c.isInterface() && !Modifier.isAbstract(c.getModifiers())) {
+            if (!excludedClasses.contains(c) && !c.isInterface() && !Modifier.isAbstract(c.getModifiers())) {
                 bySimpleName.put(c.getSimpleName().toLowerCase(), c);
                 byFullName.put(c.getCanonicalName(), c);
             }
@@ -38,7 +41,8 @@ public enum ImageFilters {
         String[] split = chainString.split("\\s*\\|\\s*");
         ImageFilterChain.ImageFilterChainBuilder builder = ImageFilterChain.builder();
         for (String param : split) {
-            builder.filter(INSTANCE.get(param));
+            ImageFilter filter = INSTANCE.get(param);
+            builder.filter(filter);
         }
         return builder.unwrapChains().build();
     }

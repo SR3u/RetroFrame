@@ -80,7 +80,30 @@ public final class ImageFilterChain implements ImageFilter {
                         })
                         .collect(Collectors.toList());
             } while (unwrapped.size() != oldSize);
-            return ImageFilterChain.builder().filters(unwrapped);
+            return ImageFilterChain.builder().filters(unwrapped).joinFast();
+        }
+
+        public ImageFilterChainBuilder joinFast() {
+            ImageFilterChainBuilder result = ImageFilterChain.builder();
+            FastImageFilterChain.FastImageFilterChainBuilder fastBuilder = null;
+            for (ImageFilter filter : filters) {
+                if (filter instanceof FastImageFilter) {
+                    if (fastBuilder == null) {
+                        fastBuilder = FastImageFilterChain.builder();
+                    }
+                    fastBuilder.filter((FastImageFilter) filter);
+                } else {
+                    if (fastBuilder != null) {
+                        result.filter(fastBuilder.unwrapChains().build());
+                        fastBuilder = null;
+                    }
+                    result.filter(filter);
+                }
+            }
+            if (fastBuilder != null) {
+                result.filter(fastBuilder.unwrapChains().build());
+            }
+            return result;
         }
 
         public ImageFilterChain build() {

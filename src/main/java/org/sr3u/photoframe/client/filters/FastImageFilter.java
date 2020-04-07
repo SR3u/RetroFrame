@@ -13,7 +13,7 @@ public interface FastImageFilter extends ImageFilter {
 
     @Override
     default Image apply(Image image) throws Exception {
-        BufferedImage result = ImageUtil.bufferedCopy(image);
+        BufferedImage result = ImageUtil.buffer(image);
         Object context = createContext(result);
         for (int y = 0; y < image.getHeight(null); y++) {
             for (int x = 0; x < image.getWidth(null); x++) {
