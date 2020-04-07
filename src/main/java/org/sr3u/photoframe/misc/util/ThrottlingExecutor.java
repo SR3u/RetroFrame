@@ -1,4 +1,4 @@
-package org.sr3u.photoframe.server.util;
+package org.sr3u.photoframe.misc.util;
 
 import javax.annotation.concurrent.ThreadSafe;
 import java.util.concurrent.Executor;

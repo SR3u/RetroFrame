@@ -8,9 +8,9 @@ import com.j256.ormlite.logger.LocalLog;
 import lombok.Builder;
 import lombok.Data;
 import org.sr3u.photoframe.client.ClientThread;
+import org.sr3u.photoframe.misc.util.ImageUtil;
 import org.sr3u.photoframe.server.data.ImageWithMetadata;
 import org.sr3u.photoframe.server.events.EventSystem;
-import org.sr3u.photoframe.server.util.ImageUtil;
 import org.sr3u.photoframe.settings.Settings;
 
 import javax.imageio.ImageIO;

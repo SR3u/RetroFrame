@@ -1,7 +1,7 @@
 package org.sr3u.photoframe.server.events;
 
+import org.sr3u.photoframe.misc.util.ThrottlingExecutor;
 import org.sr3u.photoframe.server.Server;
-import org.sr3u.photoframe.server.util.ThrottlingExecutor;
 import sr3u.streamz.functionals.Consumerex;
 import sr3u.streamz.streams.Streamex;
 

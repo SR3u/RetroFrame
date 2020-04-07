@@ -1,4 +1,4 @@
-package org.sr3u.photoframe.server.util;
+package org.sr3u.photoframe.misc.util;
 
 import com.google.protobuf.Timestamp;
 import org.sr3u.photoframe.server.Server;

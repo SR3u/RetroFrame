@@ -1,6 +1,7 @@
 package org.sr3u.photoframe.client;
 
 import com.google.common.base.Preconditions;
+import org.sr3u.photoframe.client.filters.ImageFilter;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -9,7 +10,6 @@ import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.awt.image.BufferedImage;
 import java.io.BufferedInputStream;
-import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Method;
 import java.text.SimpleDateFormat;
@@ -22,7 +22,7 @@ public class ImageWindow {
     ImagePanel imagePanel;
     OutlineLabel metadataLabel;
 
-    public ImageWindow(boolean fullScreen) {
+    public ImageWindow(boolean fullScreen, ImageFilter imageFilter) {
         frame = new JFrame();
         //frame.setLayout(new GridLayout(1, 1, 0, 0));
         frame.setLayout(new BorderLayout());
@@ -30,7 +30,7 @@ public class ImageWindow {
         if (fullScreen) {
             enableOSXFullscreen(frame);
         }
-        imagePanel = new ImagePanel();
+        imagePanel = new ImagePanel(imageFilter);
         imagePanel.setLayout(new BorderLayout());
         frame.add(imagePanel, BorderLayout.CENTER);
         frame.setVisible(true);
@@ -54,7 +54,7 @@ public class ImageWindow {
         return frame.getSize();
     }
 
-    public void displayImageAndMetadata(InputStream imgStream, Map<String, Object> metaData) throws IOException {
+    public void displayImageAndMetadata(InputStream imgStream, Map<String, Object> metaData) throws Exception {
         BufferedImage img = ImageIO.read(new BufferedInputStream(imgStream));
         if (img == null) {
             System.out.println("Failed to receive image!");

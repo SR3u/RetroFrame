@@ -106,6 +106,9 @@ public class Settings implements Fillable {
         @Builder.Default
         @PropertyMap("client.refreshDelay")
         int refreshDelay = 60000;
+        @Builder.Default
+        @PropertyMap("client.imageFilterChain")
+        String imageFitlerChain = "Identity()";
 
         public static Client load(Properties properties) {
             Client build = builder().build();

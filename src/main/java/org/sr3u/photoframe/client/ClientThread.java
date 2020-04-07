@@ -1,6 +1,9 @@
 package org.sr3u.photoframe.client;
 
 import com.google.gson.Gson;
+import org.sr3u.photoframe.client.filters.Identity;
+import org.sr3u.photoframe.client.filters.ImageFilter;
+import org.sr3u.photoframe.client.filters.ImageFilters;
 import org.sr3u.photoframe.server.Server;
 
 import java.awt.*;
@@ -22,7 +25,14 @@ public class ClientThread extends Thread {
     public ClientThread(String host, int port) {
         this.port = port;
         this.host = host;
-        imageWindow = new ImageWindow(Server.settings.getClient().isFullScreen());
+        ImageFilter imageFilter;
+        try {
+            imageFilter = ImageFilters.parse(Server.settings.getClient().getImageFitlerChain());
+        } catch (Exception e) {
+            e.printStackTrace();
+            imageFilter = new Identity();
+        }
+        imageWindow = new ImageWindow(Server.settings.getClient().isFullScreen(), imageFilter);
     }
 
     @Override

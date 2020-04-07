@@ -1,4 +1,4 @@
-package org.sr3u.photoframe.server.util;
+package org.sr3u.photoframe.misc.util;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -46,7 +46,10 @@ public class ImageUtil {
         if (img instanceof BufferedImage) {
             return (BufferedImage) img;
         }
+        return bufferedCopy(img);
+    }
 
+    public static BufferedImage bufferedCopy(Image img) {
         // Create a buffered image with transparency
         BufferedImage bimage = new BufferedImage(img.getWidth(null), img.getHeight(null), BufferedImage.TYPE_INT_ARGB);
 
