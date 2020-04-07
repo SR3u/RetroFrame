@@ -15,12 +15,27 @@ public class ImageUtil {
 
     public static Image scaledImage(Image image, int width, int height) {
         // Make sure the aspect ratio is maintained, so the image is not distorted
+        Dimension size = scaledSize(image, width, height);
+
+        int imageWidth = image.getWidth(null);
+        int imageHeight = image.getHeight(null);
+        if (imageHeight == size.height && imageWidth == size.width) {
+            return image;
+        }
+
+        // Draw the scaled image
+        BufferedImage newImage = buffer(image.getScaledInstance(size.width, size.height, Image.SCALE_SMOOTH));
+        Graphics2D graphics2D = newImage.createGraphics();
+        graphics2D.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+        graphics2D.drawImage(image, 0, 0, size.width, size.height, null);
+
+        return newImage;
+    }
+
+    public static Dimension scaledSize(Image image, int width, int height) {
         double thumbRatio = aspectRatio(width, height);
         int imageWidth = image.getWidth(null);
         int imageHeight = image.getHeight(null);
-        if (imageHeight == height && imageWidth == width) {
-            return image;
-        }
         double aspectRatio = aspectRatio(imageWidth, imageHeight);
 
         if (thumbRatio < aspectRatio) {
@@ -28,14 +43,7 @@ public class ImageUtil {
         } else {
             width = (int) (height * aspectRatio);
         }
-
-        // Draw the scaled image
-        BufferedImage newImage = buffer(image.getScaledInstance(width, height, Image.SCALE_SMOOTH));
-        Graphics2D graphics2D = newImage.createGraphics();
-        graphics2D.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
-        graphics2D.drawImage(image, 0, 0, width, height, null);
-
-        return newImage;
+        return new Dimension(width, height);
     }
 
     public static double aspectRatio(double imageWidth, double imageHeight) {

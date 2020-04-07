@@ -56,9 +56,6 @@ class ImagePanel extends JComponent {
             if (image == null) {
                 image = ImageUtil.scaledImage(originalImage, width, height);
                 blurryBackgroundImage = blur(width, height, image);
-            } else {
-                image = ImageUtil.scaledImage(image, width, height);
-                blurryBackgroundImage = ImageUtil.scaledImage(blurryBackgroundImage, width, height);
             }
             applyFiltersAsync(width, height);
         }
@@ -108,12 +105,15 @@ class ImagePanel extends JComponent {
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         if (blurryBackgroundImage != null) {
-            g.drawImage(blurryBackgroundImage, -blurryBackgroundImage.getWidth(null) / 10, -blurryBackgroundImage.getHeight(null) / 10, this);
+            int dw = getWidth() / 10;
+            int dh = getHeight() / 10;
+            g.drawImage(blurryBackgroundImage, -dw, -dh, getWidth() + 2 * dw, getHeight() + 2 * dh, this);
         }
         if (image != null) {
-            int imgWidth = image.getWidth(null);
-            int imgHeight = image.getHeight(null);
-            g.drawImage(image, avg(getWidth(), imgWidth), avg(getHeight(), imgHeight), this);
+            Dimension size = ImageUtil.scaledSize(image, getWidth(), getHeight());
+            int dw = Math.abs(avg(getWidth(), size.width));
+            int dh = Math.abs(avg(getHeight(), size.height));
+            g.drawImage(image, dw, dh, size.width, size.height, this);
         }
     }
 
