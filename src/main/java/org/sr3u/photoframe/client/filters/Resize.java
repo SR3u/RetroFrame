@@ -28,6 +28,6 @@ public class Resize implements ImageFilter {
         if (this.height == -1) {
             this.height = imageHeight;
         }
-        return ImageUtil.scaledImage(image, Math.min(this.width, imageWidth), Math.min(this.height, imageHeight));
+        return ImageUtil.scaledImage(image, this.width, this.height);
     }
 }
