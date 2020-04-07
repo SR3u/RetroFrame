@@ -22,7 +22,10 @@ public class ImageUtil {
         if (imageHeight == size.height && imageWidth == size.width) {
             return image;
         }
+        return newScaledImage(image, size);
+    }
 
+    public static BufferedImage newScaledImage(Image image, Dimension size) {
         // Draw the scaled image
         BufferedImage newImage = buffer(image.getScaledInstance(size.width, size.height, Image.SCALE_SMOOTH));
         Graphics2D graphics2D = newImage.createGraphics();
