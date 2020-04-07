@@ -30,7 +30,7 @@ public enum ImageFilters {
                 byFullName.put(c.getCanonicalName(), c);
             }
         }
-        addAlias("Macintosh", "Sierra3 LUMINANCE #000000 #111111 #222222   #333333 #444444 #555555 #666666 #777777 #888888 #999999 #AAAAAA #BBBBBB #CCCCCC #DDDDDD #EEEEEE #FFFFFF | Atkinson Monochrome");
+        addAlias("Macintosh", "resize 512 342 | Atkinson Monochrome");
     }
 
     private void addAlias(String alias, String value) {
