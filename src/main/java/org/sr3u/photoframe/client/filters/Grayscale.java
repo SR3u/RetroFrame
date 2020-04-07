@@ -1,6 +1,7 @@
 package org.sr3u.photoframe.client.filters;
 
 import lombok.Getter;
+import org.sr3u.photoframe.client.filters.utils.ArgParser;
 import org.sr3u.photoframe.misc.util.ImageUtil;
 
 import java.awt.*;
@@ -11,6 +12,7 @@ public class Grayscale implements ImageFilter {
     private double redC = 0.299;
     private double greenC = 0.587;
     private double blueC = 0.114;
+    private double alphaC = 1.0;
 
     @Override
     public Image apply(Image img) throws Exception {
@@ -23,7 +25,7 @@ public class Grayscale implements ImageFilter {
                 int red = (int) (c.getRed() * redC);
                 int green = (int) (c.getGreen() * greenC);
                 int blue = (int) (c.getBlue() * blueC);
-                int a = c.getAlpha();
+                int a = (int) (c.getAlpha() * alphaC);
                 Color newColor = new Color(red + green + blue,
                         red + green + blue,
                         red + green + blue,
@@ -36,15 +38,11 @@ public class Grayscale implements ImageFilter {
 
     @Override
     public ImageFilter init(java.util.List<String> parameters) {
-        if (parameters.size() > 0) {
-            redC = Double.parseDouble(parameters.get(2));
-        }
-        if (parameters.size() > 1) {
-            greenC = Double.parseDouble(parameters.get(2));
-        }
-        if (parameters.size() > 2) {
-            blueC = Double.parseDouble(parameters.get(2));
-        }
+        ArgParser parser = new ArgParser(parameters);
+        redC = parser.doubleAt(0).orElse(redC);
+        greenC = parser.doubleAt(1).orElse(greenC);
+        blueC = parser.doubleAt(2).orElse(blueC);
+        alphaC = parser.doubleAt(3).orElse(alphaC);
         return this;
     }
 }

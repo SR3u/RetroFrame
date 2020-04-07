@@ -11,10 +11,10 @@ public class Palette {
     private static final Map<String, ColorPicker> ALL_PICKERS = new HashMap<>();
 
     static {
-        ALL_PICKERS.put("LUMINANCE", new LuminancePicker());
-        ALL_PICKERS.put("DEFAULT", new BruteForcePicker());
-        ALL_PICKERS.put("BRUTEFORCE", new BruteForcePicker());
-        ALL_PICKERS.put("BRUTE", new BruteForcePicker());
+        ALL_PICKERS.put("luminance", new LuminancePicker());
+        ALL_PICKERS.put("default", new BruteForcePicker());
+        ALL_PICKERS.put("bruteforce", new BruteForcePicker());
+        ALL_PICKERS.put("brute", new BruteForcePicker());
     }
 
     public static final Palette BNW = new Palette("BlackAndWhite", new LuminancePicker(), Color.WHITE, Color.BLACK);
@@ -31,7 +31,7 @@ public class Palette {
             Color.decode("#AAAAAA"), Color.WHITE);
     public static final Palette CGA = new Palette("CGA", CGA1);
 
-    public static final Palette MONOCHROME = new Palette("Monochrome", BNW);
+    public static final Palette MONOCHROME = new Palette("monochrome", BNW);
 
     private String name;
     private Color[] palette;
@@ -46,7 +46,8 @@ public class Palette {
     }
 
     public static Palette get(String name) {
-        return ALL.get(name);
+        String param = name == null ? null : name.toLowerCase();
+        return ALL.get(param);
     }
 
     Palette(String name, Palette p) {
@@ -57,7 +58,9 @@ public class Palette {
         this.name = name;
         this.palette = palette;
         this.colorPicker = colorPicker;
-        ALL.put(name, this);
+        if (name != null) {
+            ALL.put(name.toLowerCase(), this);
+        }
     }
 
     Palette(String name, Color... palette) {
@@ -78,7 +81,8 @@ public class Palette {
     }
 
     public static ColorPicker getColorPicker(String s) {
-        return Optional.ofNullable(ALL_PICKERS.get(s)).orElseGet(BruteForcePicker::new);
+        String param = s == null ? null : s.toLowerCase();
+        return Optional.ofNullable(ALL_PICKERS.get(param)).orElseGet(BruteForcePicker::new);
     }
 
     public interface ColorPicker {
