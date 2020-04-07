@@ -1,7 +1,7 @@
 package org.sr3u.photoframe.client;
 
 import com.twelvemonkeys.image.ConvolveWithEdgeOp;
-import org.sr3u.photoframe.server.ImageUtil;
+import org.sr3u.photoframe.server.util.ImageUtil;
 
 import javax.swing.*;
 import java.awt.*;

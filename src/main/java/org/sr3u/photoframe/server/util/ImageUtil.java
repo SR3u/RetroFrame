@@ -1,4 +1,4 @@
-package org.sr3u.photoframe.server;
+package org.sr3u.photoframe.server.util;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;

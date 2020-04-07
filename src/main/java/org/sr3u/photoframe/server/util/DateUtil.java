@@ -1,6 +1,7 @@
-package org.sr3u.photoframe.server;
+package org.sr3u.photoframe.server.util;
 
 import com.google.protobuf.Timestamp;
+import org.sr3u.photoframe.server.Server;
 
 import java.util.Calendar;
 import java.util.Date;

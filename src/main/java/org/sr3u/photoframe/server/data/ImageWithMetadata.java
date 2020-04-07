@@ -6,7 +6,7 @@ import com.google.gson.GsonBuilder;
 import com.google.photos.library.v1.proto.MediaMetadata;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import org.sr3u.photoframe.server.ImageUtil;
+import org.sr3u.photoframe.server.util.ImageUtil;
 
 import java.awt.*;
 import java.lang.reflect.Field;

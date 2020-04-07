@@ -7,8 +7,8 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
-import org.sr3u.photoframe.server.DateUtil;
-import org.sr3u.photoframe.server.ImageUtil;
+import org.sr3u.photoframe.server.util.DateUtil;
+import org.sr3u.photoframe.server.util.ImageUtil;
 
 import java.util.Date;
 
