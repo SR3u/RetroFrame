@@ -44,3 +44,17 @@ All dithering filters have the same `palette` parameter, as `applyPalette`.
 * `sierra3`           
 * `sierra24`
 * `stucki` -- Stucki's dithering
+
+### Aliases
+* `macintosh` -- the same as `resize 512 342 | Atkinson Monochrome`<br>
+
+## Examples
+* `client.imageFilterChain=sierra3 LUMINANCE #000000 #111111 #222222 #333333 #444444 #555555 #666666 #777777 #888888 #999999 #AAAAAA #BBBBBB #CCCCCC #DDDDDD #EEEEEE #FFFFFF | Atkinson monochrome`<br>
+* `client.imageFilterChain=Macintosh`<br>
+* `client.imageFilterChain=identity`<br>
+* `client.imageFilterChain=DOT`<br>
+* `client.imageFilterChain=Grayscale`<br>
+* `client.imageFilterChain=Scale 0.25 | DOT`<br>
+* `client.imageFilterChain=Scale 0.25 | Atkinson monochrome`<br>
+* `client.imageFilterChain=resize 512 512`<br>
+* `client.imageFilterChain=sierra3 LUMINANCE #000000 #111111 #222222 #333333 #444444 #555555 #666666 #777777 #888888 #999999 #AAAAAA #BBBBBB #CCCCCC #DDDDDD #EEEEEE #FFFFFF | DOT`<br>
