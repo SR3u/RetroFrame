@@ -7,8 +7,6 @@ package org.sr3u.photoframe.client.filters.dither;
 
 /**
  * The Stucki Dithering algorithm.
- *
- * @author Richard Todd
  */
 public class Stucki extends ErrDiffusionDither {
 

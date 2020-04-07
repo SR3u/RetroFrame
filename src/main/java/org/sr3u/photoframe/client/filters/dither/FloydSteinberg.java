@@ -7,8 +7,6 @@ package org.sr3u.photoframe.client.filters.dither;
 
 /**
  * The Floyd-Steinberg Error-diffusion algorithm
- *
- * @author Richard Todd
  */
 public class FloydSteinberg extends ErrDiffusionDither {
 

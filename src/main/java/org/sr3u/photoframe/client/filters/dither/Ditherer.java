@@ -10,8 +10,6 @@ import org.sr3u.photoframe.client.filters.FastImageFilter;
 /**
  * As there are many dithering algorithms, the Ditherer interface
  * provides a common way to speak to them.
- *
- * @author Richard Todd
  */
 public interface Ditherer extends FastImageFilter {
 }

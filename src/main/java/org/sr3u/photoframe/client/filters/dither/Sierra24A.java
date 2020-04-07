@@ -5,9 +5,6 @@
  */
 package org.sr3u.photoframe.client.filters.dither;
 
-/**
- * @author richa
- */
 public class Sierra24A extends ErrDiffusionDither {
 
     public Sierra24A() {

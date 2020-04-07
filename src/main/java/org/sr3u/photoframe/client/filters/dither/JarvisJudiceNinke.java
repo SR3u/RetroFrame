@@ -7,8 +7,6 @@ package org.sr3u.photoframe.client.filters.dither;
 
 /**
  * The Jarvice, Judice, and Ninke Dithering algorithm.
- *
- * @author Richard Todd
  */
 public class JarvisJudiceNinke extends ErrDiffusionDither {
 
