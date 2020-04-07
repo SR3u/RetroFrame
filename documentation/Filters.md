@@ -1,4 +1,4 @@
-#Filters
+# Filters
 
 Filters are applied to the received image by embedded demo client.
 Their configuration can be found in settings.properties.
