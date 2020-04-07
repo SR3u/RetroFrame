@@ -37,7 +37,7 @@ class ImagePanel extends JComponent {
 
     public ImagePanel(ImageFilter imageFilter) {
         this.imageFilter = imageFilter;
-        executorService = Executors.newFixedThreadPool(2);
+        executorService = Executors.newFixedThreadPool(1);
     }
 
     @Override
