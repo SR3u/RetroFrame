@@ -65,8 +65,7 @@ class ImagePanel extends JComponent {
             if (originalImage == null) {
                 return;
             }
-            Image newImage = imageFilter.wrap().apply(ImageUtil.newScaledImage(originalImage,
-                    ImageUtil.scaledSize(image, (int) width, (int) height)));
+            Image newImage = imageFilter.wrap().apply(ImageUtil.scaledImage(originalImage, width, height));
             Image newBackground = blur(width, height, newImage);
             newBackground = imageFilter.wrap().apply(newBackground);
             image = newImage;
