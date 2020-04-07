@@ -1,7 +1,8 @@
 package org.sr3u.photoframe.client.filters;
 
 import org.reflections.Reflections;
-import org.reflections.scanners.SubTypesScanner;
+import org.reflections.util.ClasspathHelper;
+import org.reflections.util.ConfigurationBuilder;
 import sr3u.streamz.functionals.Supplierex;
 import sr3u.streamz.optionals.Optionalex;
 
@@ -18,7 +19,7 @@ public enum ImageFilters {
     private Map<String, Supplierex<ImageFilter>> byAlias = new HashMap<>();
 
     ImageFilters() {
-        Reflections reflections = new Reflections("", new SubTypesScanner());
+        Reflections reflections = new Reflections(new ConfigurationBuilder().setUrls(ClasspathHelper.forJavaClassPath()));
         Set<Class<? extends ImageFilter>> subTypesOf = reflections.getSubTypesOf(ImageFilter.class);
         for (Class<? extends ImageFilter> c : subTypesOf) {
             if (!c.equals(ImageFilterChain.class) && !c.isInterface() && !Modifier.isAbstract(c.getModifiers())) {
