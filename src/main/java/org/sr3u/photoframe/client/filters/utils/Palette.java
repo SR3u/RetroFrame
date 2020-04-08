@@ -1,14 +1,14 @@
 package org.sr3u.photoframe.client.filters.utils;
 
 import java.awt.*;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
+import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class Palette {
     private static final Map<String, Palette> ALL = new HashMap<>();
     private static final Map<String, ColorPicker> ALL_PICKERS = new HashMap<>();
+    public static final Palette DEFAULT = DefinedPalettes.BNW;
 
     static {
         ALL_PICKERS.put("luminance", new LuminancePicker());
@@ -16,22 +16,6 @@ public class Palette {
         ALL_PICKERS.put("bruteforce", new BruteForcePicker());
         ALL_PICKERS.put("brute", new BruteForcePicker());
     }
-
-    public static final Palette BNW = new Palette("BlackAndWhite", new LuminancePicker(), Color.WHITE, Color.BLACK);
-    public static final Palette CGA1 = new Palette("CGA1", Color.BLACK, Color.decode("#AA00AA"), Color.decode("#00AAAA"), Color.decode("#AAAAAA"));
-    public static final Palette CGA2 = new Palette("CGA2", Color.BLACK, Color.decode("#AA0000"), Color.decode("#00AA00"), Color.decode("#AA5500"));
-    public static final Palette CGA3 = new Palette("CGA3", Color.BLACK, Color.decode("#AA0000"), Color.decode("#00AAAA"), Color.decode("#AAAAAA"));
-    public static final Palette CGA16 = new Palette("CGA16",
-            Color.BLACK, Color.decode("#555555"),
-            Color.decode("#0000AA"), Color.decode("#5555FF"),
-            Color.decode("#00AAAA"), Color.decode("#55FF55"),
-            Color.decode("#AA0000"), Color.decode("#FF5555"),
-            Color.decode("#AA00AA"), Color.decode("#FF55FF"),
-            Color.decode("#AA5500"), Color.decode("#FFFF55"),
-            Color.decode("#AAAAAA"), Color.WHITE);
-    public static final Palette CGA = new Palette("CGA", CGA1);
-
-    public static final Palette MONOCHROME = new Palette("monochrome", BNW);
 
     private String name;
     private Color[] palette;
@@ -43,6 +27,31 @@ public class Palette {
 
     public Palette(String name, ColorPicker colorPicker, Collection<Color> colors) {
         this(name, colorPicker, colors.toArray(new Color[0]));
+    }
+
+    public static Palette parse(String paletteString) {
+        return parse(Arrays.asList(paletteString.split(" ")));
+    }
+
+    public static Palette parse(List<String> args) {
+        if (args.size() > 0) {
+            Palette palette = Palette.get(args.get(0));
+            if (palette == null) {
+                Palette.ColorPicker colorPicker = args.stream()
+                        .filter(Objects::nonNull)
+                        .filter(s -> !s.startsWith("#"))
+                        .map(Palette::getColorPicker)
+                        .findFirst().orElseGet(BruteForcePicker::new);
+                palette = new Palette("custom", colorPicker, args.stream()
+                        .filter(Objects::nonNull)
+                        .filter(s -> s.startsWith("#"))
+                        .map(Color::decode)
+                        .collect(Collectors.toSet()));
+            }
+            return palette;
+        } else {
+            return Palette.DEFAULT;
+        }
     }
 
     public static Palette get(String name) {
@@ -89,7 +98,7 @@ public class Palette {
         Color closestColor(Color c, Color[] palette);
     }
 
-    private static class LuminancePicker extends BruteForcePicker {
+    public static class LuminancePicker extends BruteForcePicker {
 
         @Override
         public double distance(final Color a, final Color b) {

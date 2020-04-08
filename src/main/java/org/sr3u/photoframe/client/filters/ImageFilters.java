@@ -31,6 +31,7 @@ public enum ImageFilters {
             }
         }
         addAlias("Macintosh", "resize 512 342 | Atkinson Monochrome");
+        addAlias("Commodore64", "resize 320 200 | Atkinson c64");
     }
 
     private void addAlias(String alias, String value) {

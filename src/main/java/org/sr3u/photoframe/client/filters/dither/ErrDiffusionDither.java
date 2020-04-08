@@ -20,7 +20,7 @@ import java.util.Arrays;
  * @see PaletteParser
  */
 public abstract class ErrDiffusionDither implements Ditherer, PaletteParser {
-    protected Palette palette = Palette.BNW;
+    protected Palette palette = Palette.DEFAULT;
     private final double[][] matrix;
     private final double denominator;
     private final int xoffs;  // how many pixels does the matrix reach back?
