@@ -3,6 +3,7 @@
 Filters are applied to the received image by embedded demo client.
 Their configuration can be found in settings.properties.
 Property `client.imageFilterChain` is a _chain_ or _pipeline_ of filters descriptor in form of _filter chain string_.
+See [Settings.md](https://github.com/SR3u/gphotorepo/blob/master/documentation/Settings.md) for more info.
 
 ## Syntax
 Filter chain string syntax is as follows:<br>
@@ -44,7 +45,7 @@ Filters are be applied from left to right.
 * `applyPalette` -- converts an image to a palette. Has 1 parameter.
                 * `palette` -- representation of a palette. Can be either an identifier of existing palette (case insensitive), 
                 or a color list with color picker algorithm. For more info see Palettes<br>.
-                By default is `monochrome`<br>
+                By default is `monochrome`<br>See [Palettes.md](https://github.com/SR3u/gphotorepo/blob/master/documentation/Palettes.md) for more info.<br>
                 *Examples:* <br>`applyPalette CGA`<br>`applypalette #000000 #ffffff #FF0000 #00FF00 #0000FF`<br>
                 `applyPalette LUMINANCE #000000 #111111 #222222 #333333 #444444 #555555 #666666 #777777 #888888 #999999 #AAAAAA #BBBBBB #CCCCCC #DDDDDD #EEEEEE #FFFFFF`<br>
 ### RGB channel filters
