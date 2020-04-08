@@ -11,7 +11,7 @@ public class ChannelIntensity extends RgbFilter {
 
     private float[] channelIntensityMask = new float[]{1.0f, 1.0f, 1.0f, 1.0f};
 
-    protected ChannelIntensity() {
+    public ChannelIntensity() {
         super(null);
         setColorMapper(this::maskColor);
     }
@@ -30,6 +30,6 @@ public class ChannelIntensity extends RgbFilter {
         for (int i = 0; i < channelIntensityMask.length; i++) {
             channelIntensityMask[i] = (float) param.doubleAt(i).orElse(channelIntensityMask[i]);
         }
-        return this;
+        return super.init(parameters);
     }
 }
