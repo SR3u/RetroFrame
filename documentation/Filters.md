@@ -57,7 +57,7 @@ Filters are be applied from left to right.
 <br>* `fG` -- green channel intensity multiplier
 <br>* `fB` -- blue channel intensity multiplier
 <br>* `fA` -- alpha channel intensity multiplier
-<br>*Examples:* `channelintensity 1.0 0.5 1.2`<br>`channelintensity 1.0 0.5 1.2 0.9`
+<br>*Examples:* <br>`channelintensity 1.0 0.5 1.2`<br>`channelintensity 1.0 0.5 1.2 0.9`
 ### Dithering            
 All dithering filters have the same `palette` parameter, as `applyPalette`.
 * `atkinson` -- Bill Atkinson's dithering (like in an old Macintosh)
