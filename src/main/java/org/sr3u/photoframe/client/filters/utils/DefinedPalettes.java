@@ -26,6 +26,7 @@ public class DefinedPalettes {
 
     public static final Palette MONOCHROME = new Palette("monochrome", BNW);
 
+    // Apple Macintosh
     public static final Palette MACINTOSH = new Palette("MACINTOSH", BNW);
     public static final Palette MACINTOSH16 = Palette.parse("Macintosh16", "bruteforce " +
             "#FFFFFF #FBF305 #FF6403 #DD0907 #F20884 #4700A5 #0000D3 #02ABEA " +
@@ -33,6 +34,19 @@ public class DefinedPalettes {
     public static final Palette MACINTOSHII = new Palette("MacintoshII", MACINTOSH16);
     public static final Palette MACINTOSH2 = new Palette("Macintosh2", MACINTOSH16);
     public static final Palette MACINTOSH_SYSTEM_4_1 = new Palette("Macintosh_System_4.1", MACINTOSH16);
+
+    // ZX Spectrum
+    public static final Palette BRIGHT0 = Palette.parse("BRIGHT0", "bruteforce #000000 #0000D7 #D70000 #D700D7 #00D700 #00D7D7 #D7D700 #D7D7D7");
+    public static final Palette BRIGHT1 = Palette.parse("BRIGHT0", "bruteforce #000000 #0000FF #FF0000 #FF00FF #00FF00 #00FFFF #FFFF00 #FFFFFF");
+    public static final Palette ZX_BRIGHT0 = new Palette("zxbright0", BRIGHT0);
+    public static final Palette ZX_BRIGHT1 = new Palette("zxbright1", BRIGHT1);
+    public static final Palette ZX_0 = new Palette("zx0", ZX_BRIGHT0);
+    public static final Palette ZX_1 = new Palette("zx1", ZX_BRIGHT1);
+    public static final Palette ZX_FULL = Palette.parse("ZXFULL", "bruteforce " +
+            "#000000 #0000D7 #D70000 #D700D7 #00D700 #00D7D7 #D7D700 #D7D7D7 " +
+            "#0000FF #FF0000 #FF00FF #00FF00 #00FFFF #FFFF00 #FFFFFF");
+
+    // Miscellaneous
 
     public static final Palette XTERM = Palette.parse("XTERM", "bruteforce " +
             "#000000 #800000 #008000 #808000 #000080 #800080 #008080 #c0c0c0 #808080 #ff0000 #00ff00 " +
