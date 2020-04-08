@@ -159,13 +159,13 @@ public class Repository {
         Iterable<Album> albums = gClient.listAlbums().iterateAll();
         for (Album album : albums) {
             if (albumName.equals(album.getTitle())) {
-                gClient.searchMediaItems(album.getId());
+                return gClient.searchMediaItems(album.getId()).iterateAll();
             }
         }
         Iterable<Album> sharedAlbums = gClient.listSharedAlbums().iterateAll();
         for (Album album : sharedAlbums) {
             if (albumName.equals(album.getTitle())) {
-                gClient.searchMediaItems(album.getId());
+                return gClient.searchMediaItems(album.getId()).iterateAll();
             }
         }
         return null;
