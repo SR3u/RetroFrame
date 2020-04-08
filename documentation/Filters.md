@@ -46,7 +46,11 @@ Filters are be applied from left to right.
                 or a color list with color picker algorithm. For more info see Palettes<br>.
                 By defailt is `monochrome`<br>
                 *Examples:* <br>`applyPalette CGA`<br>`applypalette #000000 #ffffff #FF0000 #00FF00 #0000FF`<br>
-                `applyPalette LUMINANCE #000000 #111111 #222222 #333333 #444444 #555555 #666666 #777777 #888888 #999999 #AAAAAA #BBBBBB #CCCCCC #DDDDDD #EEEEEE #FFFFFF`<br> 
+                `applyPalette LUMINANCE #000000 #111111 #222222 #333333 #444444 #555555 #666666 #777777 #888888 #999999 #AAAAAA #BBBBBB #CCCCCC #DDDDDD #EEEEEE #FFFFFF`<br>
+### RGB channel filters
+* `redchannel` -- removes green and blue channels<br>*Example:* `redchannel`<br>
+* `greenchannel` -- removes red and blue channels<br>*Example:* `greenchannel`<br>
+* `bluechannel` -- removes red and green channels<br>*Example:* `bluechannel`<br>
 ### Dithering            
 All dithering filters have the same `palette` parameter, as `applyPalette`.
 * `atkinson` -- Bill Atkinson's dithering (like in an old Macintosh)
