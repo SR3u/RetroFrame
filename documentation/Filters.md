@@ -68,7 +68,8 @@ All dithering filters have the same `palette` parameter, as `applyPalette`.
 * `stucki` -- Stucki's dithering
 
 ### Aliases
-* `macintosh` -- the same as `resize 512 342 | Atkinson Monochrome`<br>
+* `Macintosh` -- the same as `resize 512 342 | Atkinson Monochrome`<br>
+* `Commodore64` -- the same as `resize 320 200 | Atkinson c64`<br>
 
 ## Examples
 * `client.imageFilterChain=sierra3 LUMINANCE #000000 #111111 #222222 #333333 #444444 #555555 #666666 #777777 #888888 #999999 #AAAAAA #BBBBBB #CCCCCC #DDDDDD #EEEEEE #FFFFFF | Atkinson monochrome`<br>
