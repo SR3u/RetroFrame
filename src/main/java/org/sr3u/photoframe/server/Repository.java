@@ -107,10 +107,19 @@ public class Repository {
     }
 
     private Date refresh(Date refreshStartDate) {
-        Filters filters = getFilters(refreshStartDate);
+        Iterator<MediaItem> iterator = null;
+        String albumName = Server.settings.getMedia().getAlbumName();
+        if (albumName == null || albumName.trim().isEmpty()) {
+            iterator = getAllMedia(refreshStartDate).iterator();
+        } else {
+            Iterable<MediaItem> albumMedia = getAlbumMedia(refreshStartDate, albumName);
+            if (albumMedia == null) {
+                iterator = getAllMedia(refreshStartDate).iterator();
+            } else {
+                iterator = albumMedia.iterator();
+            }
+        }
         Date refreshStarted = new Date();
-        InternalPhotosLibraryClient.SearchMediaItemsPagedResponse listMediaItems = gClient.searchMediaItems(filters);
-        Iterator<MediaItem> iterator = listMediaItems.iterateAll().iterator();
         long validUntil = Item.defaultCleanupTimestamp();
         while (iterator.hasNext()) {
             MediaItem next = iterator.next();
@@ -135,6 +144,28 @@ public class Repository {
                 }
             } catch (SQLException e) {
                 e.printStackTrace();
+            }
+        }
+        return null;
+    }
+
+    private Iterable<MediaItem> getAllMedia(Date refreshStartDate) {
+        Filters filters = getFilters(refreshStartDate);
+        InternalPhotosLibraryClient.SearchMediaItemsPagedResponse listMediaItems = gClient.searchMediaItems(filters);
+        return listMediaItems.iterateAll();
+    }
+
+    private Iterable<MediaItem> getAlbumMedia(Date refreshStartDate, String albumName) {
+        Iterable<Album> albums = gClient.listAlbums().iterateAll();
+        for (Album album : albums) {
+            if (albumName.equals(album.getTitle())) {
+                gClient.searchMediaItems(album.getId());
+            }
+        }
+        Iterable<Album> sharedAlbums = gClient.listSharedAlbums().iterateAll();
+        for (Album album : sharedAlbums) {
+            if (albumName.equals(album.getTitle())) {
+                gClient.searchMediaItems(album.getId());
             }
         }
         return null;

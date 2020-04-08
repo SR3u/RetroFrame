@@ -80,6 +80,9 @@ public class Settings implements Fillable {
         @PropertyMap("media.databasePath")
         String databasePath = "mediaItems.db";
         @Builder.Default
+        @PropertyMap("media.albumName")
+        String albumName = "";
+        @Builder.Default
         @PropertyMap("media.mediaItemExpiryTime")
         public long mediaItemExpiryTime = 3000;
 
