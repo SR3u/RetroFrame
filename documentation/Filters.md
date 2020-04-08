@@ -68,15 +68,18 @@ All dithering filters have the same `palette` parameter, as `applyPalette`.
 * `stucki` -- Stucki's dithering
 
 ### Aliases (Presets)
+* `Commodore64` -- Commodore 64 emulation (`resize 320 200 | Atkinson c64`)<br>
+* `Commodore64HD` -- Commodore 64 emulation, but without downscaling (`Atkinson c64`)<br>
+* `IbmPcCga` -- IBM PC CGA mode emulation (320x200, 4 colors from first palette) (`resize 320 200 | atkinson CGA`)<br>
+* `ImPcCgaHD` -- IBM PC CGA mode emulation without downscaling (4 colors from CGA first palette) (`atkinson CGA`)<br>
+* `IBM_PC_CGA` -- IBM PC CGA mode emulation (320x200, 4 colors from first palette) (`resize 320 200 | atkinson CGA`)<br>
+* `IBM_PC_CGA_HD` -- IBM PC CGA mode emulation without downscaling (4 colors from CGA first palette) (`atkinson CGA`)<br>
 * `Macintosh` -- Macintosh Classic emulation (`resize 512 342 | Atkinson Monochrome`)<br>
 * `MacintoshHD` -- Macintosh Classic emulation, but without downscaling (`Atkinson Monochrome`)<br>
 * `MacintoshClassic` -- Macintosh Classic emulation (`resize 512 342 | Atkinson Monochrome`)<br>
 * `MacintoshClassicHD` -- Macintosh Classic emulation, but without downscaling (`Atkinson Monochrome`)<br>
-* `Commodore64` -- Commodore 64 emulation (`resize 320 200 | Atkinson c64`)<br>
-* `Commodore64HD` -- Commodore 64 emulation, but without downscaling (`Atkinson c64`)<br>
 * `ZxSpectrum` -- ZX Spectrum emulation (`resize 348 256 | atkinson ZXFULL | buffer | Spectrum 32 24`)<br>
 * `ZxSpectrumHD` -- ZX Spectrum emulation, but without downscaling and attributes collision (`atkinson ZXFULL`)<br>
-
 
 ## Examples
 * `client.imageFilterChain=sierra3 LUMINANCE #000000 #111111 #222222 #333333 #444444 #555555 #666666 #777777 #888888 #999999 #AAAAAA #BBBBBB #CCCCCC #DDDDDD #EEEEEE #FFFFFF | Atkinson monochrome`<br>

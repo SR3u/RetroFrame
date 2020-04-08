@@ -38,6 +38,10 @@ public enum ImageFilters {
         addAlias("Commodore64HD", "Atkinson c64");
         addAlias("ZxSpectrum", "resize 348 256 | atkinson ZXFULL | buffer | Spectrum 32 24");
         addAlias("ZxSpectrumHD", "atkinson ZXFULL");
+        addAlias("IBMPCCGA", "resize 320 200 | atkinson CGA");
+        addAlias("IBMPCCGAHD", "atkinson CGA");
+        addAlias("IBM_PC_CGA", "resize 320 200 | atkinson CGA");
+        addAlias("IBM_PC_CGA_HD", "atkinson CGA");
     }
 
     private void addAlias(String alias, String value) {
