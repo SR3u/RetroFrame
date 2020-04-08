@@ -1,7 +1,7 @@
 # Palettes
 
 Palette is specified by its name (se  Available palette aliases (presets) section) or by color picker name and colors:<br> 
-`<colorpicker> #<color0> #<color1> #<color2> ... #<colorN>`<br>
+`<colorpicker> #<color0> #<color1> #<color2> ... <colorN>`<br>
 *Examples:*<br>
 `brute #000000 #00AAAA #AA00AA #AAAAAA`<br>
 `luminance #111111 #222222 #3333333 #444444 #555555 #666666 #777777 #888888 #999999 #AAAAAA #BBBBBB #CCCCCC #DDDDDD #EEEEEE #FFFFFF`<BR>

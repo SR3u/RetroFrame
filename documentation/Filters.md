@@ -44,7 +44,7 @@ Filters are be applied from left to right.
         *Examples:*<br>`dot`
 * `applyPalette` -- converts an image to a palette. Has 1 parameter.
                 * `palette` -- representation of a palette. Can be either an identifier of existing palette (case insensitive), 
-                or a color list with color picker algorithm. For more info see Palettes<br>.
+                or a color list with color picker algorithm. For more info see [Palettes.md](https://github.com/SR3u/gphotorepo/blob/master/documentation/Palettes.md).<br>
                 By default is `monochrome`<br>See [Palettes.md](https://github.com/SR3u/gphotorepo/blob/master/documentation/Palettes.md) for more info.<br>
                 *Examples:* <br>`applyPalette CGA`<br>`applypalette #000000 #ffffff #FF0000 #00FF00 #0000FF`<br>
                 `applyPalette LUMINANCE #000000 #111111 #222222 #333333 #444444 #555555 #666666 #777777 #888888 #999999 #AAAAAA #BBBBBB #CCCCCC #DDDDDD #EEEEEE #FFFFFF`<br>
