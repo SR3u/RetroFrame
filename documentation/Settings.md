@@ -1,4 +1,6 @@
 # Settings
+Settings are stored in `settings.properties` file in working directory. It is a [standard Java properties](https://en.wikipedia.org/wiki/.properties) file 
+Here is a reference to property values
 
 * `java.awt.headless` -- overrides system variable, needs to be false for gui startup (*default:* `true`)
 * `client.enable` -- enable client gui startup, is overriden by java.awt.headless (*default:* `false`)

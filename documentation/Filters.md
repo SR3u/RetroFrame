@@ -1,7 +1,7 @@
 # Filters
 
 Filters are applied to the received image by embedded demo client.
-Their configuration can be found in settings.properties.
+Their configuration can be found in `settings.properties`.
 Property `client.imageFilterChain` is a _chain_ or _pipeline_ of filters descriptor in form of _filter chain string_.
 See [Settings.md](https://github.com/SR3u/gphotorepo/blob/master/documentation/Settings.md) for more info.
 
