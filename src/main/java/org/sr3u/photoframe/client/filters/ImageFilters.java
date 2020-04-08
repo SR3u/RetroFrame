@@ -32,7 +32,8 @@ public enum ImageFilters {
         }
         addAlias("Macintosh", "resize 512 342 | Atkinson Monochrome");
         addAlias("Commodore64", "resize 320 200 | Atkinson c64");
-        addAlias("ZxSpectrum", "resize 348 256 | Spectrum 32 24");
+        addAlias("ZxSpectrum", "resize 348 256 | atkinson ZXFULL | buffer | Spectrum 32 24");
+        addAlias("ZxSpectrumHD", "scale 0.5 0.5 | atkinson ZXFULL | buffer | Spectrum 160 90");
     }
 
     private void addAlias(String alias, String value) {

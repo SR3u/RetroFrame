@@ -1,19 +1,22 @@
 package org.sr3u.photoframe.client.filters.zxspectrum;
 
 import lombok.Data;
-import org.sr3u.photoframe.client.filters.FastImageFilter;
 import org.sr3u.photoframe.client.filters.ImageFilter;
 import org.sr3u.photoframe.client.filters.utils.ArgParser;
 import org.sr3u.photoframe.client.filters.utils.DefinedPalettes;
 import org.sr3u.photoframe.client.filters.utils.Palette;
+import org.sr3u.photoframe.misc.util.ImageUtil;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
-public class Spectrum implements FastImageFilter {
+public class Spectrum implements ImageFilter {
 
     protected static final Palette bright0 = new Palette("__tmp_zx_0", new Palette.LuminancePicker(), DefinedPalettes.ZX_0);
     protected static final Palette bright1 = new Palette("__tmp_zx_1", new Palette.LuminancePicker(), DefinedPalettes.ZX_1);
@@ -21,18 +24,19 @@ public class Spectrum implements FastImageFilter {
     protected int attributesH = 24;
 
     @Override
-    public Object createContext(BufferedImage image) {
-        return new Context(image, attributesW, attributesH);
-    }
-
-    @Override
-    public void apply(BufferedImage image, Object contextObject, int x, int y) throws Exception {
-        Context context = (Context) contextObject;
-        Color pixel = new Color(image.getRGB(x, y));
-        Attributes attributes = context.getAttributes(x, y);
-        Palette inkAndPaper = attributes.getInkAndPaper();
-        Color newPixel = inkAndPaper.closestColor(pixel);
-        image.setRGB(x, y, newPixel.getRGB());
+    public Image apply(Image img) throws Exception {
+        BufferedImage image = ImageUtil.buffer(img);
+        Context context = new Context(image, attributesW, attributesH);
+        for (int y = 0; y < image.getHeight(); y++) {
+            for (int x = 0; x < image.getWidth(); x++) {
+                Color pixel = new Color(image.getRGB(x, y));
+                Attributes attributes = context.getAttributes(x, y);
+                Palette inkAndPaper = attributes.getInkAndPaper();
+                Color newPixel = inkAndPaper.closestColor(pixel);
+                image.setRGB(x, y, newPixel.getRGB());
+            }
+        }
+        return image;
     }
 
     @Override
@@ -54,8 +58,8 @@ public class Spectrum implements FastImageFilter {
         public Context(BufferedImage image, int attributesW, int attributesH) {
             attributeBlockWidth = Math.max((image.getWidth() / attributesW), 1);
             attributeBlockHeight = Math.max((image.getHeight() / attributesH), 1);
-            this.attributesSizeW = attributesW;
-            this.attributesSizeH = attributesH;
+            this.attributesSizeW = Math.min(attributesW, image.getWidth());
+            this.attributesSizeH = Math.min(attributesH, image.getHeight());
 
             attributes = new Attributes[attributesSizeH][attributesSizeW];
             for (int i = 0; i < attributesSizeH; i++) {
@@ -64,11 +68,12 @@ public class Spectrum implements FastImageFilter {
                     int charX = j * attributeBlockWidth;
                     int chary = i * attributeBlockHeight;
                     int[] rgbs = image.getRGB(charX, chary, attributeBlockWidth, attributeBlockHeight, null, 0, image.getWidth());
-                    //Map<Integer, Integer> colorFrequencies = Arrays.stream(rgbs).boxed().collect(Collectors.toMap(Function.identity(), v -> 1, Integer::sum));
+                    Map<Integer, Integer> colorFrequencies = Arrays.stream(rgbs).boxed().collect(Collectors.toMap(Function.identity(), v -> 1, Integer::sum));
+                    Color mostFrequentColor = new Color(colorFrequencies.keySet().stream().max(Comparator.comparing(colorFrequencies::get)).orElse(0));
                     Color brightestColor = Arrays.stream(rgbs).distinct().mapToObj(Color::new)
-                            .min(Comparator.comparing(c -> Palette.LuminancePicker.luminanceDistance(c, Color.WHITE))).orElse(Color.WHITE);
+                            .min(Comparator.comparing(c -> distance(c, mostFrequentColor))).orElse(Color.WHITE);
                     Color darkestColor = Arrays.stream(rgbs).distinct().mapToObj(Color::new)
-                            .max(Comparator.comparing(c -> Palette.LuminancePicker.luminanceDistance(c, Color.WHITE))).orElse(Color.BLACK);
+                            .max(Comparator.comparing(c -> distance(c, mostFrequentColor))).orElse(Color.BLACK);
                     brightestColor = pickNewColor(attributes[i][j], brightestColor);
                     attributes[i][j].setInk(brightestColor);
                     if (attributes[i][j].bright) {
@@ -80,6 +85,10 @@ public class Spectrum implements FastImageFilter {
                     attributes[i][j].setInkAndPaper(new Palette("zx_tmp", new Palette.LuminancePicker(), darkestColor, brightestColor));
                 }
             }
+        }
+
+        private double distance(Color c, Color mostFrequentColor) {
+            return Palette.BruteForcePicker.squareDistance(c, mostFrequentColor) + Palette.LuminancePicker.luminanceDistance(c, Color.WHITE);
         }
 
         private Color pickNewColor(Attributes attributes, Color pixel) {
