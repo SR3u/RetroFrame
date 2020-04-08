@@ -78,4 +78,14 @@ public class DefinedPalettes {
             "#FFFFFF #DDDDDD #BBBBBB #999999 #777777 #555555 #333333 #000000 " +
             "#004499 #EEEE00 #00CC00 #DD0000 #EEEEBB #558800 #FFBB00 #00BBFF");
 
+    public static final Palette WINDOWS_16 = Palette.parse("Windows16", "bruteforce " +
+            "#000000 #800000 #00800 #80800 #000080 #800080 #008080 #C0C0C0 " +
+            "#808080 #FF0000 #00FF00 #FFFF00 #0000FF #FF00FF #00FFFF #FFFFFF");
+
+    public static final Palette WINDOWS_20 = Palette.parse("Windows20", "bruteforce " +
+            "#000000 #800000 #008000 #808000 #000080 #800080 #008080 #C0C0C0 #C0DCC0 #A6CAF0 " +
+            "#FFFBF0 #A0A0A4 #808080 #FF0000 #00FF00 #FFFF00 #0000FF #FF00FF #00FFFF #FFFFFF");
+
+    public static final Palette WINDOWS = new Palette("Windows", WINDOWS_16);
+
 }
