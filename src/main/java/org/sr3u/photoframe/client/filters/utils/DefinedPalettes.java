@@ -88,4 +88,9 @@ public class DefinedPalettes {
 
     public static final Palette WINDOWS = new Palette("Windows", WINDOWS_16);
 
+    public static final Palette RGB666 = new ClampedRGB("RGB666", 6, 6, 6);
+    public static final Palette RGB676 = new ClampedRGB("RGB676", 6, 7, 6);
+    public static final Palette RGB685 = new ClampedRGB("RGB685", 6, 8, 5);
+    public static final Palette RGB884 = new ClampedRGB("RGB884", 8, 8, 4);
+
 }
