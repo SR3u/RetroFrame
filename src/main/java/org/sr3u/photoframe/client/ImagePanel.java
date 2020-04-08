@@ -24,6 +24,7 @@ class ImagePanel extends JComponent {
 
     int previousWidth = 0;
     int previousHeight = 0;
+    private boolean forceAdjustSize = false;
 
 
     public ImagePanel(Image image) {
@@ -53,12 +54,14 @@ class ImagePanel extends JComponent {
     }
 
     private void adjustSize(double width, double height) {
-        if (originalImage != null &&
-                previousWidth != width &&
-                previousHeight != height) {
+        boolean sizeChanged = (previousWidth != width &&
+                previousHeight != height);
+        boolean shouldRepaint = sizeChanged || forceAdjustSize;
+        if (originalImage != null && shouldRepaint) {
             applyFiltersAsync(width, height);
             previousWidth = (int) width;
             previousHeight = (int) height;
+            forceAdjustSize = false;
         }
 
     }
@@ -94,6 +97,7 @@ class ImagePanel extends JComponent {
 
     public void setImage(Image image) {
         originalImage = image;
+        forceAdjustSize = true;
         adjustSize(getWidth(), getHeight());
     }
 
