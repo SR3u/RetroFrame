@@ -1,6 +1,17 @@
 # Palettes
 
+Palette is specified by its name (se  Available palette aliases (presets) section) or by color picker name and colors:<br> 
+`<colorpicker> #<color0> #<color1> #<color2> ... #<colorN>`<br>
+*Examples:*<br>
+`brute #000000 #00AAAA #AA00AA #AAAAAA`<br>
+`luminance #111111 #222222 #3333333 #444444 #555555 #666666 #777777 #888888 #999999 #AAAAAA #BBBBBB #CCCCCC #DDDDDD #EEEEEE #FFFFFF`<BR>
 See [Filters.md](https://github.com/SR3u/gphotorepo/blob/master/documentation/Filters.md) for more info.
+
+## Available color pickers:
+* `bruteforce` -> Default one, uses just pure color components difference
+* `brute` -> Same as `bruteforce`
+* `default` -> Same as `bruteforce`
+* `luminance` -> Uses luminance difference as well as color components. Best for grayscale palettes
 
 ## Available palette aliases (presets)
 
