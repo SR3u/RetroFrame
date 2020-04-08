@@ -112,6 +112,12 @@ public class Settings implements Fillable {
         @Builder.Default
         @PropertyMap("client.imageFilterChain")
         String imageFitlerChain = "Identity";
+        @Builder.Default
+        @PropertyMap("client.window.transparent")
+        boolean transparentWindnow = false;
+        @Builder.Default
+        @PropertyMap("client.window.transparent.controls")
+        boolean transparentWindnowControls = true;
 
         public static Client load(Properties properties) {
             Client build = builder().build();

@@ -2,6 +2,7 @@ package org.sr3u.photoframe.client;
 
 import com.google.common.base.Preconditions;
 import org.sr3u.photoframe.client.filters.ImageFilter;
+import org.sr3u.photoframe.server.Server;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -24,13 +25,14 @@ public class ImageWindow {
 
     public ImageWindow(boolean fullScreen, ImageFilter imageFilter) {
         frame = new JFrame();
+        imagePanel = new ImagePanel(imageFilter);
+        handleTransparency();
         //frame.setLayout(new GridLayout(1, 1, 0, 0));
         frame.setLayout(new BorderLayout());
         frame.setSize(320, 240);
         if (fullScreen) {
             enableOSXFullscreen(frame);
         }
-        imagePanel = new ImagePanel(imageFilter);
         imagePanel.setLayout(new BorderLayout());
         frame.add(imagePanel, BorderLayout.CENTER);
         frame.setVisible(true);
@@ -48,6 +50,25 @@ public class ImageWindow {
                 frame.repaint();
             }
         });
+    }
+
+    private void handleTransparency() {
+        if (Server.settings.getClient().isTransparentWindnow()) {
+            if (!Server.settings.getClient().isTransparentWindnowControls()) {
+                frame.setUndecorated(true);
+            } else {
+                JFrame.setDefaultLookAndFeelDecorated(true);
+                frame = new JFrame();
+            }
+            try {
+                frame.setBackground(new Color(0, 0, 0, 0));
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        } else {
+            frame.setBackground(Color.WHITE);
+        }
+        imagePanel.setOpaque(false);
     }
 
     public Dimension getSize() {
@@ -122,4 +143,5 @@ public class ImageWindow {
             e.printStackTrace();
         }
     }
+
 }
