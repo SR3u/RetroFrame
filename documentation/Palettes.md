@@ -26,9 +26,9 @@ See [Filters.md](https://github.com/SR3u/gphotorepo/blob/master/documentation/Fi
 * `CGA_Mode_4_0_Low` -> [CGA graphic mode 4 palette 0 low intensity.](https://en.wikipedia.org/wiki/Color_Graphics_Adapter#Standard_graphics_modes)
 * `CGA_Mode_4_0_High` -> [CGA graphic mode 4 palette 0 high intensity.](https://en.wikipedia.org/wiki/Color_Graphics_Adapter#Standard_graphics_modes)
 * `CGA_Mode_4_1_Low` -> [CGA graphic mode 4 palette 1 low intensity.](https://en.wikipedia.org/wiki/Color_Graphics_Adapter#Standard_graphics_modes)
+* `CGA_Mode_4_1_High` -> [CGA graphic mode 5 palette low intensity.](https://en.wikipedia.org/wiki/Color_Graphics_Adapter#Standard_graphics_modes)
 * `CGA_Mode_5_Low` -> [CGA graphic mode 4 palette 1 low intensity.](https://en.wikipedia.org/wiki/Color_Graphics_Adapter#Standard_graphics_modes)
 * `CGA_Mode_5_High` -> [CGA graphic mode 5 palette high intensity.](https://en.wikipedia.org/wiki/Color_Graphics_Adapter#Standard_graphics_modes)
-* `CGA_Mode_4_1_High` -> [CGA graphic mode 5 palette low intensity.](https://en.wikipedia.org/wiki/Color_Graphics_Adapter#Standard_graphics_modes)
 * `CGA16` -> [CGA 16 color graphic palette](https://en.wikipedia.org/wiki/Color_Graphics_Adapter#Standard_graphics_modes)
 
 * `Macintosh` -> Same as BlackAndWhite. Two color black and white palette, as in MacintoshClassic
