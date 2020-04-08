@@ -31,6 +31,6 @@ public class ClampedRGB extends Palette {
     }
 
     private int clamp(int c, int levels) {
-        return (int) ((c * 1.0f / levels) * levels);
+        return ((int) (c * 1.0f / levels)) * levels;
     }
 }
