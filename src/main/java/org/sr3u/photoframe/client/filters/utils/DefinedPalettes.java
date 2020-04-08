@@ -4,9 +4,13 @@ import java.awt.*;
 
 public class DefinedPalettes {
     public static final Palette BNW = new Palette("BlackAndWhite", new Palette.LuminancePicker(), Color.WHITE, Color.BLACK);
-    public static final Palette CGA1 = new Palette("CGA1", Color.BLACK, Color.decode("#AA00AA"), Color.decode("#00AAAA"), Color.decode("#AAAAAA"));
-    public static final Palette CGA2 = new Palette("CGA2", Color.BLACK, Color.decode("#AA0000"), Color.decode("#00AA00"), Color.decode("#AA5500"));
-    public static final Palette CGA3 = new Palette("CGA3", Color.BLACK, Color.decode("#AA0000"), Color.decode("#00AAAA"), Color.decode("#AAAAAA"));
+
+    public static final Palette CGA_Mode_4_0_Low = Palette.parse("CGA_Mode_4_0_High", "BRUTEFORCE #000000 #00AA00 #AA0000 #AA5500");
+    public static final Palette CGA_Mode_4_0_High = Palette.parse("CGA_Mode_4_0_High", "BRUTEFORCE #000000 #55FF55 #FF5555 #FF5555");
+    public static final Palette CGA_Mode_4_1_Low = Palette.parse("CGA_Mode_4_1_Low", "BRUTEFORCE #000000 #00AAAA #AA00AA #AAAAAA");
+    public static final Palette CGA_Mode_4_1_High = Palette.parse("CGA_Mode_4_1_High", "BRUTEFORCE #000000 #55FFFF #FF55FF #FFFFFF");
+    public static final Palette CGA_Mode_5_Low = Palette.parse("CGA_Mode_5_Low", "BRUTEFORCE #000000 #00AAAA #AA0000 #AAAAAA");
+    public static final Palette CGA_Mode_5_High = Palette.parse("CGA_Mode_5_High", "BRUTEFORCE #000000 #55FFFF #FF5555 #FFFFFF");
     public static final Palette CGA16 = new Palette("CGA16",
             Color.BLACK, Color.decode("#555555"),
             Color.decode("#0000AA"), Color.decode("#5555FF"),
@@ -15,7 +19,7 @@ public class DefinedPalettes {
             Color.decode("#AA00AA"), Color.decode("#FF55FF"),
             Color.decode("#AA5500"), Color.decode("#FFFF55"),
             Color.decode("#AAAAAA"), Color.WHITE);
-    public static final Palette CGA = new Palette("CGA", CGA1);
+    public static final Palette CGA = new Palette("CGA", CGA_Mode_4_1_High);
 
     public static final Palette C64 = new Palette("C64", new Palette.BruteForcePicker(),
             Color.decode("#000000"), Color.decode("#626262"), Color.decode("#898989"), Color.decode("#adadad"),
@@ -37,7 +41,7 @@ public class DefinedPalettes {
 
     // ZX Spectrum
     public static final Palette BRIGHT0 = Palette.parse("BRIGHT0", "bruteforce #000000 #0000D7 #D70000 #D700D7 #00D700 #00D7D7 #D7D700 #D7D7D7");
-    public static final Palette BRIGHT1 = Palette.parse("BRIGHT0", "bruteforce #000000 #0000FF #FF0000 #FF00FF #00FF00 #00FFFF #FFFF00 #FFFFFF");
+    public static final Palette BRIGHT1 = Palette.parse("BRIGHT1", "bruteforce #000000 #0000FF #FF0000 #FF00FF #00FF00 #00FFFF #FFFF00 #FFFFFF");
     public static final Palette ZX_BRIGHT0 = new Palette("zxbright0", BRIGHT0);
     public static final Palette ZX_BRIGHT1 = new Palette("zxbright1", BRIGHT1);
     public static final Palette ZX_0 = new Palette("zx0", ZX_BRIGHT0);
@@ -88,9 +92,9 @@ public class DefinedPalettes {
 
     public static final Palette WINDOWS = new Palette("Windows", WINDOWS_16);
 
-    public static final Palette RGB666 = new ClampedRGB("RGB666", 6, 6, 6);
-    public static final Palette RGB676 = new ClampedRGB("RGB676", 6, 7, 6);
-    public static final Palette RGB685 = new ClampedRGB("RGB685", 6, 8, 5);
-    public static final Palette RGB884 = new ClampedRGB("RGB884", 8, 8, 4);
+    public static final Palette RGB666 = new RGB("RGB666", 6, 6, 6);
+    public static final Palette RGB676 = new RGB("RGB676", 6, 7, 6);
+    public static final Palette RGB685 = new RGB("RGB685", 6, 8, 5);
+    public static final Palette RGB884 = new RGB("RGB884", 8, 8, 4);
 
 }

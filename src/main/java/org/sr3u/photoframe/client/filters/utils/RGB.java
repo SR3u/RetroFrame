@@ -3,17 +3,17 @@ package org.sr3u.photoframe.client.filters.utils;
 import java.awt.*;
 import java.util.Collections;
 
-public class ClampedRGB extends Palette {
+public class RGB extends Palette {
     private final int levelsR;
     private final int levelsG;
     private final int levelsB;
     private final int levelsA;
 
-    public ClampedRGB(String name, int levelsR, int levelsG, int levelsB) {
+    public RGB(String name, int levelsR, int levelsG, int levelsB) {
         this(name, levelsR, levelsG, levelsB, 255);
     }
 
-    public ClampedRGB(String name, int levelsR, int levelsG, int levelsB, int levelsA) {
+    public RGB(String name, int levelsR, int levelsG, int levelsB, int levelsA) {
         super(name, Collections.emptyList());
         this.levelsR = levelsR;
         this.levelsG = levelsG;
