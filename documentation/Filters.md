@@ -63,8 +63,8 @@ All dithering filters have the same `palette` parameter, as `applyPalette`.
 * `atkinson` -- Bill Atkinson's dithering (like in an old Macintosh)
 * `floydsteinberg` -- Floyd-Steinberg Error-diffusion algorithm
 * `jarvisjudiceninke` -- Jarvice, Judice, and Ninke Dithering algorithm.
-* `sierra3`           
-* `sierra24`
+* `sierra3` -- Sierra 3 dithering           
+* `sierra24` -- Sierra 24 dithering
 * `stucki` -- Stucki's dithering
 
 ### Aliases
