@@ -29,21 +29,25 @@ public class Palette {
         this(name, colorPicker, colors.toArray(new Color[0]));
     }
 
-    public static Palette parse(String paletteString) {
-        return parse(Arrays.asList(paletteString.split(" ")));
+    public static Palette parse(String name, String paletteString) {
+        return parse(name, Arrays.asList(paletteString.split(" ")));
     }
 
-    public static Palette parse(List<String> args) {
+    public static Palette parse(String name, List<String> args) {
         if (args.size() > 0) {
             Palette palette = Palette.get(args.get(0));
             if (palette == null) {
                 Palette.ColorPicker colorPicker = args.stream()
                         .filter(Objects::nonNull)
+                        .map(String::trim)
+                        .filter(s -> !s.isEmpty())
                         .filter(s -> !s.startsWith("#"))
                         .map(Palette::getColorPicker)
                         .findFirst().orElseGet(BruteForcePicker::new);
-                palette = new Palette("custom", colorPicker, args.stream()
+                palette = new Palette(name, colorPicker, args.stream()
                         .filter(Objects::nonNull)
+                        .map(String::trim)
+                        .filter(s -> !s.isEmpty())
                         .filter(s -> s.startsWith("#"))
                         .map(Color::decode)
                         .collect(Collectors.toSet()));

@@ -22,7 +22,7 @@ import java.util.List;
 public interface PaletteParser extends ImageFilter {
     @Override
     default ImageFilter init(List<String> args) {
-        this.setPalette(Palette.parse(args));
+        this.setPalette(Palette.parse("custom", args));
         return this;
     }
 
