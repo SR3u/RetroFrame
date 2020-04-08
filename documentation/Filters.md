@@ -28,6 +28,12 @@ Filters are be applied from left to right.
 * `brightness` -- make images brighter (or darker) with clipping.<br>
             Has 1 parameter: `factor` --brightness multiplier. <br>
             *Examples:*<br>`brightness 0.75`<br>`brightness 1.2`<br>
+* `hue` -- changes image HUE channel with round-robin clipping.<br>
+            Has 1 parameter: `factor` --hue multiplier. <br>
+            *Examples:*<br>`hue 0.75`<br>`hue 1.2`<br>
+* `saturation` -- changes image saturation channel with clipping.<br>
+            Has 1 parameter: `factor` --hue multiplier. <br>
+            *Examples:*<br>`saturation 0.75`<br>`saturation 1.2`<br>                     
 * `grayscale` -- convert image to grayscale. Has 3 parameters `grayscale redWeight greenWeight blueWeight`:<br>
             * `redWeight` -- weight of red channel, default: `0.299`<br>
             * `greenWeight` -- weight of green channel, default `0.587`<br>
