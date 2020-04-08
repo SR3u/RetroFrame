@@ -10,7 +10,7 @@ import java.util.List;
 
 public abstract class RgbFilter implements FastImageFilter {
 
-    private final Functionex<Color, Color> colorMapper;
+    private Functionex<Color, Color> colorMapper;
 
     protected RgbFilter(Functionex<Color, Color> colorMapper) {
         this.colorMapper = colorMapper;
@@ -41,5 +41,9 @@ public abstract class RgbFilter implements FastImageFilter {
         } else {
             return new Color(rgba[0], rgba[1], rgba[2]);
         }
+    }
+
+    protected void setColorMapper(Functionex<Color, Color> colorMapper) {
+        this.colorMapper = colorMapper;
     }
 }
