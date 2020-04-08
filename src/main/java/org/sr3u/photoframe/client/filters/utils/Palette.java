@@ -29,6 +29,10 @@ public class Palette {
         this(name, colorPicker, colors.toArray(new Color[0]));
     }
 
+    public Palette(String name, ColorPicker colorPicker, Palette prototype) {
+        this(name, colorPicker, prototype.palette);
+    }
+
     public static Palette parse(String name, String paletteString) {
         return parse(name, Arrays.asList(paletteString.split(" ")));
     }
@@ -63,11 +67,11 @@ public class Palette {
         return ALL.get(param);
     }
 
-    Palette(String name, Palette p) {
+    public Palette(String name, Palette p) {
         this(name, p.colorPicker, p.palette);
     }
 
-    Palette(String name, ColorPicker colorPicker, Color... palette) {
+    public Palette(String name, ColorPicker colorPicker, Color... palette) {
         this.name = name;
         this.palette = palette;
         this.colorPicker = colorPicker;
@@ -76,7 +80,7 @@ public class Palette {
         }
     }
 
-    Palette(String name, Color... palette) {
+    public Palette(String name, Color... palette) {
         this(name, new BruteForcePicker(), palette);
     }
 
@@ -106,15 +110,19 @@ public class Palette {
 
         @Override
         public double distance(final Color a, final Color b) {
-            // Compare the difference of two RGB values, weigh by CCIR 601 luminosity:
-            final double luma1 = (a.getRed() * 299 + a.getGreen() * 587 + a.getBlue() * 114) / 1000.0;
-            final double luma2 = (b.getRed() * 299 + b.getGreen() * 587 + b.getBlue() * 114) / 1000.0;
-            final double lumadiff = luma1 - luma2;
+            final double lumadiff = luminanceDistance(a, b);
             final double diffR = (a.getRed() - b.getRed());
             final double diffG = (a.getGreen() - b.getGreen());
             final double diffB = (a.getBlue() - b.getBlue());
             return (diffR * diffR * 0.299 + diffG * diffG * 0.587 + diffB * diffB * 0.114) * 0.75
                     + lumadiff * lumadiff;
+        }
+
+        public static double luminanceDistance(Color a, Color b) {
+            // Compare the difference of two RGB values, weigh by CCIR 601 luminosity:
+            final double luma1 = (a.getRed() * 299 + a.getGreen() * 587 + a.getBlue() * 114) / 1000.0;
+            final double luma2 = (b.getRed() * 299 + b.getGreen() * 587 + b.getBlue() * 114) / 1000.0;
+            return luma1 - luma2;
         }
     }
 
@@ -132,11 +140,19 @@ public class Palette {
             return closest;
         }
 
-        public double distance(Color c1, Color c2) {
+        protected double distance(Color c1, Color c2) {
+            return squareDistance(c1, c2);
+        }
+
+        public static int squareDistance(Color c1, Color c2) {
             int Rdiff = c1.getRed() - c2.getRed();
             int Gdiff = c1.getGreen() - c2.getBlue();
             int Bdiff = c1.getGreen() - c2.getBlue();
             return Rdiff * Rdiff + Gdiff * Gdiff + Bdiff * Bdiff;
+        }
+
+        public static double normalizedDistance(Color c1, Color c2) {
+            return squareDistance(c1, c2) / 195075.0;
         }
     }
 }

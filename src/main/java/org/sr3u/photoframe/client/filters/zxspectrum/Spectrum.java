@@ -1,0 +1,110 @@
+package org.sr3u.photoframe.client.filters.zxspectrum;
+
+import lombok.Data;
+import org.sr3u.photoframe.client.filters.FastImageFilter;
+import org.sr3u.photoframe.client.filters.ImageFilter;
+import org.sr3u.photoframe.client.filters.utils.ArgParser;
+import org.sr3u.photoframe.client.filters.utils.DefinedPalettes;
+import org.sr3u.photoframe.client.filters.utils.Palette;
+
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.util.Arrays;
+import java.util.Comparator;
+import java.util.List;
+
+public class Spectrum implements FastImageFilter {
+
+    protected static final Palette bright0 = new Palette("__tmp_zx_0", new Palette.LuminancePicker(), DefinedPalettes.ZX_0);
+    protected static final Palette bright1 = new Palette("__tmp_zx_1", new Palette.LuminancePicker(), DefinedPalettes.ZX_1);
+    protected int attributesW = 32;
+    protected int attributesH = 24;
+
+    @Override
+    public Object createContext(BufferedImage image) {
+        return new Context(image, attributesW, attributesH);
+    }
+
+    @Override
+    public void apply(BufferedImage image, Object contextObject, int x, int y) throws Exception {
+        Context context = (Context) contextObject;
+        Color pixel = new Color(image.getRGB(x, y));
+        Attributes attributes = context.getAttributes(x, y);
+        Palette inkAndPaper = attributes.getInkAndPaper();
+        Color newPixel = inkAndPaper.closestColor(pixel);
+        image.setRGB(x, y, newPixel.getRGB());
+    }
+
+    @Override
+    public ImageFilter init(List<String> parameters) {
+        ArgParser params = new ArgParser(parameters);
+        attributesW = Math.abs(params.intAt(0).orElse(attributesW));
+        attributesH = Math.abs(params.intAt(0).orElse(attributesH));
+        return this;
+    }
+
+    private static class Context {
+        final int attributeBlockWidth;
+        final int attributeBlockHeight;
+
+        final Attributes[][] attributes;
+        private final int attributesSizeW;
+        private final int attributesSizeH;
+
+        public Context(BufferedImage image, int attributesW, int attributesH) {
+            attributeBlockWidth = Math.max((image.getWidth() / attributesW), 1);
+            attributeBlockHeight = Math.max((image.getHeight() / attributesH), 1);
+            this.attributesSizeW = attributesW;
+            this.attributesSizeH = attributesH;
+
+            attributes = new Attributes[attributesSizeH][attributesSizeW];
+            for (int i = 0; i < attributesSizeH; i++) {
+                for (int j = 0; j < attributesSizeW; j++) {
+                    attributes[i][j] = new Attributes();
+                    int charX = j * attributeBlockWidth;
+                    int chary = i * attributeBlockHeight;
+                    int[] rgbs = image.getRGB(charX, chary, attributeBlockWidth, attributeBlockHeight, null, 0, image.getWidth());
+                    //Map<Integer, Integer> colorFrequencies = Arrays.stream(rgbs).boxed().collect(Collectors.toMap(Function.identity(), v -> 1, Integer::sum));
+                    Color brightestColor = Arrays.stream(rgbs).distinct().mapToObj(Color::new)
+                            .min(Comparator.comparing(c -> Palette.LuminancePicker.luminanceDistance(c, Color.WHITE))).orElse(Color.WHITE);
+                    Color darkestColor = Arrays.stream(rgbs).distinct().mapToObj(Color::new)
+                            .max(Comparator.comparing(c -> Palette.LuminancePicker.luminanceDistance(c, Color.WHITE))).orElse(Color.BLACK);
+                    brightestColor = pickNewColor(attributes[i][j], brightestColor);
+                    attributes[i][j].setInk(brightestColor);
+                    if (attributes[i][j].bright) {
+                        darkestColor = bright1.closestColor(darkestColor);
+                    } else {
+                        darkestColor = bright0.closestColor(darkestColor);
+                    }
+                    attributes[i][j].setPaper(darkestColor);
+                    attributes[i][j].setInkAndPaper(new Palette("zx_tmp", new Palette.LuminancePicker(), darkestColor, brightestColor));
+                }
+            }
+        }
+
+        private Color pickNewColor(Attributes attributes, Color pixel) {
+            Color b0 = bright0.closestColor(pixel);
+            Color b1 = bright1.closestColor(pixel);
+            if (Palette.BruteForcePicker.squareDistance(pixel, b0) > Palette.BruteForcePicker.squareDistance(pixel, b1)) {
+                attributes.bright = false;
+                return b0;
+            } else {
+                attributes.bright = true;
+                return b1;
+            }
+        }
+
+        public Attributes getAttributes(int x, int y) {
+            return attributes[(y / attributeBlockHeight) % attributesSizeH][(x / attributeBlockWidth) % attributesSizeW];
+        }
+    }
+
+    @Data
+    public static class Attributes {
+        private boolean flash = false; // bit7, unused
+        private Boolean bright = null; // bit6, choose between BRIGHT0 and BRIGHT1 palettes
+        private Color paper; // bits 5..3, paper (background) color
+        private Color ink; // bits 2..0, ink (foreground) color
+        private Palette inkAndPaper;
+    }
+}
