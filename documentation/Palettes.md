@@ -44,11 +44,12 @@ See [Filters.md](https://github.com/SR3u/gphotorepo/blob/master/documentation/Fi
 
 * `monochrome` -> Two color black and white monochrome palette
 
-* `RISCOS` -> [RISC OS default palette](https://en.wikipedia.org/wiki/List_of_software_palettes#RISC_OS_default_palette)
+* `RGB222` -> 2 level RGB
 * `RGB666` -> [6 level RGB](https://en.wikipedia.org/wiki/List_of_software_palettes#6_level_RGB)
 * `RGB676` -> [6-7-6 levels RGB](https://en.wikipedia.org/wiki/List_of_software_palettes#6-7-6_levels_RGB)
 * `RGB685` -> [6-8-5 levels RGB](https://en.wikipedia.org/wiki/List_of_software_palettes#6-8-5_levels_RGB)
 * `RGB884` -> [8-8-4 levels RGB](https://en.wikipedia.org/wiki/List_of_software_palettes#8-8-4_levels_RGB)
+* `RISCOS` -> [RISC OS default palette](https://en.wikipedia.org/wiki/List_of_software_palettes#RISC_OS_default_palette)
 
 * `Windows16` -> [Microsoft Windows default 16-color palette](https://en.wikipedia.org/wiki/List_of_software_palettes#Microsoft_Windows_default_16-color_palette)
 * `Windows20` -> [Microsoft Windows default 20-color palette](https://en.wikipedia.org/wiki/List_of_software_palettes#Microsoft_Windows_default_20-color_palette)
