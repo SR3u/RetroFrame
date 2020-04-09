@@ -1,0 +1,33 @@
+package org.sr3u.photoframe.client.filters;
+
+import org.sr3u.photoframe.client.filters.utils.DefinedPalettes;
+import org.sr3u.photoframe.client.filters.utils.Palette;
+
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.util.List;
+
+public class CMYK2x2 implements FastImageFilter {
+
+    private Palette[][] palettes = new Palette[][]{
+            new Palette[]{DefinedPalettes.GRAYSCALE, DefinedPalettes.CYAN},
+            new Palette[]{DefinedPalettes.MAGENTA, DefinedPalettes.YELLOW},
+    };
+
+    @Override
+    public Object createContext(BufferedImage image) {
+        return null;
+    }
+
+    @Override
+    public void apply(BufferedImage image, Object contextObject, int x, int y) throws Exception {
+        Color pixel = new Color(image.getRGB(x, y));
+        Color newPixel = palettes[y % 2][x % 2].closestColor(pixel);
+        image.setRGB(x, y, newPixel.getRGB());
+    }
+
+    @Override
+    public ImageFilter init(List<String> parameters) {
+        return this;
+    }
+}

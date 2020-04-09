@@ -42,6 +42,13 @@ Filters are be applied from left to right.
             *Examples:*<br>`grayscale`<br>`grayscale 0.4 0.3 0.2`<br>
 * `dot` -- apply a 2x2 channel filtering pattern, has no parameters<br>
         *Examples:*<br>`dot`
+* `cmyk2x2` -- apply 2x2 channel filtering palette pattern:
+               | `grayscale` | `cyan`   |
+               |---|---|
+               | `magenta`   | `yellow` | <br>
+               It has no parameters.
+               For more info see [Palettes.md](https://github.com/SR3u/gphotorepo/blob/master/documentation/Palettes.md).<br>
+                *Example:* <br>`cmyk2x2`
 * `applyPalette` -- converts an image to a palette. Has 1 parameter.
                 * `palette` -- representation of a palette. Can be either an identifier of existing palette (case insensitive), 
                 or a color list with color picker algorithm. For more info see [Palettes.md](https://github.com/SR3u/gphotorepo/blob/master/documentation/Palettes.md).<br>

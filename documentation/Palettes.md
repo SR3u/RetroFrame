@@ -20,6 +20,7 @@ See [Filters.md](https://github.com/SR3u/gphotorepo/blob/master/documentation/Fi
 * `BRIGHT1` -> ZX Spectrum palette 1
 
 * `C64` -> [Commodore 64 color palette](https://www.c64-wiki.com/wiki/Color)
+* `cyan` -> 256 levels of cyan color
 
 * `CGA`-> [CGA graphic mode 4 palette 1 high intensity.](https://en.wikipedia.org/wiki/Color_Graphics_Adapter#Standard_graphics_modes)
              Same as `CGA_Mode_4_1_High` 
@@ -31,11 +32,15 @@ See [Filters.md](https://github.com/SR3u/gphotorepo/blob/master/documentation/Fi
 * `CGA_Mode_5_High` -> [CGA graphic mode 5 palette high intensity.](https://en.wikipedia.org/wiki/Color_Graphics_Adapter#Standard_graphics_modes)
 * `CGA16` -> [CGA 16 color graphic palette](https://en.wikipedia.org/wiki/Color_Graphics_Adapter#Standard_graphics_modes)
 
+* `Grayscale` -> 256 levels grayscale palette.
+
 * `Macintosh` -> Same as BlackAndWhite. Two color black and white palette, as in MacintoshClassic
 * `Macintosh16` -> [Apple Macintosh default 16-color palette](https://en.wikipedia.org/wiki/List_of_software_palettes#Apple_Macintosh_default_16-color_palette)
 * `Macintosh_System_4.1` -> Same as `Macintosh16` [Apple Macintosh default 16-color palette](https://en.wikipedia.org/wiki/List_of_software_palettes#Apple_Macintosh_default_16-color_palette)
 * `MacintoshII` -> Same as `Macintosh16` [Apple Macintosh default 16-color palette](https://en.wikipedia.org/wiki/List_of_software_palettes#Apple_Macintosh_default_16-color_palette)
 * `Macintosh2` ->  Same as `Macintosh16` [Apple Macintosh default 16-color palette](https://en.wikipedia.org/wiki/List_of_software_palettes#Apple_Macintosh_default_16-color_palette)
+
+* `magenta` -> 256 levels of magenta color
 
 * `monochrome` -> Two color black and white monochrome palette
 
@@ -50,6 +55,8 @@ See [Filters.md](https://github.com/SR3u/gphotorepo/blob/master/documentation/Fi
 * `Windows` -> same as `Windows16` [Microsoft Windows default 16-color palette](https://en.wikipedia.org/wiki/List_of_software_palettes#Microsoft_Windows_default_16-color_palette)
 
 * `XTERM` -> [XTERM](https://en.wikipedia.org/wiki/Xterm) [256 Color palette](https://commons.wikimedia.org/wiki/File:Xterm_256color_chart.svg)
+
+* `yellow` -> 256 levels of yellow color
 
 * `ZX0` -> ZX Spectrum palette 0
 * `ZX1` -> ZX Spectrum palette 1

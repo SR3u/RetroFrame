@@ -97,4 +97,9 @@ public class DefinedPalettes {
     public static final Palette RGB685 = new RGB("RGB685", 6, 8, 5);
     public static final Palette RGB884 = new RGB("RGB884", 8, 8, 4);
 
+    public static final Palette GRAYSCALE = new Grayscale("Grayscale");
+    public static final Palette CYAN = new MonochromeScale("Cyan", new Palette.BruteForcePicker(), Color.decode("#00FFFF"));
+    public static final Palette MAGENTA = new MonochromeScale("Magenta", new Palette.BruteForcePicker(), Color.decode("#FF00FF"));
+    public static final Palette YELLOW = new MonochromeScale("Yellow", new Palette.BruteForcePicker(), Color.decode("#FFFF00"));
+
 }
