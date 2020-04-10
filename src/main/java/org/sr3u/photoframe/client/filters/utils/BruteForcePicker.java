@@ -5,10 +5,13 @@ import org.sr3u.photoframe.server.Main;
 import java.awt.*;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.atomic.AtomicLong;
 
 public class BruteForcePicker implements ColorPicker {
 
     private Map<Integer, Color> selectionCache = new ConcurrentHashMap<>();
+    private AtomicLong cleanupsCount = new AtomicLong(0);
+    private AtomicLong resetsCount = new AtomicLong(0);
 
     @Override
     public Color closestColor(int rgb, Color[] palette) {
@@ -26,9 +29,11 @@ public class BruteForcePicker implements ColorPicker {
 
     @Override
     public void reset() {
+        long resetsCount = this.resetsCount.incrementAndGet();
         if (selectionCache.size() > Main.settings.getClient().getColorCacheSize()) {
             System.out.println("clearing selectionCache, as it was larger than the threshold (" + selectionCache.size() + " > " + Main.settings.getClient().getColorCacheSize() + ")");
             selectionCache.clear();
+            System.out.println("Color cache cleanups: " + cleanupsCount.incrementAndGet() + " / " + resetsCount);
         }
     }
 
