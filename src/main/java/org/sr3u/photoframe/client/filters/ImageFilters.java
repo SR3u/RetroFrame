@@ -42,6 +42,8 @@ public enum ImageFilters {
         addAlias("IBMPCCGAHD", "atkinson CGA");
         addAlias("IBM_PC_CGA", "resize 320 200 | atkinson CGA");
         addAlias("IBM_PC_CGA_HD", "atkinson CGA");
+        addAlias("TV", "Trinitron");
+        addAlias("CRT", "Trinitron");
     }
 
     private void addAlias(String alias, String value) {

@@ -41,7 +41,8 @@ Filters are be applied from left to right.
             * `blieWeight` -- weight of blue channel, default `0.114`<br>
             *Examples:*<br>`grayscale`<br>`grayscale 0.4 0.3 0.2`<br>
 * `dot` -- apply a 2x2 channel filtering pattern, has no parameters<br>
-        *Examples:*<br>`dot`
+        *Examples:*<br>`dot`<br>
+* `Trinitron` -- Sony Trinitron (kinda)
 * `cmyk2x2` -- apply 2x2 channel filtering palette pattern:<br>
               `grayscale` `cyan`<br>
                `magenta` `yellow`<br>
@@ -80,6 +81,7 @@ All dithering filters have the same `palette` parameter, as `applyPalette`.
 ### Aliases (Presets)
 * `Commodore64` -- Commodore 64 emulation (`resize 320 200 | Atkinson c64`)<br>
 * `Commodore64HD` -- Commodore 64 emulation, but without downscaling (`Atkinson c64`)<br>
+* `CRT` -- Old Cathode Ray Tube screen (kinda) (`Trinitron`)<br>
 * `IbmPcCga` -- IBM PC CGA mode emulation (320x200, 4 colors from first palette) (`resize 320 200 | atkinson CGA`)<br>
 * `ImPcCgaHD` -- IBM PC CGA mode emulation without downscaling (4 colors from CGA first palette) (`atkinson CGA`)<br>
 * `IBM_PC_CGA` -- IBM PC CGA mode emulation (320x200, 4 colors from first palette) (`resize 320 200 | atkinson CGA`)<br>
@@ -88,6 +90,7 @@ All dithering filters have the same `palette` parameter, as `applyPalette`.
 * `MacintoshHD` -- Macintosh Classic emulation, but without downscaling (`Atkinson Monochrome`)<br>
 * `MacintoshClassic` -- Macintosh Classic emulation (`resize 512 342 | Atkinson Monochrome`)<br>
 * `MacintoshClassicHD` -- Macintosh Classic emulation, but without downscaling (`Atkinson Monochrome`)<br>
+* `TV` -- Old TV (kinda) (`Trinitron`)<br>  
 * `ZxSpectrum` -- ZX Spectrum emulation (`resize 348 256 | atkinson ZXFULL | buffer | Spectrum 32 24`)<br>
 * `ZxSpectrumHD` -- ZX Spectrum emulation, but without downscaling and attributes collision (`atkinson ZXFULL`)<br>
 
