@@ -18,8 +18,8 @@ public class Spectrum implements ImageFilter {
 
     protected static final Palette bright0 = new Palette("__tmp_zx_0", new LuminancePicker(), DefinedPalettes.ZX_0);
     protected static final Palette bright1 = new Palette("__tmp_zx_1", new LuminancePicker(), DefinedPalettes.ZX_1);
-    protected int attributesW = 32;
-    protected int attributesH = 24;
+    protected int attributesW = 8;
+    protected int attributesH = -1;
 
     @Override
     public Image apply(Image img) throws Exception {
@@ -41,7 +41,7 @@ public class Spectrum implements ImageFilter {
     public ImageFilter init(List<String> parameters) {
         ArgParser params = new ArgParser(parameters);
         attributesW = Math.abs(params.intAt(0).orElse(attributesW));
-        attributesH = Math.abs(params.intAt(0).orElse(attributesH));
+        attributesH = params.intAt(0).orElse(attributesH);
         return this;
     }
 
@@ -54,6 +54,12 @@ public class Spectrum implements ImageFilter {
         private final int attributesSizeH;
 
         public Context(BufferedImage image, int attributesW, int attributesH) {
+
+            if (attributesH <= 0) {
+                attributesH = image.getHeight() / attributesW;
+                attributesW = image.getWidth() / attributesW;
+            }
+
             attributeBlockWidth = Math.max((image.getWidth() / attributesW), 1);
             attributeBlockHeight = Math.max((image.getHeight() / attributesH), 1);
             this.attributesSizeW = Math.min(attributesW, image.getWidth());

@@ -36,7 +36,7 @@ public enum ImageFilters {
         addAlias("MacintoshClassicHD", "Atkinson Monochrome");
         addAlias("Commodore64", "resize 320 200 | Atkinson c64");
         addAlias("Commodore64HD", "Atkinson c64");
-        addAlias("ZxSpectrum", "resize 348 256 | atkinson ZXFULL | buffer | Spectrum 32 24");
+        addAlias("ZxSpectrum", "resize 348 256 | atkinson ZXFULL | buffer | Spectrum");
         addAlias("ZxSpectrumHD", "atkinson ZXFULL");
         addAlias("IBMPCCGA", "resize 320 200 | atkinson CGA");
         addAlias("IBMPCCGAHD", "atkinson CGA");

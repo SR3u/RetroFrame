@@ -64,6 +64,10 @@ Filters are be applied from left to right.
 <br>* `fB` -- blue channel intensity multiplier
 <br>* `fA` -- alpha channel intensity multiplier
 <br>*Examples:* <br>`channelintensity 1.0 0.5 1.2`<br>`channelintensity 1.0 0.5 1.2 0.9`
+* `Spectrum` -- spectrum-like effect. Has 2 parameters: `columns` and `rows`.<br>
+        * `columns` -- how many columns does the attributes map have. If `rows` <= 0, then it is interpretted as character width and height (*default:* `8`)<br>
+        * `rows` -- how many rows does the attributes map have (*default:* `-1`)<br>
+        
 ### Dithering            
 All dithering filters have the same `palette` parameter, as `applyPalette`.
 * `atkinson` -- Bill Atkinson's dithering (like in an old Macintosh)
