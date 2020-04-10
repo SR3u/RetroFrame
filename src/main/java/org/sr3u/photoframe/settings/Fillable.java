@@ -1,7 +1,5 @@
 package org.sr3u.photoframe.settings;
 
-import org.apache.log4j.Logger;
-
 import java.lang.reflect.Field;
 import java.util.Properties;
 
@@ -33,7 +31,7 @@ public interface Fillable {
                         }
                     }
                 } catch (Exception e) {
-                    Logger.getLogger(Fillable.class).error("Failed to fill property " + getClass().getName() + "." + field.getName() + " with setting " + propertyName);
+                    System.out.println("ERROR: Failed to fill property " + getClass().getName() + "." + field.getName() + " with setting " + propertyName);
                 }
             }
         }

@@ -13,6 +13,9 @@ public class Settings implements Fillable {
     @PropertyMap("java.awt.headless")
     boolean java_awt_headless = true;
     @Builder.Default
+    @PropertyMap("log4j.configuration")
+    String log4jProperties = "log4j.properties";
+    @Builder.Default
     @PropertyMap("processingThreads")
     int processingTreads = Math.max(Runtime.getRuntime().availableProcessors() - 2, 1);
     @Builder.Default
@@ -121,6 +124,12 @@ public class Settings implements Fillable {
         @Builder.Default
         @PropertyMap("client.filters.colorCacheSize")
         int colorCacheSize = 1024;
+        @Builder.Default
+        @PropertyMap("client.server.port")
+        int serverPort = 4242;
+        @Builder.Default
+        @PropertyMap("client.server.address")
+        String serverAddress = "localhost";
 
         public static Client load(Properties properties) {
             Client build = builder().build();
@@ -132,6 +141,9 @@ public class Settings implements Fillable {
     @Value
     @Builder
     public static class Server implements Fillable {
+        @Builder.Default
+        @PropertyMap("server.enable")
+        boolean enabled = true;
         @Builder.Default
         @PropertyMap("server.port")
         int port = 4242;

@@ -38,11 +38,10 @@ public class Main {
     private static final EventSystem eventsSystem;
 
     static { // HIDE DOCK ICON (if any)
-        PropertyConfigurator.configure("log4j.properties");
-        org.apache.log4j.BasicConfigurator.configure();
+        settings = Settings.load("settings.properties");
+        PropertyConfigurator.configure(settings.getLog4jProperties());
         System.setProperty("com.j256.ormlite.logger.type", "ERROR");
         System.setProperty(LocalLog.LOCAL_LOG_LEVEL_PROPERTY, "ERROR");
-        settings = Settings.load("settings.properties");
         System.setProperty("java.awt.headless", String.valueOf(settings.isJava_awt_headless()));
         log.info("java.awt.headless: " + java.awt.GraphicsEnvironment.isHeadless());
         eventsSystem = new EventSystem();
@@ -68,18 +67,20 @@ public class Main {
             eventsSystem.registerHandler(new MediaBackup());
         }
         try {
-            PhotosLibraryClient client = PhotosLibraryClientFactory.createClient(credentialsPath, Resources.REQUIRED_SCOPES);
+            if (settings.getServer().isEnabled()) {
+                PhotosLibraryClient client = PhotosLibraryClientFactory.createClient(credentialsPath, Resources.REQUIRED_SCOPES);
                /* InternalPhotosLibraryClient.ListMediaItemsPagedResponse response = client.listMediaItems();
                 for (MediaItem item : response.iterateAll()) {
                     // Get some properties of a media item
                     log.info(item);
                 }*/
-            Repository repository = new Repository(client, eventsSystem);
-            scheduleRefresh(repository);
-            scheduleSending(repository);
-            new ServerThread(repository, settings.getServer().getPort()).start();
+                Repository repository = new Repository(client, eventsSystem);
+                scheduleRefresh(repository);
+                scheduleSending(repository);
+                new ServerThread(repository, settings.getServer().getPort()).start();
+            }
             if (settings.isClientEnabled()) {
-                new ClientThread("localhost", settings.getServer().getPort()).start();
+                new ClientThread(settings.getClient().getServerAddress(), settings.getClient().getServerPort()).start();
             }
         } catch (Exception e) {
             log.error(e);
