@@ -42,7 +42,8 @@ Filters are be applied from left to right.
             *Examples:*<br>`grayscale`<br>`grayscale 0.4 0.3 0.2`<br>
 * `dot` -- apply a 2x2 channel filtering pattern, has no parameters<br>
         *Examples:*<br>`dot`<br>
-* `Trinitron` -- [Sony Trinitron](https://en.wikipedia.org/wiki/Trinitron) (kinda)
+* `TrinitronH` -- [Sony Trinitron](https://en.wikipedia.org/wiki/Trinitron) (kinda) with horizontal grid<br>
+* `TrinitronV` -- [Sony Trinitron](https://en.wikipedia.org/wiki/Trinitron) (kinda) with vertical grid<br>
 * `cmyk2x2` -- apply 2x2 channel filtering palette pattern:<br>
               `grayscale` `cyan`<br>
                `magenta` `yellow`<br>
@@ -91,7 +92,7 @@ All dithering filters have the same `palette` parameter, as `applyPalette`.
 * `MacintoshClassic` -- Macintosh Classic emulation (`resize 512 342 | Atkinson Monochrome`)<br>
 * `MacintoshClassicHD` -- Macintosh Classic emulation, but without downscaling (`Atkinson Monochrome`)<br>
 * `Trinitron` -- [Sony Trinitron](https://en.wikipedia.org/wiki/Trinitron) (kinda)
-* `TV` -- Old TV (kinda) (`Trinitron`)<br>  
+* `TV` -- Old TV (kinda) (`TrinitronH`)<br>  
 * `ZxSpectrum` -- ZX Spectrum emulation (`resize 348 256 | atkinson ZXFULL | buffer | Spectrum 32 24`)<br>
 * `ZxSpectrumHD` -- ZX Spectrum emulation, but without downscaling and attributes collision (`atkinson ZXFULL`)<br>
 
