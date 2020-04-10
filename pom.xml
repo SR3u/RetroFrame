@@ -187,7 +187,7 @@
                             <transformers>
                                 <transformer
                                         implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-                                    <mainClass>org.sr3u.photoframe.server.Server</mainClass>
+                                    <mainClass>org.sr3u.photoframe.server.Main</mainClass>
                                 </transformer>
                             </transformers>
                         </configuration>

@@ -4,7 +4,7 @@ import com.google.gson.Gson;
 import org.sr3u.photoframe.client.filters.Identity;
 import org.sr3u.photoframe.client.filters.ImageFilter;
 import org.sr3u.photoframe.client.filters.ImageFilters;
-import org.sr3u.photoframe.server.Server;
+import org.sr3u.photoframe.server.Main;
 
 import java.awt.*;
 import java.io.*;
@@ -27,12 +27,12 @@ public class ClientThread extends Thread {
         this.host = host;
         ImageFilter imageFilter;
         try {
-            imageFilter = ImageFilters.parse(Server.settings.getClient().getImageFitlerChain());
+            imageFilter = ImageFilters.parse(Main.settings.getClient().getImageFitlerChain());
         } catch (Exception e) {
             e.printStackTrace();
             imageFilter = new Identity();
         }
-        imageWindow = new ImageWindow(Server.settings.getClient().isFullScreen(), imageFilter);
+        imageWindow = new ImageWindow(Main.settings.getClient().isFullScreen(), imageFilter);
     }
 
     @Override
@@ -48,10 +48,10 @@ public class ClientThread extends Thread {
                     out.write(size.width + "x" + size.height + "x" + 32);
                     out.write(0);
                     out.flush();
-                    int metadataSize = Server.intFromByteArray(in.readNBytes(4));
+                    int metadataSize = Main.intFromByteArray(in.readNBytes(4));
                     String json = new String(in.readNBytes(metadataSize));
                     Map<String, Object> metaData = GSON.fromJson(json, Map.class);
-                    int imageSize = Server.intFromByteArray(in.readNBytes(4));
+                    int imageSize = Main.intFromByteArray(in.readNBytes(4));
                     System.out.println(json);
                     imageWindow.displayImageAndMetadata(in, metaData);
                 } catch (Exception e) {
@@ -72,7 +72,7 @@ public class ClientThread extends Thread {
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
-                    Thread.sleep(Server.settings.getClient().getRefreshDelay());
+                    Thread.sleep(Main.settings.getClient().getRefreshDelay());
                 }
             } catch (InterruptedException e) {
                 e.printStackTrace();

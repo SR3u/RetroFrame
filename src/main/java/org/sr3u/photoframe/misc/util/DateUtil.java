@@ -1,7 +1,7 @@
 package org.sr3u.photoframe.misc.util;
 
 import com.google.protobuf.Timestamp;
-import org.sr3u.photoframe.server.Server;
+import org.sr3u.photoframe.server.Main;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -20,7 +20,7 @@ public class DateUtil {
     }
 
     public static boolean isDateExpiredForMediaItem(Date eventQueryTimestamp) {
-        return eventQueryTimestamp == null || (Math.abs((new Date().getTime() - eventQueryTimestamp.getTime()) / 1000) > Server.settings.getMedia().mediaItemExpiryTime);
+        return eventQueryTimestamp == null || (Math.abs((new Date().getTime() - eventQueryTimestamp.getTime()) / 1000) > Main.settings.getMedia().mediaItemExpiryTime);
     }
 
     public static com.google.type.Date toProtobuf(Date date) {

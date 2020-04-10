@@ -3,7 +3,7 @@ package org.sr3u.photoframe.client.filters.utils;
 import java.awt.*;
 
 public class DefinedPalettes {
-    public static final Palette BNW = new Palette("BlackAndWhite", new Palette.LuminancePicker(), Color.WHITE, Color.BLACK);
+    public static final Palette BNW = new Palette("BlackAndWhite", new LuminancePicker(), Color.WHITE, Color.BLACK);
 
     public static final Palette CGA_Mode_4_0_Low = Palette.parse("CGA_Mode_4_0_High", "BRUTEFORCE #000000 #00AA00 #AA0000 #AA5500");
     public static final Palette CGA_Mode_4_0_High = Palette.parse("CGA_Mode_4_0_High", "BRUTEFORCE #000000 #55FF55 #FF5555 #FF5555");
@@ -21,7 +21,7 @@ public class DefinedPalettes {
             Color.decode("#AAAAAA"), Color.WHITE);
     public static final Palette CGA = new Palette("CGA", CGA_Mode_4_1_High);
 
-    public static final Palette C64 = new Palette("C64", new Palette.BruteForcePicker(),
+    public static final Palette C64 = new Palette("C64", new BruteForcePicker(),
             Color.decode("#000000"), Color.decode("#626262"), Color.decode("#898989"), Color.decode("#adadad"),
             Color.decode("#ffffff"), Color.decode("#9f4e44"), Color.decode("#cb7e75"), Color.decode("#6d5412"),
             Color.decode("#a1683c"), Color.decode("#c9d487"), Color.decode("#9ae29b"), Color.decode("#5cab5e"),
@@ -99,8 +99,8 @@ public class DefinedPalettes {
     public static final Palette RGB884 = new RGB("RGB884", 8, 8, 4);
 
     public static final Palette GRAYSCALE = new Grayscale("Grayscale");
-    public static final Palette CYAN = new MonochromeScale("Cyan", new Palette.LuminancePicker(), Color.decode("#00FFFF"));
-    public static final Palette MAGENTA = new MonochromeScale("Magenta", new Palette.LuminancePicker(), Color.decode("#FF00FF"));
-    public static final Palette YELLOW = new MonochromeScale("Yellow", new Palette.LuminancePicker(), Color.decode("#FFFF00"));
+    public static final Palette CYAN = new MonochromeScale("Cyan", new LuminancePicker(), Color.decode("#00FFFF"));
+    public static final Palette MAGENTA = new MonochromeScale("Magenta", new LuminancePicker(), Color.decode("#FF00FF"));
+    public static final Palette YELLOW = new MonochromeScale("Yellow", new LuminancePicker(), Color.decode("#FFFF00"));
 
 }

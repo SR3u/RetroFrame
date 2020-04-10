@@ -16,13 +16,18 @@ import java.util.List;
  * LUMINANCE #000000 #111111 #222222 #444444 #666666 #777777 #888888 #AAAAAA #CCCCCC #EEEEEE #FFFFFF
  *
  * @see Palette
- * @see Palette.ColorPicker
+ * @see ColorPicker
  * @see ErrDiffusionDither
  */
 public interface PaletteParser extends ImageFilter {
     @Override
     default ImageFilter init(List<String> args) {
-        this.setPalette(Palette.parse("custom", args));
+        Palette custom = Palette.parse("custom", args);
+        if (custom != null) {
+            this.setPalette(custom);
+        } else {
+            this.setPalette(Palette.DEFAULT);
+        }
         return this;
     }
 

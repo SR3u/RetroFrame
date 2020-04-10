@@ -2,9 +2,7 @@ package org.sr3u.photoframe.client.filters.zxspectrum;
 
 import lombok.Data;
 import org.sr3u.photoframe.client.filters.ImageFilter;
-import org.sr3u.photoframe.client.filters.utils.ArgParser;
-import org.sr3u.photoframe.client.filters.utils.DefinedPalettes;
-import org.sr3u.photoframe.client.filters.utils.Palette;
+import org.sr3u.photoframe.client.filters.utils.*;
 import org.sr3u.photoframe.misc.util.ImageUtil;
 
 import java.awt.*;
@@ -18,8 +16,8 @@ import java.util.stream.Collectors;
 
 public class Spectrum implements ImageFilter {
 
-    protected static final Palette bright0 = new Palette("__tmp_zx_0", new Palette.LuminancePicker(), DefinedPalettes.ZX_0);
-    protected static final Palette bright1 = new Palette("__tmp_zx_1", new Palette.LuminancePicker(), DefinedPalettes.ZX_1);
+    protected static final Palette bright0 = new Palette("__tmp_zx_0", new LuminancePicker(), DefinedPalettes.ZX_0);
+    protected static final Palette bright1 = new Palette("__tmp_zx_1", new LuminancePicker(), DefinedPalettes.ZX_1);
     protected int attributesW = 32;
     protected int attributesH = 24;
 
@@ -82,19 +80,19 @@ public class Spectrum implements ImageFilter {
                         darkestColor = bright0.closestColor(darkestColor);
                     }
                     attributes[i][j].setPaper(darkestColor);
-                    attributes[i][j].setInkAndPaper(new Palette("zx_tmp", new Palette.LuminancePicker(), darkestColor, brightestColor));
+                    attributes[i][j].setInkAndPaper(new Palette("zx_tmp", new LuminancePicker(), darkestColor, brightestColor));
                 }
             }
         }
 
         private double distance(Color c, Color mostFrequentColor) {
-            return Palette.BruteForcePicker.squareDistance(c, mostFrequentColor) + Palette.LuminancePicker.luminanceDistance(c, Color.WHITE);
+            return BruteForcePicker.squareDistance(c, mostFrequentColor) + LuminancePicker.luminanceDistance(c, Color.WHITE);
         }
 
         private Color pickNewColor(Attributes attributes, Color pixel) {
             Color b0 = bright0.closestColor(pixel);
             Color b1 = bright1.closestColor(pixel);
-            if (Palette.BruteForcePicker.squareDistance(pixel, b0) > Palette.BruteForcePicker.squareDistance(pixel, b1)) {
+            if (BruteForcePicker.squareDistance(pixel, b0) > BruteForcePicker.squareDistance(pixel, b1)) {
                 attributes.bright = false;
                 return b0;
             } else {

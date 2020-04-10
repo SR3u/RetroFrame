@@ -19,7 +19,7 @@ import java.awt.image.BufferedImage;
  */
 public final class ApplyPalette implements Ditherer, PaletteParser {
 
-    private Palette palette;
+    private Palette palette = Palette.DEFAULT;
 
     @Override
     public Object createContext(BufferedImage image) {

@@ -1,7 +1,7 @@
 package org.sr3u.photoframe.server.events;
 
 import org.sr3u.photoframe.misc.util.ThrottlingExecutor;
-import org.sr3u.photoframe.server.Server;
+import org.sr3u.photoframe.server.Main;
 import sr3u.streamz.functionals.Consumerex;
 import sr3u.streamz.streams.Streamex;
 
@@ -11,8 +11,8 @@ import java.util.concurrent.Executors;
 
 public class EventSystem {
     Set<Consumerex<Event>> eventHandlers = new HashSet<>();
-    ThrottlingExecutor executor = new ThrottlingExecutor(Executors.newFixedThreadPool(Server.settings.getProcessingTreads()),
-            Server.settings.getProcessingTreads() * 2);
+    ThrottlingExecutor executor = new ThrottlingExecutor(Executors.newFixedThreadPool(Main.settings.getProcessingTreads()),
+            Main.settings.getProcessingTreads() * 2);
 
     public void registerHandler(Consumerex<Event> eventHandler) {
         try {

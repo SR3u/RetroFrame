@@ -27,7 +27,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
-public class Server {
+public class Main {
 
     public static final String DISPLAY_SERVERS_JSON = "displayServers.json";
     public static final Settings settings;

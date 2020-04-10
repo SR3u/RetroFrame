@@ -76,7 +76,7 @@ public class FastImageFilterChain implements FastImageFilter {
                         })
                         .collect(Collectors.toList());
             } while (unwrapped.size() != oldSize);
-            return FastImageFilterChain.builder().filters(unwrapped);
+            return FastImageFilterChain.builder().filters(new ArrayList<>(unwrapped));
         }
 
         public FastImageFilterChainBuilder filter(FastImageFilter filter) {

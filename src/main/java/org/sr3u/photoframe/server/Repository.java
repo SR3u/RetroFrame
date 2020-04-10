@@ -43,7 +43,7 @@ public class Repository {
         this.gClient = gClient;
         defaultImage = ImageUtil.scaledImage(ImageIO.read(Repository.class.getResource("picture.svg")), defaultSize);
         Class.forName("org.sqlite.JDBC");
-        JdbcConnectionSource connectionSource = new JdbcConnectionSource("jdbc:sqlite:" + Server.settings.getMedia().getDatabasePath());
+        JdbcConnectionSource connectionSource = new JdbcConnectionSource("jdbc:sqlite:" + Main.settings.getMedia().getDatabasePath());
         TableUtils.createTableIfNotExists(connectionSource, Item.class);
         dao = DaoManager.createDao(connectionSource, Item.class);
         this.eventSystem = eventSystem;
@@ -108,7 +108,7 @@ public class Repository {
 
     private Date refresh(Date refreshStartDate) {
         Iterator<MediaItem> iterator = null;
-        String albumName = Server.settings.getMedia().getAlbumName();
+        String albumName = Main.settings.getMedia().getAlbumName();
         if (albumName == null || albumName.trim().isEmpty()) {
             iterator = getAllMedia(refreshStartDate).iterator();
         } else {

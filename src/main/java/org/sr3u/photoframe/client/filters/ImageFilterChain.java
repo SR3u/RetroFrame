@@ -12,7 +12,7 @@ import java.util.stream.Stream;
 @Value
 public final class ImageFilterChain implements ImageFilter {
 
-    private final List<ImageFilter> filters;
+    List<ImageFilter> filters;
 
     public ImageFilterChain(List<ImageFilter> filters) {
         this.filters = filters;

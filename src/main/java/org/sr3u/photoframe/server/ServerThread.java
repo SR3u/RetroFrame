@@ -50,8 +50,8 @@ public class ServerThread extends Thread {
             Dimension size = parseDimension(sizeStr);
             out.flush();
             ImageWithMetadata random = repository.getRandom(size);
-            Server.sendMetadata(out, random);
-            Server.sendImage(size, out, random);
+            Main.sendMetadata(out, random);
+            Main.sendImage(size, out, random);
             out.flush();
 
         } catch (Exception e) {

@@ -2,7 +2,7 @@ package org.sr3u.photoframe.client;
 
 import com.google.common.base.Preconditions;
 import org.sr3u.photoframe.client.filters.ImageFilter;
-import org.sr3u.photoframe.server.Server;
+import org.sr3u.photoframe.server.Main;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -53,8 +53,8 @@ public class ImageWindow {
     }
 
     private void handleTransparency() {
-        if (Server.settings.getClient().isTransparentWindnow()) {
-            if (!Server.settings.getClient().isTransparentWindnowControls()) {
+        if (Main.settings.getClient().isTransparentWindnow()) {
+            if (!Main.settings.getClient().isTransparentWindnowControls()) {
                 frame.setUndecorated(true);
             } else {
                 JFrame.setDefaultLookAndFeelDecorated(true);

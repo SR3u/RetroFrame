@@ -34,7 +34,7 @@ public class MediaBackup implements Consumerex<Event> {
 
     @Override
     public void accept(Event e) throws Exception {
-        String backupPath = Server.settings.getMedia().getBackupPath();
+        String backupPath = Main.settings.getMedia().getBackupPath();
         e.ifType(NewItemEvent.class, event -> saveIfNeeded(backupPath, event))
                 .ifType(UpdatedItemEvent.class, event -> saveIfNeeded(backupPath, event))
                 .ifType(DeletedItemEvent.class, event -> {
