@@ -6,6 +6,7 @@ import com.google.gson.GsonBuilder;
 import com.google.photos.library.v1.proto.MediaMetadata;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import org.apache.log4j.Logger;
 import org.sr3u.photoframe.misc.util.ImageUtil;
 
 import java.awt.*;
@@ -18,6 +19,9 @@ import java.util.function.BiConsumer;
 @AllArgsConstructor
 @Getter
 public class ImageWithMetadata {
+
+    private static final Logger log = Logger.getLogger(ImageWithMetadata.class);
+
     public static final Gson GSON = new GsonBuilder()
             .setFieldNamingStrategy(new ImageWithMetadataFieldNamingStrategy())
             .create();
@@ -45,7 +49,7 @@ public class ImageWithMetadata {
                     consumer.accept(f.getName(), v);
                 }
             } catch (Throwable e) {
-                e.printStackTrace();
+                log.error(e);
             }
         }
     }

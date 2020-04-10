@@ -1,5 +1,6 @@
 package org.sr3u.photoframe.server.events;
 
+import org.apache.log4j.Logger;
 import org.sr3u.photoframe.misc.util.ThrottlingExecutor;
 import org.sr3u.photoframe.server.Main;
 import sr3u.streamz.functionals.Consumerex;
@@ -10,6 +11,8 @@ import java.util.Set;
 import java.util.concurrent.Executors;
 
 public class EventSystem {
+    private static final Logger log = Logger.getLogger(EventSystem.class);
+
     Set<Consumerex<Event>> eventHandlers = new HashSet<>();
     ThrottlingExecutor executor = new ThrottlingExecutor(Executors.newFixedThreadPool(Main.settings.getProcessingTreads()),
             Main.settings.getProcessingTreads() * 2);
@@ -18,7 +21,7 @@ public class EventSystem {
         try {
             executor.submit(() -> eventHandlers.add(eventHandler));
         } catch (InterruptedException e) {
-            e.printStackTrace();
+            log.error(e);
         }
     }
 
@@ -33,7 +36,7 @@ public class EventSystem {
                         }
                     }));
         } catch (InterruptedException e) {
-            e.printStackTrace();
+            log.error(e);
         }
     }
 

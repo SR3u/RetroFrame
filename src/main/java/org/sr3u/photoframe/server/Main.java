@@ -57,7 +57,7 @@ public class Main {
         try {
             displayServers = readServersFromFile(DISPLAY_SERVERS_JSON);
         } catch (FileNotFoundException e) {
-            e.printStackTrace();
+            log.error(e);
             displayServers = Collections.emptyList();
         }
         System.setProperty(LocalLog.LOCAL_LOG_LEVEL_PROPERTY, "ERROR");
@@ -82,7 +82,7 @@ public class Main {
                 new ClientThread("localhost", settings.getServer().getPort()).start();
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            log.error(e);
         }
     }
 
@@ -94,11 +94,11 @@ public class Main {
                     try {
                         sendRandomPhoto(repository, dServer);
                     } catch (Throwable e) {
-                        e.printStackTrace();
+                        log.error(e);
                     }
                 }
             } catch (Throwable e) {
-                e.printStackTrace();
+                log.error(e);
             }
         }, 0, 15, TimeUnit.SECONDS);
     }

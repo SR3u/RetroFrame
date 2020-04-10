@@ -33,7 +33,7 @@ public class ClientThread extends Thread {
         try {
             imageFilter = ImageFilters.parse(Main.settings.getClient().getImageFitlerChain());
         } catch (Exception e) {
-            e.printStackTrace();
+            log.error(e);
             imageFilter = new Identity();
         }
         imageWindow = new ImageWindow(Main.settings.getClient().isFullScreen(), imageFilter);
@@ -59,27 +59,27 @@ public class ClientThread extends Thread {
                     log.info("Metadata: " + json);
                     imageWindow.displayImageAndMetadata(in, metaData);
                 } catch (Exception e) {
-                    e.printStackTrace();
+                    log.error(e);
                 } finally {
                     try {
                         in.close();
                     } catch (IOException e) {
-                        e.printStackTrace();
+                        log.error(e);
                     }
                     try {
                         out.close();
                     } catch (IOException e) {
-                        e.printStackTrace();
+                        log.error(e);
                     }
                     try {
                         clientSocket.close();
                     } catch (IOException e) {
-                        e.printStackTrace();
+                        log.error(e);
                     }
                     Thread.sleep(Main.settings.getClient().getRefreshDelay());
                 }
             } catch (InterruptedException e) {
-                e.printStackTrace();
+                log.error(e);
             }
         }
     }

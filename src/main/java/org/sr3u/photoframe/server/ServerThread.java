@@ -1,5 +1,6 @@
 package org.sr3u.photoframe.server;
 
+import org.apache.log4j.Logger;
 import org.sr3u.photoframe.server.data.ImageWithMetadata;
 
 import java.awt.*;
@@ -11,6 +12,8 @@ import java.net.ServerSocket;
 import java.net.Socket;
 
 public class ServerThread extends Thread {
+
+    private static final Logger log = Logger.getLogger(ServerThread.class);
 
     private final int port;
     private Repository repository;
@@ -35,7 +38,7 @@ public class ServerThread extends Thread {
                 Socket clientSocket = server.accept();
                 handleClient(clientSocket);
             } catch (IOException e) {
-                e.printStackTrace();
+                log.error(e);
             }
         }
     }
@@ -55,25 +58,25 @@ public class ServerThread extends Thread {
             out.flush();
 
         } catch (Exception e) {
-            e.printStackTrace();
+            log.error(e);
         } finally {
             try {
                 clientSocket.close();
             } catch (Exception e) {
-                e.printStackTrace();
+                log.error(e);
             }
             if (in != null) {
                 try {
                     in.close();
                 } catch (Exception e) {
-                    e.printStackTrace();
+                    log.error(e);
                 }
             }
             if (out != null) {
                 try {
                     out.close();
                 } catch (Exception e) {
-                    e.printStackTrace();
+                    log.error(e);
                 }
             }
         }

@@ -72,7 +72,7 @@ public class Repository {
                 MediaMetadata metadata = mediaItem.getMediaMetadata();
                 return new ImageWithMetadata(image, ImageWithMetadata.convert(metadata));
             } catch (Exception e) {
-                e.printStackTrace();
+                log.error(e);
             }
         }
         return new ImageWithMetadata(defaultImage, Collections.emptyMap());
@@ -90,7 +90,7 @@ public class Repository {
             }
             cleanup();
         } catch (Throwable e) {
-            e.printStackTrace();
+            log.error(e);
         }
         log.info("Refresh: DONE");
     }
@@ -106,7 +106,7 @@ public class Repository {
                 deleteBuilder.delete();
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            log.error(e);
         }
     }
 
@@ -147,7 +147,7 @@ public class Repository {
                     }
                 }
             } catch (SQLException e) {
-                e.printStackTrace();
+                log.error(e);
             }
         }
         return null;
