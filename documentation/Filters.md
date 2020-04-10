@@ -110,6 +110,7 @@ All dithering filters have the same `palette` parameter, as `applyPalette`.
 
 ## Important notes: 
 * `TV`, `Trinitron`, `TrinitronV` and `TrinitronH` may require additional 3x upscaling if applied after low-res filters (`Commodore`, `IbmPcCga`, etc).
-Insert `scale 3 3` between it and previous filters for best result or if you experience any weird color issues. Don't upscale if you are using *HD* filter.<br>
-*Example:* `Commodore64 | scale 3 3 | Trinitron`, `IbmPcCga | scale 3 3 | Trinitron`.
+Insert `scale 3 3` or `OriginalSize` between it and previous filters for best result or if you experience any weird color issues.<br>
+*WARNING:* Don't upscale if you are using *HD* filter.<br>
+*Example:* `Commodore64 | scale 3 3 | Trinitron`, `IbmPcCga | OriginalSize | Trinitron`.
 * `ZxSpectrum` and `Spectrum` filter is very *very* slow. 
