@@ -108,5 +108,7 @@ All dithering filters have the same `palette` parameter, as `applyPalette`.
 * `client.imageFilterChain=sierra3 LUMINANCE #000000 #111111 #222222 #333333 #444444 #555555 #666666 #777777 #888888 #999999 #AAAAAA #BBBBBB #CCCCCC #DDDDDD #EEEEEE #FFFFFF | DOT`<br>
 
 ## Important notes: 
-* `TV`, `Trinitron`, `TrinitronV` and `TrinitronH` may require additional 3x upscaling if applied after low-res filters (`Commodore`, `IbmPcCga`, etc), so insert `scale 3 3` between it and previous filters if you experience any weird color issues.
+* `TV`, `Trinitron`, `TrinitronV` and `TrinitronH` may require additional 3x upscaling if applied after low-res filters (`Commodore`, `IbmPcCga`, etc).
+Insert `scale 3 3` between it and previous filters for best result or if you experience any weird color issues. Don't upscale if you are using *HD* filter.<br>
+*Example:* `Commodore64 | scale 3 3 | Trinitron`, `IbmPcCga | scale 3 3 | Trinitron`.
 * `ZxSpectrum` and `Spectrum` filter is very *very* slow. 
