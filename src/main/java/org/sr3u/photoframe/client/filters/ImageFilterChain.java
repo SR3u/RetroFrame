@@ -13,6 +13,7 @@ import java.util.stream.Stream;
 public final class ImageFilterChain implements ImageFilter {
 
     List<ImageFilter> filters;
+    ImageFilter.Context context = new ImageFilter.Context();
 
     public ImageFilterChain(List<ImageFilter> filters) {
         this.filters = filters;
@@ -29,9 +30,10 @@ public final class ImageFilterChain implements ImageFilter {
 
     @Override
     public Image apply(Image image) throws Exception {
+        context.setOriginalSize(new Dimension(image.getWidth(null), image.getHeight(null)));
         reset();
         for (ImageFilter f : filters) {
-            image = f.apply(image);
+            image = f.apply(context, image);
         }
         return image;
     }
@@ -135,4 +137,5 @@ public final class ImageFilterChain implements ImageFilter {
             filter.reset();
         }
     }
+
 }

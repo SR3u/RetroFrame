@@ -7,8 +7,8 @@ import java.awt.*;
 import java.util.List;
 
 public class Resize implements ImageFilter {
-    int width = -1;
-    int height = -1;
+    protected int width = -1;
+    protected int height = -1;
 
     @Override
     public ImageFilter init(List<String> parameters) {

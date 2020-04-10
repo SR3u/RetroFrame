@@ -26,6 +26,7 @@ Filters are be applied from left to right.
 * `resize` -- resize image to certain width and height in pixels, keeping the proportions.<br>
             Has 2 parameters: `width` and `height`, both in pixels and both are required.<br>
             *Example:* `resize 512 256`<br>
+* `OriginalSize` -- resize image back to its original size.<br>Has no parameters.<br>*Example:* `OriginalSize`<br>
 * `brightness` -- make images brighter (or darker) with clipping.<br>
             Has 1 parameter: `factor` --brightness multiplier. <br>
             *Examples:*<br>`brightness 0.75`<br>`brightness 1.2`<br>
