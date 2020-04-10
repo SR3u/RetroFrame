@@ -33,7 +33,8 @@ public class BruteForcePicker implements ColorPicker {
         if (selectionCache.size() > Main.settings.getClient().getColorCacheSize()) {
             System.out.println("clearing selectionCache, as it was larger than the threshold (" + selectionCache.size() + " > " + Main.settings.getClient().getColorCacheSize() + ")");
             selectionCache.clear();
-            System.out.println("Color cache cleanups: " + cleanupsCount.incrementAndGet() + " / " + resetsCount);
+            long cleanupsCount = this.cleanupsCount.incrementAndGet();
+            System.out.println("Color cache cleanups: " + cleanupsCount + " / " + resetsCount + " (" + (cleanupsCount * 100) / resetsCount + "%)");
         }
     }
 
