@@ -52,6 +52,7 @@ public class ImageWindow {
                 frame.repaint();
             }
         });
+        metadataLabel.setVisible(Main.settings.getClient().isShowMetadata());
     }
 
     private void handleTransparency() {
@@ -91,7 +92,11 @@ public class ImageWindow {
                         .map(Date::new)
                         .map(d -> new SimpleDateFormat("dd.MM.yyyy HH:mm:ss").format(d))
                         .orElse("??.??.???? ??:??:??");
-                metadataLabel.setText(metaDataRendered);
+                if (metadataLabel.isVisible()) {
+                    metadataLabel.setText(metaDataRendered);
+                } else {
+                    metadataLabel.setText("");
+                }
                 frame.setTitle("Photo Frame " + metaDataRendered);
                 frame.invalidate();
                 frame.validate();

@@ -5,6 +5,7 @@ Here is a reference to its keys and values:<br>
 * `client.server.address` -- server instance address  (*default:* `locahost`)
 * `client.server.port` -- server instance port  (*default:* `4242`)
 * `client.enable` -- enable client gui startup, is overridden by java.awt.headless (*default:* `false`)
+* `client.showMetadata` -- Show metadata while displaying image? (*default:* `true`)
 * `client.fullscreen` -- launch client window in full screen (*default:* `false`)
 * `client.refreshDelay` -- how many milliseconds each photo is shown (*default:* `60000`)
 * `client.window.transparent` -- try to make client window transparent (*default:* `false`)

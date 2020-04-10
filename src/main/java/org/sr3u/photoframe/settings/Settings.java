@@ -130,6 +130,9 @@ public class Settings implements Fillable {
         @Builder.Default
         @PropertyMap("client.server.address")
         String serverAddress = "localhost";
+        @Builder.Default
+        @PropertyMap("client.showMetadata")
+        boolean showMetadata = true;
 
         public static Client load(Properties properties) {
             Client build = builder().build();
