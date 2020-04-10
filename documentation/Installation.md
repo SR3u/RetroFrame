@@ -2,6 +2,13 @@
 
 ## Linux, macOS and other UNIX-like platforms
 
+### Pre-requisites
+
+* jdk11 (or later)
+* maven
+
+### Installation
+
 * Create script `update.sh` in the desired installation directory with following contents:<br>
 ```bash
 #!/bin/bash
