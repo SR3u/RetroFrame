@@ -91,7 +91,7 @@ All dithering filters have the same `palette` parameter, as `applyPalette`.
 * `MacintoshHD` -- Macintosh Classic emulation, but without downscaling (`Atkinson Monochrome`)<br>
 * `MacintoshClassic` -- Macintosh Classic emulation (`resize 512 342 | Atkinson Monochrome`)<br>
 * `MacintoshClassicHD` -- Macintosh Classic emulation, but without downscaling (`Atkinson Monochrome`)<br>
-* `Trinitron` -- [Sony Trinitron](https://en.wikipedia.org/wiki/Trinitron) (kinda)
+* `Trinitron` -- [Sony Trinitron](https://en.wikipedia.org/wiki/Trinitron) (kinda)<br>
 * `TV` -- Old TV (kinda) (`TrinitronH`)<br>  
 * `ZxSpectrum` -- ZX Spectrum emulation (`resize 348 256 | atkinson ZXFULL | buffer | Spectrum 32 24`)<br>
 * `ZxSpectrumHD` -- ZX Spectrum emulation, but without downscaling and attributes collision (`atkinson ZXFULL`)<br>
@@ -106,3 +106,6 @@ All dithering filters have the same `palette` parameter, as `applyPalette`.
 * `client.imageFilterChain=Scale 0.25 | Atkinson monochrome`<br>
 * `client.imageFilterChain=resize 512 512`<br>
 * `client.imageFilterChain=sierra3 LUMINANCE #000000 #111111 #222222 #333333 #444444 #555555 #666666 #777777 #888888 #999999 #AAAAAA #BBBBBB #CCCCCC #DDDDDD #EEEEEE #FFFFFF | DOT`<br>
+
+## Important notes: 
+`TV`, `Trinitron`, `TrinitronV` and `TrinitronH` may require additional 3x upscaling if applied after low-res filters (`Commodore`, `IbmPcCga`, etc), so insert `scale 3 3` between it and previous filters if you experience any weird color issues. 
