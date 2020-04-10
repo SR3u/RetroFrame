@@ -8,7 +8,10 @@ import org.sr3u.photoframe.client.filters.ImageFilters;
 import org.sr3u.photoframe.server.Main;
 
 import java.awt.*;
-import java.io.*;
+import java.io.BufferedInputStream;
+import java.io.BufferedWriter;
+import java.io.InputStream;
+import java.io.OutputStreamWriter;
 import java.net.Socket;
 import java.util.Map;
 
@@ -64,26 +67,32 @@ public class ClientThread extends Thread {
                     e.printStackTrace();
                 } finally {
                     try {
-                        in.close();
-                    } catch (IOException e) {
+                        if (in != null) {
+                            in.close();
+                        }
+                    } catch (Exception e) {
                         log.error(e);
                         e.printStackTrace();
                     }
                     try {
-                        out.close();
-                    } catch (IOException e) {
+                        if (out != null) {
+                            out.close();
+                        }
+                    } catch (Exception e) {
                         log.error(e);
                         e.printStackTrace();
                     }
                     try {
-                        clientSocket.close();
-                    } catch (IOException e) {
+                        if (clientSocket != null) {
+                            clientSocket.close();
+                        }
+                    } catch (Exception e) {
                         log.error(e);
                         e.printStackTrace();
                     }
                     Thread.sleep(Main.settings.getClient().getRefreshDelay());
                 }
-            } catch (InterruptedException e) {
+            } catch (Exception e) {
                 log.error(e);
                 e.printStackTrace();
             }
