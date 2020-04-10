@@ -78,11 +78,15 @@ class ImagePanel extends JComponent {
             if (originalImage == null) {
                 return;
             }
-            Image newImage = imageFilter.wrap().apply(ImageUtil.scaledImage(ImageUtil.bufferedCopy(originalImage), width, height));
-            Image newBackground = blur(width, height, newImage);
-            newBackground = imageFilter.wrap().apply(newBackground);
-            image = newImage;
-            blurryBackgroundImage = newBackground;
+            try {
+                Image newImage = imageFilter.apply(ImageUtil.scaledImage(ImageUtil.bufferedCopy(originalImage), width, height));
+                Image newBackground = blur(width, height, newImage);
+                newBackground = imageFilter.apply(newBackground);
+                image = newImage;
+                blurryBackgroundImage = newBackground;
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
             forceRedraw();
         });
     }
