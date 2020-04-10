@@ -9,6 +9,7 @@ import com.j256.ormlite.jdbc.JdbcConnectionSource;
 import com.j256.ormlite.stmt.DeleteBuilder;
 import com.j256.ormlite.table.TableUtils;
 import lombok.SneakyThrows;
+import org.apache.log4j.Logger;
 import org.sr3u.photoframe.misc.util.DateUtil;
 import org.sr3u.photoframe.misc.util.ImageUtil;
 import org.sr3u.photoframe.server.data.ImageWithMetadata;
@@ -31,6 +32,9 @@ import java.util.*;
 import static com.google.photos.library.v1.proto.ContentCategory.*;
 
 public class Repository {
+
+    private static final Logger log = Logger.getLogger(Repository.class);
+
     private static final int MAX_ATTEMPTS = 16;
     private final PhotosLibraryClient gClient;
     private final Image defaultImage;
@@ -79,7 +83,7 @@ public class Repository {
             if (gClient == null) {
                 return;
             }
-            System.out.println(getClass().getName() + " Refresh: STARTED");
+            log.info("Refresh: STARTED");
             Date refreshStartDate = new Date();
             while (refreshStartDate != null) {
                 refreshStartDate = refresh(refreshStartDate);
@@ -88,7 +92,7 @@ public class Repository {
         } catch (Throwable e) {
             e.printStackTrace();
         }
-        System.out.println(getClass().getName() + " Refresh: DONE");
+        log.info("Refresh: DONE");
     }
 
     private void cleanup() {
@@ -125,11 +129,11 @@ public class Repository {
             MediaItem next = iterator.next();
             if (DateUtil.isDateExpiredForMediaItem(refreshStarted)) {
                 Date refreshDate = DateUtil.addDays(DateUtil.getCreationDate(next.getMediaMetadata().getCreationTime()), 1);
-                System.out.println("Refresh restarted from date " + refreshDate);
+                log.info("Refresh restarted from date " + refreshDate);
                 return refreshDate;
             }
             try {
-                System.out.println("processing item " + next.getId());
+                log.info("processing item " + next.getId());
                 synchronized (this) {
                     List<Item> item = dao.queryForEq("googleID", next.getId());
                     if (item.isEmpty()) {

@@ -7,6 +7,8 @@ import com.google.photos.library.v1.PhotosLibraryClient;
 import com.j256.ormlite.logger.LocalLog;
 import lombok.Builder;
 import lombok.Data;
+import org.apache.log4j.Logger;
+import org.apache.log4j.PropertyConfigurator;
 import org.sr3u.photoframe.client.ClientThread;
 import org.sr3u.photoframe.misc.util.ImageUtil;
 import org.sr3u.photoframe.server.data.ImageWithMetadata;
@@ -29,16 +31,20 @@ import java.util.concurrent.TimeUnit;
 
 public class Main {
 
+    private static final Logger log = Logger.getLogger(Main.class);
+
     public static final String DISPLAY_SERVERS_JSON = "displayServers.json";
     public static final Settings settings;
     private static final EventSystem eventsSystem;
 
     static { // HIDE DOCK ICON (if any)
+        PropertyConfigurator.configure("log4j.properties");
+        org.apache.log4j.BasicConfigurator.configure();
         System.setProperty("com.j256.ormlite.logger.type", "ERROR");
         System.setProperty(LocalLog.LOCAL_LOG_LEVEL_PROPERTY, "ERROR");
         settings = Settings.load("settings.properties");
         System.setProperty("java.awt.headless", String.valueOf(settings.isJava_awt_headless()));
-        System.out.println("java.awt.headless: " + java.awt.GraphicsEnvironment.isHeadless());
+        log.info("java.awt.headless: " + java.awt.GraphicsEnvironment.isHeadless());
         eventsSystem = new EventSystem();
     }
 
@@ -66,7 +72,7 @@ public class Main {
                /* InternalPhotosLibraryClient.ListMediaItemsPagedResponse response = client.listMediaItems();
                 for (MediaItem item : response.iterateAll()) {
                     // Get some properties of a media item
-                    System.out.println(item);
+                    log.info(item);
                 }*/
             Repository repository = new Repository(client, eventsSystem);
             scheduleRefresh(repository);
@@ -126,7 +132,7 @@ public class Main {
         ImageIO.write(image, "png", baos);
         baos.flush();
         byte[] bytes = baos.toByteArray();
-        System.out.println("bytes.length = " + bytes.length);
+        log.info("bytes.length = " + bytes.length);
         out.write(intToByteArray(bytes.length));
         out.flush();
         out.write(bytes);

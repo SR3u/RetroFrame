@@ -1,6 +1,7 @@
 package org.sr3u.photoframe.client;
 
 import com.google.gson.Gson;
+import org.apache.log4j.Logger;
 import org.sr3u.photoframe.client.filters.Identity;
 import org.sr3u.photoframe.client.filters.ImageFilter;
 import org.sr3u.photoframe.client.filters.ImageFilters;
@@ -12,6 +13,9 @@ import java.net.Socket;
 import java.util.Map;
 
 public class ClientThread extends Thread {
+
+    private static final Logger log = Logger.getLogger(ClientThread.class);
+
     public static final Gson GSON = new Gson();
     private ImageWindow imageWindow;
 
@@ -52,7 +56,7 @@ public class ClientThread extends Thread {
                     String json = new String(in.readNBytes(metadataSize));
                     Map<String, Object> metaData = GSON.fromJson(json, Map.class);
                     int imageSize = Main.intFromByteArray(in.readNBytes(4));
-                    System.out.println(json);
+                    log.info("Metadata: " + json);
                     imageWindow.displayImageAndMetadata(in, metaData);
                 } catch (Exception e) {
                     e.printStackTrace();
