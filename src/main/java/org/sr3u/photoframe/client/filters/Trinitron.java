@@ -22,7 +22,7 @@ public class Trinitron implements FastImageFilter {
 
     @Override
     public void apply(BufferedImage image, Object contextObject, int x, int y) throws Exception {
-        scanlineFilters[y % scanlineFilters.length].apply(image, contextObject, x, y);
+        scanlineFilters[x % scanlineFilters.length].apply(image, contextObject, x, y);
     }
 
     @Override
