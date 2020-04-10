@@ -8,7 +8,9 @@ Here is a reference to its keys and values:<br>
 * `client.window.transparent` -- try to make client window transparent (*default:* `false`)
 * `client.window.transparent.controls` -- try still have client window controls if it is transparent (*default:* `true`)
 * `client.imageFilterChain` -- filters applied to the image before it is shown (*default:* `identity`). See [Filters.md](https://github.com/SR3u/gphotorepo/blob/master/documentation/Filters.md) for more info.
-* `client.filters.colorCacheSize` -- cache size for each `palette` (*default:* 1024). See [Filters.md](https://github.com/SR3u/gphotorepo/blob/master/documentation/Filters.md) and [Palettes.md](https://github.com/SR3u/gphotorepo/blob/master/documentation/Palettes.md) for more info.
+* `client.filters.colorCacheSize` -- cache size for each `palette` (*default:* `1024`).<br>
+ It is not recommended to change it to a much bigger number, as it affects memory consumption. Changing it to values les than `256` is also not recommended.<br>
+  See [Filters.md](https://github.com/SR3u/gphotorepo/blob/master/documentation/Filters.md) and [Palettes.md](https://github.com/SR3u/gphotorepo/blob/master/documentation/Palettes.md) for more info.
 * `server.port` -- port server will listen (*default:* `4242`)
 * `media.databasePath` -- local database cache (*default:* `mediaItems.db`)
 * `media.backup` -- perform backup of cached media (*default:* `false`)
