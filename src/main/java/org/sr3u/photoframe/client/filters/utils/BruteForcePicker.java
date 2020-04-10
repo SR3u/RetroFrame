@@ -3,12 +3,12 @@ package org.sr3u.photoframe.client.filters.utils;
 import org.sr3u.photoframe.server.Main;
 
 import java.awt.*;
-import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class BruteForcePicker implements ColorPicker {
 
-    private Map<Integer, Color> selectionCache = new HashMap<>();
+    private Map<Integer, Color> selectionCache = new ConcurrentHashMap<>();
 
     @Override
     public Color closestColor(int rgb, Color[] palette) {
