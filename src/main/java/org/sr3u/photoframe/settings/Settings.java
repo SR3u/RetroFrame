@@ -118,6 +118,9 @@ public class Settings implements Fillable {
         @Builder.Default
         @PropertyMap("client.window.transparent.controls")
         boolean transparentWindnowControls = true;
+        @Builder.Default
+        @PropertyMap("client.filters.colorCacheSize")
+        int colorCacheSize = 1024;
 
         public static Client load(Properties properties) {
             Client build = builder().build();

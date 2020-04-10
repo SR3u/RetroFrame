@@ -149,4 +149,9 @@ public abstract class ErrDiffusionDither implements Ditherer, PaletteParser {
     public void setPalette(Palette palette) {
         this.palette = palette;
     }
+
+    @Override
+    public void reset() {
+        this.palette.reset();
+    }
 }

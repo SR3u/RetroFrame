@@ -44,4 +44,8 @@ public class DOT implements FastImageFilter {
         int rgb = image.getRGB(x, y);
         image.setRGB(x, y, function(x, y).apply(rgb));
     }
+
+    @Override
+    public void reset() {
+    }
 }

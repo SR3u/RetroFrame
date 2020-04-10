@@ -46,4 +46,8 @@ public abstract class RgbFilter implements FastImageFilter {
     protected void setColorMapper(Functionex<Color, Color> colorMapper) {
         this.colorMapper = colorMapper;
     }
+
+    @Override
+    public void reset() {
+    }
 }

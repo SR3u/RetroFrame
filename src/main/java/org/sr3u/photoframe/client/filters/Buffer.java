@@ -14,4 +14,8 @@ public class Buffer implements ImageFilter {
     public Image apply(Image image) throws Exception {
         return ImageUtil.buffer(image);
     }
+
+    @Override
+    public void reset() {
+    }
 }

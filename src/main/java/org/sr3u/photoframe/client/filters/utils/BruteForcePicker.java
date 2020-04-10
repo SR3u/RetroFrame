@@ -1,19 +1,35 @@
 package org.sr3u.photoframe.client.filters.utils;
 
+import org.sr3u.photoframe.server.Main;
+
 import java.awt.*;
+import java.util.HashMap;
+import java.util.Map;
 
 public class BruteForcePicker implements ColorPicker {
 
-    @Override
-    public Color closestColor(Color c, Color[] palette) {
-        Color closest = palette[0];
+    private Map<Integer, Color> selectionCache = new HashMap<>();
 
-        for (Color n : palette) {
-            if (distance(n, c) < distance(closest, c)) {
-                closest = n;
+    @Override
+    public Color closestColor(int rgb, Color[] palette) {
+        return selectionCache.computeIfAbsent(rgb, k -> {
+            Color c = new Color(rgb);
+            Color closest = palette[0];
+            for (Color n : palette) {
+                if (distance(n, c) < distance(closest, c)) {
+                    closest = n;
+                }
             }
+            return closest;
+        });
+    }
+
+    @Override
+    public void reset() {
+        if (selectionCache.size() > Main.settings.getClient().getColorCacheSize()) {
+            System.out.println("clearing selectionCache, as it was larger than the threshold (" + selectionCache.size() + " > " + Main.settings.getClient().getColorCacheSize() + ")");
+            selectionCache.clear();
         }
-        return closest;
     }
 
     protected double distance(Color c1, Color c2) {

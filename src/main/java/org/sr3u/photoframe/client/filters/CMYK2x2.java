@@ -27,6 +27,15 @@ public class CMYK2x2 implements FastImageFilter {
     }
 
     @Override
+    public void reset() {
+        for (int i = 0; i < palettes.length; i++) {
+            for (int j = 0; j < palettes[i].length; j++) {
+                palettes[i][j].reset();
+            }
+        }
+    }
+
+    @Override
     public ImageFilter init(List<String> parameters) {
         return this;
     }

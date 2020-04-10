@@ -123,4 +123,11 @@ public class FastImageFilterChain implements FastImageFilter {
             return "FastImageFilterChain.FastImageFilterChainBuilder(filters=" + this.filters + ")";
         }
     }
+
+    @Override
+    public void reset() {
+        for (ImageFilter filter : filters) {
+            filter.reset();
+        }
+    }
 }

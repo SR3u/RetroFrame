@@ -29,6 +29,7 @@ public final class ImageFilterChain implements ImageFilter {
 
     @Override
     public Image apply(Image image) throws Exception {
+        reset();
         for (ImageFilter f : filters) {
             image = f.apply(image);
         }
@@ -125,6 +126,13 @@ public final class ImageFilterChain implements ImageFilter {
         @Override
         public String toString() {
             return "ImageFilterChain.ImageFilterChainBuilder(filters=" + this.filters + ")";
+        }
+    }
+
+    @Override
+    public void reset() {
+        for (ImageFilter filter : filters) {
+            filter.reset();
         }
     }
 }

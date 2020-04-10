@@ -30,4 +30,8 @@ public class Resize implements ImageFilter {
         }
         return ImageUtil.scaledImage(image, this.width, this.height);
     }
+
+    @Override
+    public void reset() {
+    }
 }

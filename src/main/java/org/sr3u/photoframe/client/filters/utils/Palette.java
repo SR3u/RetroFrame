@@ -94,7 +94,7 @@ public class Palette {
     }
 
     public Color closestColor(Color c) {
-        return colorPicker.closestColor(c, palette);
+        return colorPicker.closestColor(c.getRGB(), palette);
     }
 
     public static ColorPicker getColorPicker(String s) {
@@ -102,4 +102,7 @@ public class Palette {
         return Optional.ofNullable(ALL_PICKERS.get(param)).orElseGet(BruteForcePicker::new);
     }
 
+    public void reset() {
+        colorPicker.reset();
+    }
 }

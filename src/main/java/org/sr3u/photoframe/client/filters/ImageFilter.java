@@ -8,6 +8,8 @@ import java.util.List;
 
 
 public interface ImageFilter extends Functionex<Image, Image> {
+    void reset();
+
     ImageFilter init(List<String> parameters);
 
     default ImageFilter init(String... parameters) {

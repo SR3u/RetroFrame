@@ -29,4 +29,8 @@ public class Scale implements ImageFilter {
         int newHeight = (int) (image.getHeight(null) * scaleY);
         return image.getScaledInstance(newWidth, newHeight, Image.SCALE_SMOOTH);
     }
+
+    @Override
+    public void reset() {
+    }
 }

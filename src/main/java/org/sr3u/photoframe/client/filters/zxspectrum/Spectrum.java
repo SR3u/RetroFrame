@@ -114,4 +114,10 @@ public class Spectrum implements ImageFilter {
         private Color ink; // bits 2..0, ink (foreground) color
         private Palette inkAndPaper;
     }
+
+    @Override
+    public void reset() {
+        bright0.reset();
+        bright1.reset();
+    }
 }

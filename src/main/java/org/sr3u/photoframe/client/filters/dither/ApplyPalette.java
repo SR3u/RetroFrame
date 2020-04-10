@@ -40,4 +40,9 @@ public final class ApplyPalette implements Ditherer, PaletteParser {
     public void setPalette(Palette palette) {
         this.palette = palette;
     }
+
+    @Override
+    public void reset() {
+        this.palette.reset();
+    }
 }

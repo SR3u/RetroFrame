@@ -41,4 +41,8 @@ public class Grayscale implements FastImageFilter {
         alphaC = parser.doubleAt(3).orElse(alphaC);
         return this;
     }
+
+    @Override
+    public void reset() {
+    }
 }

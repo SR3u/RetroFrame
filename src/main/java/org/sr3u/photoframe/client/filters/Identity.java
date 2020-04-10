@@ -12,4 +12,8 @@ public class Identity implements ImageFilter {
     public Image apply(Image image) throws Exception {
         return image;
     }
+
+    @Override
+    public void reset() {
+    }
 }

@@ -3,5 +3,12 @@ package org.sr3u.photoframe.client.filters.utils;
 import java.awt.*;
 
 public interface ColorPicker {
-    Color closestColor(Color c, Color[] palette);
+
+    default Color closestColor(Color c, Color[] palette) {
+        return closestColor(c.getRGB(), palette);
+    }
+
+    Color closestColor(int rgb, Color[] palette);
+
+    void reset();
 }

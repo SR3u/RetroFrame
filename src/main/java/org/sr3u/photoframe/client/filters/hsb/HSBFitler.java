@@ -67,4 +67,8 @@ public abstract class HSBFitler implements FastImageFilter {
         return (float) i;
     }
 
+    @Override
+    public void reset() {
+    }
+
 }
