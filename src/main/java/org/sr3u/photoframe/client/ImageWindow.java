@@ -80,20 +80,21 @@ public class ImageWindow {
         if (img == null) {
             System.out.println("Failed to receive image!");
         } else {
-            imagePanel.setImage(img);
+            imagePanel.setImage(img).thenAccept(v -> {
+                String metaDataRendered = extract(metaData, "creationTime_", Map.class)
+                        .flatMap(md -> extract(md, "seconds", Number.class))
+                        .map(n -> multiply(n, 1000))
+                        .map(Number::longValue)
+                        .map(Date::new)
+                        .map(d -> new SimpleDateFormat("dd.MM.yyyy HH:mm:ss").format(d))
+                        .orElse("??.??.???? ??:??:??");
+                metadataLabel.setText(metaDataRendered);
+                frame.setTitle("Photo Frame " + metaDataRendered);
+                frame.invalidate();
+                frame.validate();
+                frame.repaint();
+            });
         }
-        String metaDataRendered = extract(metaData, "creationTime_", Map.class)
-                .flatMap(md -> extract(md, "seconds", Number.class))
-                .map(n -> multiply(n, 1000))
-                .map(Number::longValue)
-                .map(Date::new)
-                .map(d -> new SimpleDateFormat("dd.MM.yyyy HH:mm:ss").format(d))
-                .orElse("??.??.???? ??:??:??");
-        metadataLabel.setText(metaDataRendered);
-        frame.setTitle("Photo Frame " + metaDataRendered);
-        frame.invalidate();
-        frame.validate();
-        frame.repaint();
     }
 
     private static <T> Optional<T> extract(Map map, Object key, Class<T> clazz) {

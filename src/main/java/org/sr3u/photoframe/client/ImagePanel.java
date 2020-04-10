@@ -11,6 +11,7 @@ import java.awt.image.BufferedImageOp;
 import java.awt.image.ConvolveOp;
 import java.awt.image.Kernel;
 import java.util.Arrays;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -53,17 +54,18 @@ class ImagePanel extends JComponent {
         adjustSize(width, height);
     }
 
-    private void adjustSize(double width, double height) {
+    private CompletableFuture<Void> adjustSize(double width, double height) {
         boolean sizeChanged = (previousWidth != width &&
                 previousHeight != height);
         boolean shouldRepaint = sizeChanged || forceAdjustSize;
         if (originalImage != null && shouldRepaint) {
-            applyFiltersAsync(width, height);
-            previousWidth = (int) width;
-            previousHeight = (int) height;
-            forceAdjustSize = false;
+            return applyFiltersAsync(width, height).thenAccept(v -> {
+                previousWidth = (int) width;
+                previousHeight = (int) height;
+                forceAdjustSize = false;
+            });
         }
-
+        return CompletableFuture.completedFuture(null);
     }
 
     private Image blur(double width, double height, Image img) {
@@ -71,8 +73,8 @@ class ImagePanel extends JComponent {
         return blur.filter(ImageUtil.buffer(scaledInstance), null).getScaledInstance((int) (width + (width / 5)), (int) (height + height / 5), Image.SCALE_FAST);
     }
 
-    private void applyFiltersAsync(double width, double height) {
-        executorService.submit(() -> {
+    private CompletableFuture<Void> applyFiltersAsync(double width, double height) {
+        return CompletableFuture.runAsync(() -> {
             if (originalImage == null) {
                 return;
             }
@@ -95,10 +97,10 @@ class ImagePanel extends JComponent {
         return image;
     }
 
-    public void setImage(Image image) {
+    public CompletableFuture<Void> setImage(Image image) {
         originalImage = image;
         forceAdjustSize = true;
-        adjustSize(getWidth(), getHeight());
+        return adjustSize(getWidth(), getHeight());
     }
 
     @Override
