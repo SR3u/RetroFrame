@@ -39,6 +39,7 @@ public class ServerThread extends Thread {
                 handleClient(clientSocket);
             } catch (IOException e) {
                 log.error(e);
+                e.printStackTrace();
             }
         }
     }
@@ -59,17 +60,20 @@ public class ServerThread extends Thread {
 
         } catch (Exception e) {
             log.error(e);
+            e.printStackTrace();
         } finally {
             try {
                 clientSocket.close();
             } catch (Exception e) {
                 log.error(e);
+                e.printStackTrace();
             }
             if (in != null) {
                 try {
                     in.close();
                 } catch (Exception e) {
                     log.error(e);
+                    e.printStackTrace();
                 }
             }
             if (out != null) {
@@ -77,6 +81,7 @@ public class ServerThread extends Thread {
                     out.close();
                 } catch (Exception e) {
                     log.error(e);
+                    e.printStackTrace();
                 }
             }
         }

@@ -50,6 +50,7 @@ public class ImageWithMetadata {
                 }
             } catch (Throwable e) {
                 log.error(e);
+                e.printStackTrace();
             }
         }
     }

@@ -57,6 +57,7 @@ public class Main {
             displayServers = readServersFromFile(DISPLAY_SERVERS_JSON);
         } catch (FileNotFoundException e) {
             log.error(e);
+            e.printStackTrace();
             displayServers = Collections.emptyList();
         }
         System.setProperty(LocalLog.LOCAL_LOG_LEVEL_PROPERTY, "ERROR");
@@ -84,6 +85,7 @@ public class Main {
             }
         } catch (Exception e) {
             log.error(e);
+            e.printStackTrace();
         }
     }
 
@@ -96,10 +98,12 @@ public class Main {
                         sendRandomPhoto(repository, dServer);
                     } catch (Throwable e) {
                         log.error(e);
+                        e.printStackTrace();
                     }
                 }
             } catch (Throwable e) {
                 log.error(e);
+                e.printStackTrace();
             }
         }, 0, 15, TimeUnit.SECONDS);
     }

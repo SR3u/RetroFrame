@@ -73,6 +73,7 @@ public class Repository {
                 return new ImageWithMetadata(image, ImageWithMetadata.convert(metadata));
             } catch (Exception e) {
                 log.error(e);
+                e.printStackTrace();
             }
         }
         return new ImageWithMetadata(defaultImage, Collections.emptyMap());
@@ -91,6 +92,7 @@ public class Repository {
             cleanup();
         } catch (Throwable e) {
             log.error(e);
+            e.printStackTrace();
         }
         log.info("Refresh: DONE");
     }
@@ -107,6 +109,7 @@ public class Repository {
             }
         } catch (SQLException e) {
             log.error(e);
+            e.printStackTrace();
         }
     }
 
@@ -148,6 +151,7 @@ public class Repository {
                 }
             } catch (SQLException e) {
                 log.error(e);
+                e.printStackTrace();
             }
         }
         return null;

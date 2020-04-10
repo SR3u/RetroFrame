@@ -22,6 +22,7 @@ public class EventSystem {
             executor.submit(() -> eventHandlers.add(eventHandler));
         } catch (InterruptedException e) {
             log.error(e);
+            e.printStackTrace();
         }
     }
 
@@ -37,6 +38,7 @@ public class EventSystem {
                     }));
         } catch (InterruptedException e) {
             log.error(e);
+            e.printStackTrace();
         }
     }
 

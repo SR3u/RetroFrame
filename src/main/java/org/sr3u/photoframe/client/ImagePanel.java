@@ -90,6 +90,7 @@ class ImagePanel extends JComponent {
                 blurryBackgroundImage = newBackground;
             } catch (Exception e) {
                 log.error(e);
+                e.printStackTrace();
             }
             forceRedraw();
         });

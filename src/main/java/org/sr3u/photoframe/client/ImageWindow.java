@@ -66,6 +66,7 @@ public class ImageWindow {
                 frame.setBackground(new Color(0, 0, 0, 0));
             } catch (Exception e) {
                 log.error(e);
+                e.printStackTrace();
             }
         } else {
             frame.setBackground(Color.WHITE);
@@ -144,6 +145,7 @@ public class ImageWindow {
             window.setVisible(true);
         } catch (Exception e) {
             log.error(e);
+            e.printStackTrace();
         }
     }
 
