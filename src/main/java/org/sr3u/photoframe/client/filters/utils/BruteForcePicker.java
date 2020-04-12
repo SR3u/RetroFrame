@@ -1,6 +1,7 @@
 package org.sr3u.photoframe.client.filters.utils;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.sr3u.photoframe.server.Main;
 
 import java.awt.*;
@@ -10,7 +11,7 @@ import java.util.concurrent.atomic.AtomicLong;
 
 public class BruteForcePicker implements ColorPicker {
 
-    private static final Logger log = Logger.getLogger(ColorPicker.class);
+    private static final Logger log = LogManager.getLogger(ColorPicker.class);
 
     private Map<Integer, Color> selectionCache = new ConcurrentHashMap<>();
     private AtomicLong cleanupsCount = new AtomicLong(0);

@@ -1,7 +1,8 @@
 package org.sr3u.photoframe.client;
 
 import com.twelvemonkeys.image.ConvolveWithEdgeOp;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.sr3u.photoframe.client.filters.Identity;
 import org.sr3u.photoframe.client.filters.ImageFilter;
 import org.sr3u.photoframe.misc.util.ImageUtil;
@@ -18,7 +19,7 @@ import java.util.concurrent.Executors;
 
 class ImagePanel extends JComponent {
 
-    private static final Logger log = Logger.getLogger(ImagePanel.class);
+    private static final Logger log = LogManager.getLogger(ImagePanel.class);
 
     private final ImageFilter imageFilter;
     private Image image;

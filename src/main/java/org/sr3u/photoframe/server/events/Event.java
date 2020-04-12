@@ -4,7 +4,8 @@ import com.google.photos.library.v1.PhotosLibraryClient;
 import com.google.photos.library.v1.proto.MediaItem;
 import com.j256.ormlite.dao.Dao;
 import lombok.Getter;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.sr3u.photoframe.misc.util.DateUtil;
 import org.sr3u.photoframe.server.data.Item;
 import sr3u.streamz.functionals.Consumerex;
@@ -14,7 +15,7 @@ import java.util.Date;
 @Getter
 public class Event {
 
-    private static final Logger log = Logger.getLogger(Event.class);
+    private static final Logger log = LogManager.getLogger(Event.class);
 
     Date eventQueryTimestamp;
     Item item;

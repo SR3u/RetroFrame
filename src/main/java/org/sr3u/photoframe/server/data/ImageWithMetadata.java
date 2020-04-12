@@ -6,7 +6,8 @@ import com.google.gson.GsonBuilder;
 import com.google.photos.library.v1.proto.MediaMetadata;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.sr3u.photoframe.misc.util.ImageUtil;
 
 import java.awt.*;
@@ -20,7 +21,7 @@ import java.util.function.BiConsumer;
 @Getter
 public class ImageWithMetadata {
 
-    private static final Logger log = Logger.getLogger(ImageWithMetadata.class);
+    private static final Logger log = LogManager.getLogger(ImageWithMetadata.class);
 
     public static final Gson GSON = new GsonBuilder()
             .setFieldNamingStrategy(new ImageWithMetadataFieldNamingStrategy())

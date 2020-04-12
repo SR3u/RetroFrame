@@ -1,7 +1,8 @@
 package org.sr3u.photoframe.client;
 
 import com.google.gson.Gson;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.sr3u.photoframe.client.filters.Identity;
 import org.sr3u.photoframe.client.filters.ImageFilter;
 import org.sr3u.photoframe.client.filters.ImageFilters;
@@ -17,7 +18,7 @@ import java.util.Map;
 
 public class ClientThread extends Thread {
 
-    private static final Logger log = Logger.getLogger(ClientThread.class);
+    private static final Logger log = LogManager.getLogger(ClientThread.class);
 
     public static final Gson GSON = new Gson();
     private ImageWindow imageWindow;

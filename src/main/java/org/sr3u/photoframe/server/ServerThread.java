@@ -1,6 +1,7 @@
 package org.sr3u.photoframe.server;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.sr3u.photoframe.server.data.ImageWithMetadata;
 
 import java.awt.*;
@@ -13,7 +14,7 @@ import java.net.Socket;
 
 public class ServerThread extends Thread {
 
-    private static final Logger log = Logger.getLogger(ServerThread.class);
+    private static final Logger log = LogManager.getLogger(ServerThread.class);
 
     private final int port;
     private Repository repository;

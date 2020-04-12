@@ -7,8 +7,9 @@ import com.google.photos.library.v1.PhotosLibraryClient;
 import com.j256.ormlite.logger.LocalLog;
 import lombok.Builder;
 import lombok.Data;
-import org.apache.log4j.Logger;
-import org.apache.log4j.PropertyConfigurator;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.core.LoggerContext;
 import org.sr3u.photoframe.client.ClientThread;
 import org.sr3u.photoframe.misc.util.ImageUtil;
 import org.sr3u.photoframe.server.data.ImageWithMetadata;
@@ -31,7 +32,7 @@ import java.util.concurrent.TimeUnit;
 
 public class Main {
 
-    private static final Logger log = Logger.getLogger(Main.class);
+    private static final Logger log = LogManager.getLogger(Main.class);
 
     public static final String DISPLAY_SERVERS_JSON = "displayServers.json";
     public static final Settings settings;
@@ -39,7 +40,9 @@ public class Main {
 
     static { // HIDE DOCK ICON (if any)
         settings = Settings.load("settings.properties");
-        PropertyConfigurator.configure(settings.getLog4jProperties());
+        LoggerContext context = (org.apache.logging.log4j.core.LoggerContext) LogManager.getContext(false);
+        File file = new File(settings.getLog4jProperties());
+        context.setConfigLocation(file.toURI());
         System.setProperty("com.j256.ormlite.logger.type", "ERROR");
         System.setProperty(LocalLog.LOCAL_LOG_LEVEL_PROPERTY, "ERROR");
         System.setProperty("java.awt.headless", String.valueOf(settings.isJava_awt_headless()));

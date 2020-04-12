@@ -1,7 +1,8 @@
 package org.sr3u.photoframe.client;
 
 import com.google.common.base.Preconditions;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.sr3u.photoframe.client.filters.ImageFilter;
 import org.sr3u.photoframe.server.Main;
 
@@ -24,7 +25,7 @@ public class ImageWindow {
     JFrame frame;
     ImagePanel imagePanel;
     OutlineLabel metadataLabel;
-    private static final Logger log = Logger.getLogger(ImageWindow.class);
+    private static final Logger log = LogManager.getLogger(ImageWindow.class);
 
     public ImageWindow(boolean fullScreen, ImageFilter imageFilter) {
         frame = new JFrame();

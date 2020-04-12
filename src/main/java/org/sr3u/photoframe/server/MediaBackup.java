@@ -2,7 +2,8 @@ package org.sr3u.photoframe.server;
 
 import com.google.gson.Gson;
 import com.google.photos.library.v1.proto.MediaItem;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.sr3u.photoframe.server.data.Item;
 import org.sr3u.photoframe.server.data.MediaType;
 import org.sr3u.photoframe.server.events.DeletedItemEvent;
@@ -29,7 +30,7 @@ import java.util.Objects;
 
 public class MediaBackup implements Consumerex<Event> {
 
-    private static final Logger log = Logger.getLogger(Repository.class);
+    private static final Logger log = LogManager.getLogger(Repository.class);
 
     public static final String DELETED = "deleted";
     private static final String ITEMS = "items";
