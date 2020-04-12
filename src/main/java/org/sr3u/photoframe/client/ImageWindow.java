@@ -14,6 +14,7 @@ import java.awt.image.BufferedImage;
 import java.io.BufferedInputStream;
 import java.io.InputStream;
 import java.lang.reflect.Method;
+import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Map;
@@ -27,6 +28,7 @@ public class ImageWindow {
 
     public ImageWindow(boolean fullScreen, ImageFilter imageFilter) {
         frame = new JFrame();
+        setIcon();
         imagePanel = new ImagePanel(imageFilter);
         handleTransparency();
         //frame.setLayout(new GridLayout(1, 1, 0, 0));
@@ -53,6 +55,13 @@ public class ImageWindow {
             }
         });
         metadataLabel.setVisible(Main.settings.getClient().isShowMetadata());
+    }
+
+    private void setIcon() {
+        URL url = ClassLoader.getSystemResource("org/sr3u/photoframe/client/icon.png");
+        Toolkit kit = Toolkit.getDefaultToolkit();
+        Image img = kit.createImage(url);
+        frame.setIconImage(img);
     }
 
     private void handleTransparency() {
