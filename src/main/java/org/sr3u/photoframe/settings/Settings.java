@@ -13,9 +13,6 @@ public class Settings implements Fillable {
     @PropertyMap("java.awt.headless")
     boolean java_awt_headless = true;
     @Builder.Default
-    @PropertyMap("log4j.configuration")
-    String log4jProperties = "log4j.properties";
-    @Builder.Default
     @PropertyMap("processingThreads")
     int processingTreads = Math.max(Runtime.getRuntime().availableProcessors() - 2, 1);
     @Builder.Default

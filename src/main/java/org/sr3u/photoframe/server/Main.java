@@ -9,7 +9,6 @@ import lombok.Builder;
 import lombok.Data;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.apache.logging.log4j.core.LoggerContext;
 import org.sr3u.photoframe.client.ClientThread;
 import org.sr3u.photoframe.misc.util.ImageUtil;
 import org.sr3u.photoframe.server.data.ImageWithMetadata;
@@ -40,9 +39,6 @@ public class Main {
 
     static { // HIDE DOCK ICON (if any)
         settings = Settings.load("settings.properties");
-        LoggerContext context = (org.apache.logging.log4j.core.LoggerContext) LogManager.getContext(false);
-        File file = new File(settings.getLog4jProperties());
-        context.setConfigLocation(file.toURI());
         System.setProperty("com.j256.ormlite.logger.type", "ERROR");
         System.setProperty(LocalLog.LOCAL_LOG_LEVEL_PROPERTY, "ERROR");
         System.setProperty("java.awt.headless", String.valueOf(settings.isJava_awt_headless()));
@@ -152,7 +148,7 @@ public class Main {
         ses.scheduleAtFixedRate(repository::refresh, 0, 1, TimeUnit.DAYS);
     }
 
-    public static final byte[] intToByteArray(int value) {
+    public static byte[] intToByteArray(int value) {
         return new byte[]{
                 (byte) (value >>> 24),
                 (byte) (value >>> 16),
