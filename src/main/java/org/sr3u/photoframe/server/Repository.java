@@ -98,8 +98,6 @@ public class Repository {
             }
             log.info("Refresh: CLEANUP");
             cleanup();
-            log.info("Refresh: handling DisplayUpdate");
-            handleUdpateDisplay();
         } catch (Throwable e) {
             log.error(e);
             e.printStackTrace();
@@ -119,24 +117,6 @@ public class Repository {
         try {
             Streamex.ofStream(dao.queryBuilder().where().lt("validUntil", cleanupTimestamp).query().stream())
                     .forEach(item -> eventSystem.fireEvent(new DeletedItemEvent(item, gClient, dao)));
-            DeleteBuilder<Item, String> deleteBuilder = dao.deleteBuilder();
-            deleteBuilder.where().lt("validUntil", cleanupTimestamp);
-            synchronized (this) {
-                deleteBuilder.delete();
-            }
-        } catch (SQLException e) {
-            log.error(e);
-            e.printStackTrace();
-        }
-    }
-
-    private void handleUdpateDisplay() {
-        long cleanupTimestamp = DateUtil.timestamp(new Date());
-        try {
-            for (Item item : dao.queryBuilder().where().eq("updateDisplay", true).query()) {
-                item.setUpdateDisplay(true);
-                dao.update(item);
-            }
             DeleteBuilder<Item, String> deleteBuilder = dao.deleteBuilder();
             deleteBuilder.where().lt("validUntil", cleanupTimestamp);
             synchronized (this) {
