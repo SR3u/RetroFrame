@@ -42,7 +42,7 @@ java -jar ./target/retroframe.jar -gui
 * Add execution flag to this script `chmod +x ./start.sh`
 <Br>Then ther is two options:
     1) CLI setup:
-        * Launch retroframe via `start.sh` and follow teh command line instructions to grant access to your Google Photo library
+        * Launch retroframe via `start.sh` and follow the command line instructions to grant access to your Google Photo library
     2) GUI setup
         * Launch retroframe via `start.sh` and wait until `settings.properties` file appears in `RetroFrame` folder.
         * Edit `settings.properties` in any text editor:
