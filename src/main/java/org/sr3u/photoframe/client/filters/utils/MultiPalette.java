@@ -51,21 +51,30 @@ public class MultiPalette extends Palette {
         for (Palette p : palettes) {
             colors.addAll(Arrays.asList(p.toPredefined().getColors()));
         }
-        return new PredefinedPalette(null, new LuminancePicker(), colors);
+        return new PredefinedPalette(null, colorPicker, colors);
     }
 
     @Override
     public Color closestColor(Color c) {
-        Color best = null;
-        double bestD = Double.MAX_VALUE;
-        for (Palette p : palettes) {
-            Color n = p.closestColor(c);
-            double distance = colorPicker.distance(c, n);
-            if (distance < bestD) {
-                best = n;
-                bestD = distance;
+        Color best = colorPicker.cachedColor(c.getRGB());
+        if (best == null) {
+            double bestD = Double.MAX_VALUE;
+            for (Palette p : palettes) {
+                Color n = p.closestColor(c);
+                double distance = colorPicker.distance(c, n);
+                if (distance < bestD) {
+                    best = n;
+                    bestD = distance;
+                }
             }
         }
         return best;
+    }
+
+    @Override
+    public void reset() {
+        super.reset();
+        colorPicker.reset();
+        palettes.forEach(Palette::reset);
     }
 }

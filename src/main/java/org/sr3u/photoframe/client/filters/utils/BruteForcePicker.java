@@ -11,7 +11,7 @@ import java.util.concurrent.atomic.AtomicLong;
 
 public class BruteForcePicker implements ColorPicker {
 
-    private static final Logger log = LogManager.getLogger(ColorPicker.class);
+    private static final Logger log = LogManager.getLogger(BruteForcePicker.class);
 
     private Map<Integer, Color> selectionCache = new ConcurrentHashMap<>();
     private AtomicLong cleanupsCount = new AtomicLong(0);
@@ -32,13 +32,18 @@ public class BruteForcePicker implements ColorPicker {
     }
 
     @Override
+    public Color cachedColor(int rgb) {
+        return selectionCache.get(rgb);
+    }
+
+    @Override
     public void reset() {
         long resetsCount = this.resetsCount.incrementAndGet();
         if (selectionCache.size() > Main.settings.getClient().getColorCacheSize()) {
-            log.info("clearing selectionCache, as it was larger than the threshold (" + selectionCache.size() + " > " + Main.settings.getClient().getColorCacheSize() + ")");
+            log.warn("clearing selectionCache, as it was larger than the threshold (" + selectionCache.size() + " > " + Main.settings.getClient().getColorCacheSize() + ")");
             selectionCache.clear();
             long cleanupsCount = this.cleanupsCount.incrementAndGet();
-            log.info("Color cache cleanups: " + cleanupsCount + " / " + resetsCount + " (" + (cleanupsCount * 100) / resetsCount + "%)");
+            log.warn("Color cache cleanups: " + cleanupsCount + " / " + resetsCount + " (" + (cleanupsCount * 100) / resetsCount + "%)");
         }
     }
 

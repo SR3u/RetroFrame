@@ -13,4 +13,6 @@ public interface ColorPicker {
     double distance(Color a, Color b);
 
     void reset();
+
+    Color cachedColor(int rgb);
 }
