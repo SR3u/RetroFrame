@@ -26,7 +26,7 @@ public interface PaletteParser extends ImageFilter {
         if (custom != null) {
             this.setPalette(custom);
         } else {
-            this.setPalette(Palette.DEFAULT);
+            this.setPalette(Palette.defaultPalette());
         }
         return this;
     }

@@ -16,8 +16,8 @@ import java.util.stream.Collectors;
 
 public class Spectrum implements ImageFilter {
 
-    protected static final Palette bright0 = new Palette("__tmp_zx_0", new LuminancePicker(), DefinedPalettes.ZX_0);
-    protected static final Palette bright1 = new Palette("__tmp_zx_1", new LuminancePicker(), DefinedPalettes.ZX_1);
+    protected static final Palette bright0 = new PredefinedPalette(null, new LuminancePicker(), DefinedPalettes.ZX_0);
+    protected static final Palette bright1 = new PredefinedPalette(null, new LuminancePicker(), DefinedPalettes.ZX_1);
     protected int attributesW = 8;
     protected int attributesH = -1;
 
@@ -86,7 +86,7 @@ public class Spectrum implements ImageFilter {
                         darkestColor = bright0.closestColor(darkestColor);
                     }
                     attributes[i][j].setPaper(darkestColor);
-                    attributes[i][j].setInkAndPaper(new Palette("zx_tmp", new LuminancePicker(), darkestColor, brightestColor));
+                    attributes[i][j].setInkAndPaper(new PredefinedPalette(null, new LuminancePicker(), darkestColor, brightestColor));
                 }
             }
         }

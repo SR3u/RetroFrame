@@ -10,5 +10,7 @@ public interface ColorPicker {
 
     Color closestColor(int rgb, Color[] palette);
 
+    double distance(Color a, Color b);
+
     void reset();
 }

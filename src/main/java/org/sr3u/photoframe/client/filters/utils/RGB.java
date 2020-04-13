@@ -1,7 +1,8 @@
 package org.sr3u.photoframe.client.filters.utils;
 
 import java.awt.*;
-import java.util.Collections;
+import java.util.ArrayList;
+import java.util.List;
 
 public class RGB extends Palette {
     private final int levelsR;
@@ -14,11 +15,29 @@ public class RGB extends Palette {
     }
 
     public RGB(String name, int levelsR, int levelsG, int levelsB, int levelsA) {
-        super(name, Collections.emptyList());
+        super(name);
         this.levelsR = levelsR;
         this.levelsG = levelsG;
         this.levelsB = levelsB;
         this.levelsA = levelsA;
+    }
+
+    @Override
+    protected PredefinedPalette toPredefined() {
+        List<Color> colors = new ArrayList<>(levelsR * levelsG * levelsB * levelsA);
+        for (int r = 0; r < levelsR; r++) {
+            for (int g = 0; g < levelsG; g++) {
+                for (int b = 0; b < levelsB; b++) {
+                    for (int a = 0; a < levelsA; a++) {
+                        colors.add(new Color(clamp(r * levelsR, levelsR),
+                                clamp(g * levelsG, levelsG),
+                                clamp(b * levelsB, levelsB),
+                                clamp(a * levelsA, levelsA)));
+                    }
+                }
+            }
+        }
+        return new PredefinedPalette(null, new LuminancePicker(), colors);
     }
 
     @Override

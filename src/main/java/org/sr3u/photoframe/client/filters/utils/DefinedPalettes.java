@@ -3,15 +3,15 @@ package org.sr3u.photoframe.client.filters.utils;
 import java.awt.*;
 
 public class DefinedPalettes {
-    public static final Palette BNW = new Palette("BlackAndWhite", new LuminancePicker(), Color.WHITE, Color.BLACK);
+    public static final PredefinedPalette BNW = new PredefinedPalette("BlackAndWhite", new LuminancePicker(), Color.WHITE, Color.BLACK).toPredefined();
 
-    public static final Palette CGA_Mode_4_0_Low = Palette.parse("CGA_Mode_4_0_High", "BRUTEFORCE #000000 #00AA00 #AA0000 #AA5500");
-    public static final Palette CGA_Mode_4_0_High = Palette.parse("CGA_Mode_4_0_High", "BRUTEFORCE #000000 #55FF55 #FF5555 #FF5555");
-    public static final Palette CGA_Mode_4_1_Low = Palette.parse("CGA_Mode_4_1_Low", "BRUTEFORCE #000000 #00AAAA #AA00AA #AAAAAA");
-    public static final Palette CGA_Mode_4_1_High = Palette.parse("CGA_Mode_4_1_High", "BRUTEFORCE #000000 #55FFFF #FF55FF #FFFFFF");
-    public static final Palette CGA_Mode_5_Low = Palette.parse("CGA_Mode_5_Low", "BRUTEFORCE #000000 #00AAAA #AA0000 #AAAAAA");
-    public static final Palette CGA_Mode_5_High = Palette.parse("CGA_Mode_5_High", "BRUTEFORCE #000000 #55FFFF #FF5555 #FFFFFF");
-    public static final Palette CGA16 = new Palette("CGA16",
+    public static final PredefinedPalette CGA_Mode_4_0_Low = Palette.parse("CGA_Mode_4_0_High", "BRUTEFORCE #000000 #00AA00 #AA0000 #AA5500").toPredefined();
+    public static final PredefinedPalette CGA_Mode_4_0_High = Palette.parse("CGA_Mode_4_0_High", "BRUTEFORCE #000000 #55FF55 #FF5555 #FF5555").toPredefined();
+    public static final PredefinedPalette CGA_Mode_4_1_Low = Palette.parse("CGA_Mode_4_1_Low", "BRUTEFORCE #000000 #00AAAA #AA00AA #AAAAAA").toPredefined();
+    public static final PredefinedPalette CGA_Mode_4_1_High = Palette.parse("CGA_Mode_4_1_High", "BRUTEFORCE #000000 #55FFFF #FF55FF #FFFFFF").toPredefined();
+    public static final PredefinedPalette CGA_Mode_5_Low = Palette.parse("CGA_Mode_5_Low", "BRUTEFORCE #000000 #00AAAA #AA0000 #AAAAAA").toPredefined();
+    public static final PredefinedPalette CGA_Mode_5_High = Palette.parse("CGA_Mode_5_High", "BRUTEFORCE #000000 #55FFFF #FF5555 #FFFFFF").toPredefined();
+    public static final PredefinedPalette CGA16 = new PredefinedPalette("CGA16",
             Color.BLACK, Color.decode("#555555"),
             Color.decode("#0000AA"), Color.decode("#5555FF"),
             Color.decode("#00AAAA"), Color.decode("#55FF55"),
@@ -19,40 +19,40 @@ public class DefinedPalettes {
             Color.decode("#AA00AA"), Color.decode("#FF55FF"),
             Color.decode("#AA5500"), Color.decode("#FFFF55"),
             Color.decode("#AAAAAA"), Color.WHITE);
-    public static final Palette CGA = new Palette("CGA", CGA_Mode_4_1_High);
+    public static final PredefinedPalette CGA = new PredefinedPalette("CGA", CGA_Mode_4_1_High);
 
-    public static final Palette C64 = new Palette("C64", new BruteForcePicker(),
+    public static final PredefinedPalette C64 = new PredefinedPalette("C64", new BruteForcePicker(),
             Color.decode("#000000"), Color.decode("#626262"), Color.decode("#898989"), Color.decode("#adadad"),
             Color.decode("#ffffff"), Color.decode("#9f4e44"), Color.decode("#cb7e75"), Color.decode("#6d5412"),
             Color.decode("#a1683c"), Color.decode("#c9d487"), Color.decode("#9ae29b"), Color.decode("#5cab5e"),
             Color.decode("#6abfc6"), Color.decode("#887ecb"), Color.decode("#50459b"), Color.decode("#a057a3")
-    );
+    ).toPredefined();
 
-    public static final Palette MONOCHROME = new Palette("monochrome", BNW);
+    public static final PredefinedPalette MONOCHROME = new PredefinedPalette("monochrome", BNW);
 
     // Apple Macintosh
-    public static final Palette MACINTOSH = new Palette("MACINTOSH", BNW);
-    public static final Palette MACINTOSH16 = Palette.parse("Macintosh16", "bruteforce " +
+    public static final PredefinedPalette MACINTOSH = new PredefinedPalette("MACINTOSH", BNW);
+    public static final PredefinedPalette MACINTOSH16 = Palette.parse("Macintosh16", "bruteforce " +
             "#FFFFFF #FBF305 #FF6403 #DD0907 #F20884 #4700A5 #0000D3 #02ABEA " +
-            "#1FB714 #006412 #562C05 #90713A #C0C0C0 #808080 #404040 #000000");
-    public static final Palette MACINTOSHII = new Palette("MacintoshII", MACINTOSH16);
-    public static final Palette MACINTOSH2 = new Palette("Macintosh2", MACINTOSH16);
-    public static final Palette MACINTOSH_SYSTEM_4_1 = new Palette("Macintosh_System_4.1", MACINTOSH16);
+            "#1FB714 #006412 #562C05 #90713A #C0C0C0 #808080 #404040 #000000").toPredefined();
+    public static final PredefinedPalette MACINTOSHII = new PredefinedPalette("MacintoshII", MACINTOSH16.toPredefined());
+    public static final PredefinedPalette MACINTOSH2 = new PredefinedPalette("Macintosh2", MACINTOSH16.toPredefined());
+    public static final PredefinedPalette MACINTOSH_SYSTEM_4_1 = new PredefinedPalette("Macintosh_System_4.1", MACINTOSH16);
 
     // ZX Spectrum
-    public static final Palette BRIGHT0 = Palette.parse("BRIGHT0", "bruteforce #000000 #0000D7 #D70000 #D700D7 #00D700 #00D7D7 #D7D700 #D7D7D7");
-    public static final Palette BRIGHT1 = Palette.parse("BRIGHT1", "bruteforce #000000 #0000FF #FF0000 #FF00FF #00FF00 #00FFFF #FFFF00 #FFFFFF");
-    public static final Palette ZX_BRIGHT0 = new Palette("zxbright0", BRIGHT0);
-    public static final Palette ZX_BRIGHT1 = new Palette("zxbright1", BRIGHT1);
-    public static final Palette ZX_0 = new Palette("zx0", ZX_BRIGHT0);
-    public static final Palette ZX_1 = new Palette("zx1", ZX_BRIGHT1);
-    public static final Palette ZX_FULL = Palette.parse("ZXFULL", "bruteforce " +
+    public static final PredefinedPalette BRIGHT0 = Palette.parse("BRIGHT0", "bruteforce #000000 #0000D7 #D70000 #D700D7 #00D700 #00D7D7 #D7D700 #D7D7D7").toPredefined();
+    public static final PredefinedPalette BRIGHT1 = Palette.parse("BRIGHT1", "bruteforce #000000 #0000FF #FF0000 #FF00FF #00FF00 #00FFFF #FFFF00 #FFFFFF").toPredefined();
+    public static final PredefinedPalette ZX_BRIGHT0 = new PredefinedPalette("zxbright0", BRIGHT0.toPredefined());
+    public static final PredefinedPalette ZX_BRIGHT1 = new PredefinedPalette("zxbright1", BRIGHT1.toPredefined());
+    public static final PredefinedPalette ZX_0 = new PredefinedPalette("zx0", ZX_BRIGHT0.toPredefined());
+    public static final PredefinedPalette ZX_1 = new PredefinedPalette("zx1", ZX_BRIGHT1.toPredefined());
+    public static final PredefinedPalette ZX_FULL = Palette.parse("ZXFULL", "bruteforce " +
             "#000000 #0000D7 #D70000 #D700D7 #00D700 #00D7D7 #D7D700 #D7D7D7 " +
-            "#0000FF #FF0000 #FF00FF #00FF00 #00FFFF #FFFF00 #FFFFFF");
+            "#0000FF #FF0000 #FF00FF #00FF00 #00FFFF #FFFF00 #FFFFFF").toPredefined();
 
     // Miscellaneous
 
-    public static final Palette XTERM = Palette.parse("XTERM", "bruteforce " +
+    public static final PredefinedPalette XTERM = Palette.parse("XTERM", "bruteforce " +
             "#000000 #800000 #008000 #808000 #000080 #800080 #008080 #c0c0c0 #808080 #ff0000 #00ff00 " +
             "#ffff00 #0000ff #ff00ff #00ffff #ffffff #000000 #00005f #000087 #0000af #0000d7 #0000ff " +
             "#005f00 #005f5f #005f87 #005faf #005fd7 #005fff #008700 #00875f #008787 #0087af #0087d7 " +
@@ -76,21 +76,21 @@ public class DefinedPalettes {
             "#ffd700 #ffd75f #ffd787 #ffd7af #ffd7d7 #ffd7ff #ffff00 #ffff5f #ffff87 #ffffaf #ffffd7 " +
             "#ffffff #080808 #121212 #1c1c1c #262626 #303030 #3a3a3a #444444 #4e4e4e #585858 #626262 " +
             "#6c6c6c #767676 #808080 #8a8a8a #949494 #9e9e9e #a8a8a8 #b2b2b2 #bcbcbc #c6c6c6 #d0d0d0 " +
-            "#dadada #e4e4e4 #eeeeee");
+            "#dadada #e4e4e4 #eeeeee").toPredefined();
 
-    public static final Palette RISCOS = Palette.parse("RISCOS", "bruteforce " +
+    public static final PredefinedPalette RISCOS = Palette.parse("RISCOS", "bruteforce " +
             "#FFFFFF #DDDDDD #BBBBBB #999999 #777777 #555555 #333333 #000000 " +
-            "#004499 #EEEE00 #00CC00 #DD0000 #EEEEBB #558800 #FFBB00 #00BBFF");
+            "#004499 #EEEE00 #00CC00 #DD0000 #EEEEBB #558800 #FFBB00 #00BBFF").toPredefined();
 
-    public static final Palette WINDOWS_16 = Palette.parse("Windows16", "bruteforce " +
+    public static final PredefinedPalette WINDOWS_16 = Palette.parse("Windows16", "bruteforce " +
             "#000000 #800000 #00800 #80800 #000080 #800080 #008080 #C0C0C0 " +
-            "#808080 #FF0000 #00FF00 #FFFF00 #0000FF #FF00FF #00FFFF #FFFFFF");
+            "#808080 #FF0000 #00FF00 #FFFF00 #0000FF #FF00FF #00FFFF #FFFFFF").toPredefined();
 
-    public static final Palette WINDOWS_20 = Palette.parse("Windows20", "bruteforce " +
+    public static final PredefinedPalette WINDOWS_20 = Palette.parse("Windows20", "bruteforce " +
             "#000000 #800000 #008000 #808000 #000080 #800080 #008080 #C0C0C0 #C0DCC0 #A6CAF0 " +
-            "#FFFBF0 #A0A0A4 #808080 #FF0000 #00FF00 #FFFF00 #0000FF #FF00FF #00FFFF #FFFFFF");
+            "#FFFBF0 #A0A0A4 #808080 #FF0000 #00FF00 #FFFF00 #0000FF #FF00FF #00FFFF #FFFFFF").toPredefined();
 
-    public static final Palette WINDOWS = new Palette("Windows", WINDOWS_16);
+    public static final PredefinedPalette WINDOWS = new PredefinedPalette("Windows", WINDOWS_16).toPredefined();
 
     public static final Palette RGB222 = new RGB("RGB222", 2, 2, 2);
     public static final Palette RGB666 = new RGB("RGB666", 6, 6, 6);
@@ -98,12 +98,13 @@ public class DefinedPalettes {
     public static final Palette RGB685 = new RGB("RGB685", 6, 8, 5);
     public static final Palette RGB884 = new RGB("RGB884", 8, 8, 4);
 
-    public static final Palette GRAYSCALE = new Grayscale("Grayscale");
-    public static final Palette CYAN = new MonochromeScale("Cyan", new LuminancePicker(), Color.decode("#00FFFF"));
-    public static final Palette MAGENTA = new MonochromeScale("Magenta", new LuminancePicker(), Color.decode("#FF00FF"));
-    public static final Palette YELLOW = new MonochromeScale("Yellow", new LuminancePicker(), Color.decode("#FFFF00"));
+    public static final Grayscale GRAYSCALE = new Grayscale("Grayscale", 256);
+    public static final MonochromeScale CYAN = new MonochromeScale("Cyan", Color.decode("#00FFFF"), 256);
+    public static final MonochromeScale MAGENTA = new MonochromeScale("Magenta", Color.decode("#FF00FF"), 256);
+    public static final MonochromeScale YELLOW = new MonochromeScale("Yellow", Color.decode("#FFFF00"), 256);
+    public static final Palette CMYK = new MultiPalette("CMYK", new LuminancePicker(), CYAN, MAGENTA, YELLOW, BNW);
 
-    public static final Palette XORG = Palette.parse("Xorg", "bruteforce " +
+    public static final PredefinedPalette XORG = Palette.parse("Xorg", "bruteforce " +
             "#F0F8FF #FAEBD7 #00FFFF #7FFFD4 #F0FFFF #F5F5DC #FFE4C4 #000000 #FFEBCD #0000FF #8A2BE2 " +
             "#A52A2A #DEB887 #5F9EA0 #7FFF00 #D2691E #FF7F50 #6495ED #FFF8DC #DC143C #00FFFF #00008B " +
             "#008B8B #B8860B #A9A9A9 #006400 #BDB76B #8B008B #556B2F #FF8C00 #9932CC #8B0000 #E9967A " +
@@ -117,9 +118,9 @@ public class DefinedPalettes {
             "#FFDAB9 #CD853F #FFC0CB #DDA0DD #B0E0E6 #A020F0 #800080 #663399 #FF0000 #BC8F8F #4169E1 " +
             "#8B4513 #FA8072 #F4A460 #2E8B57 #FFF5EE #A0522D #C0C0C0 #87CEEB #6A5ACD #708090 #FFFAFA " +
             "#00FF7F #4682B4 #D2B48C #008080 #D8BFD8 #FF6347 #40E0D0 #EE82EE #F5DEB3 #FFFFFF #F5F5F5 " +
-            "#FFFF00 #9ACD32");
+            "#FFFF00 #9ACD32").toPredefined();
 
-    public static final Palette X11_EXT_NOGRAY = Palette.parse("X11ext_noGray", "bruteforce " +
+    public static final PredefinedPalette X11_EXT_NOGRAY = Palette.parse("X11ext_noGray", "bruteforce " +
             "#FAEBD7 #FFEFDB #EEDFCC #CDC0B0 #8B8378 #7FFFD4 #76EEC6 #66CDAA #458B74 #F0FFFF #E0EEEE " +
             "#C1CDCD #838B8B #FFE4C4 #EED5B7 #CDB79E #8B7D6B #0000FF #0000EE #0000CD #00008B #A52A2A " +
             "#FF4040 #EE3B3B #CD3333 #8B2323 #DEB887 #FFD39B #EEC591 #CDAA7D #8B7355 #5F9EA0 #98F5FF " +
@@ -152,14 +153,14 @@ public class DefinedPalettes {
             "#00CD66 #008B45 #4682B4 #63B8FF #5CACEE #4F94CD #36648B #D2B48C #FFA54F #EE9A49 #CD853F " +
             "#8B5A2B #D8BFD8 #FFE1FF #EED2EE #CDB5CD #8B7B8B #FF6347 #EE5C42 #CD4F39 #8B3626 #40E0D0 " +
             "#00F5FF #00E5EE #00C5CD #00868B #D02090 #FF3E96 #EE3A8C #CD3278 #8B2252 #F5DEB3 #FFE7BA " +
-            "#EED8AE #CDBA96 #8B7E66 #FFFF00 #EEEE00 #CDCD00 #8B8B00");
+            "#EED8AE #CDBA96 #8B7E66 #FFFF00 #EEEE00 #CDCD00 #8B8B00").toPredefined();
 
-    public static final Palette X11 = new Palette("X11", XORG);
-    public static final Palette X_DOT_ORG = new Palette("X.org", XORG);
-    public static final Palette X11_EXT = Palette.merge("X11ext", X11, X11_EXT_NOGRAY);
-    public static final Palette X11_FULL = new Palette("X11full", X11_EXT);
+    public static final PredefinedPalette X11 = new PredefinedPalette("X11", XORG);
+    public static final PredefinedPalette X_DOT_ORG = new PredefinedPalette("X.org", XORG);
+    public static final PredefinedPalette X11_EXT = new MultiPalette("X11ext", X11, X11_EXT_NOGRAY).toPredefined();
+    public static final PredefinedPalette X11_FULL = new PredefinedPalette("X11full", X11_EXT);
 
-    public static final Palette CRAYOLA = Palette.parse("Crayola", "luminance " +
+    public static final PredefinedPalette CRAYOLA = Palette.parse("Crayola", "luminance " +
             "#ED0A3F #C32148 #FD0E35 #C62D42 #CC474B #CC3336 #E12C2C #D92121 #B94E48 #FF5349 #FE4C40 " +
             "#FE6F5E #B33B24 #CC553D #E6735C #FF9980 #E58E73 #FF7034 #FF681F #FF8833 #FFB97B #ECAC76 " +
             "#E77200 #FFAE42 #F2BA49 #FBE7B2 #F2C649 #F8D568 #FCD667 #FED85D #FBE870 #F1E788 #FFEB00 " +
@@ -174,6 +175,6 @@ public class DefinedPalettes {
             "#FBAED2 #FFB7D5 #FFA6C9 #F7468A #E30B5C #FDD7E4 #E62E6B #DB5079 #FC80A5 #F091A9 #FF91A4 " +
             "#A55353 #CA3435 #FEBAAD #F7A38E #E97451 #AF593E #9E5B40 #87421F #926F5B #DEA681 #D27D46 " +
             "#664228 #FA9D5A #EDC9AF #FFCBA4 #805533 #FDD5B1 #EED9C4 #665233 #837050 #E6BC5C #D9D6CF " +
-            "#92926E #E6BE8A #C9C0BB #DA8A67 #C88A65 #000000 #736A62 #8B8680 #C8C8CD #FFFFFF");
+            "#92926E #E6BE8A #C9C0BB #DA8A67 #C88A65 #000000 #736A62 #8B8680 #C8C8CD #FFFFFF").toPredefined();
 
 }

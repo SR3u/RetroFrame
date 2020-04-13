@@ -20,7 +20,7 @@ import java.util.Arrays;
  * @see PaletteParser
  */
 public abstract class ErrDiffusionDither implements Ditherer, PaletteParser {
-    protected Palette palette = Palette.DEFAULT;
+    protected Palette palette = Palette.defaultPalette();
     private final double[][] matrix;
     private final double denominator;
     private final int xoffs;  // how many pixels does the matrix reach back?
@@ -59,9 +59,11 @@ public abstract class ErrDiffusionDither implements Ditherer, PaletteParser {
         Arrays.fill(temp, 0.0);
 
         // rotate the other rows up
-        for (int i = 0; i < m.length - 1; i++) {
+        /*for (int i = 0; i < m.length - 1; i++) {
             m[i] = m[i + 1];
-        }
+        }*/
+        System.arraycopy(m, 1, m, 0, m.length - 1);
+
 
         // save the newly-zeroed row to the end to start filling
         m[m.length - 1] = temp;

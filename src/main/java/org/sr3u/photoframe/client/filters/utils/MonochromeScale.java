@@ -4,23 +4,38 @@ import java.awt.*;
 import java.util.ArrayList;
 
 public class MonochromeScale extends Palette {
-    public MonochromeScale(String name, ColorPicker colorPicker, Color baseColor) {
-        super(name, colorPicker, createColors(baseColor));
+    private static final int HUE_IDX = 0;
+    private static final int SATURATION_IDX = 1;
+    private static final int BRIGHTNESS_IDX = 2;
+
+    private final int levels;
+    private final Color baseColor;
+    private final float[] baseHsb;
+
+    public MonochromeScale(String name, Color baseColor, int levels) {
+        super(name);
+        this.baseColor = baseColor;
+        this.levels = levels;
+        this.baseHsb = hsb(baseColor);
     }
 
-    private static java.util.List<Color> createColors(Color baseColor) {
-        java.util.List<Color> colors = new ArrayList<>(256);
-        for (int i = 0; i < 256; i++) {
-            double factor = i / 255.0;
+    private static java.util.List<Color> createColors(Color baseColor, int levels) {
+        java.util.List<Color> colors = new ArrayList<>(levels);
+        for (int i = 0; i <= levels; i++) {
+            double factor = i / (1.0 * levels);
             colors.add(createColor(baseColor, factor));
         }
         return colors;
     }
 
     private static Color createColor(Color baseColor, double brightness) {
-        float[] hsb = Color.RGBtoHSB(baseColor.getRed(), baseColor.getGreen(), baseColor.getBlue(), null);
-        hsb[2] = clipAt(hsb[2] * brightness, 1.0);
-        return new Color(Color.HSBtoRGB(hsb[0], hsb[1], hsb[2]));
+        float[] hsb = hsb(baseColor);
+        hsb[BRIGHTNESS_IDX] = clipAt(hsb[BRIGHTNESS_IDX] * brightness, 1.0);
+        return new Color(Color.HSBtoRGB(hsb[0], hsb[1], hsb[BRIGHTNESS_IDX]));
+    }
+
+    private static float[] hsb(Color baseColor) {
+        return Color.RGBtoHSB(baseColor.getRed(), baseColor.getGreen(), baseColor.getBlue(), null);
     }
 
     private static float clipAt(double i, double max) {
@@ -29,4 +44,18 @@ public class MonochromeScale extends Palette {
         }
         return (float) i;
     }
+
+    @Override
+    protected PredefinedPalette toPredefined() {
+        return new PredefinedPalette(null, new LuminancePicker(), createColors(baseColor, levels));
+    }
+
+    @Override
+    public Color closestColor(Color c) {
+        float[] hsb = hsb(c);
+        double brightness = hsb[BRIGHTNESS_IDX];
+        hsb[BRIGHTNESS_IDX] = clipAt(baseHsb[BRIGHTNESS_IDX] * brightness, 1.0);
+        return new Color(Color.HSBtoRGB(baseHsb[HUE_IDX], hsb[SATURATION_IDX], hsb[BRIGHTNESS_IDX]));
+    }
+
 }

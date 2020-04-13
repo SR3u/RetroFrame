@@ -42,7 +42,8 @@ public class BruteForcePicker implements ColorPicker {
         }
     }
 
-    protected double distance(Color c1, Color c2) {
+    @Override
+    public double distance(Color c1, Color c2) {
         return squareDistance(c1, c2);
     }
 

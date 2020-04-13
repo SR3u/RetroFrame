@@ -3,13 +3,10 @@ package org.sr3u.photoframe.client.filters.utils;
 import java.awt.*;
 import java.util.List;
 import java.util.*;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
-public class Palette {
+public abstract class Palette {
     private static final Map<String, Palette> ALL = new HashMap<>();
     private static final Map<String, ColorPicker> ALL_PICKERS = new HashMap<>();
-    public static final Palette DEFAULT = DefinedPalettes.BNW;
 
     static {
         ALL_PICKERS.put("luminance", new LuminancePicker());
@@ -18,93 +15,40 @@ public class Palette {
         ALL_PICKERS.put("brute", new BruteForcePicker());
     }
 
-    private String name;
-    private Color[] palette;
-    private ColorPicker colorPicker;
+    protected String name;
 
-    public Palette(String name, Collection<Color> colors) {
-        this(name, colors.toArray(new Color[0]));
-    }
-
-    public Palette(String name, ColorPicker colorPicker, Collection<Color> colors) {
-        this(name, colorPicker, colors.toArray(new Color[0]));
-    }
-
-    public Palette(String name, ColorPicker colorPicker, Palette prototype) {
-        this(name, colorPicker, prototype.palette);
+    protected Palette(String name) {
+        this.name = name;
+        if (name != null) {
+            ALL.put(name.toLowerCase(), this);
+        }
     }
 
     public static Palette parse(String name, String paletteString) {
         return parse(name, Arrays.asList(paletteString.split(" ")));
     }
 
-    public static Palette merge(String name, Palette a, Palette b) {
-        return new Palette(name, mergeColors(a, b));
+    public Palette append(Palette... palettes) {
+        return new MultiPalette(this).append(palettes);
     }
 
-    public static Palette merge(String name, ColorPicker colorPicker, Palette a, Palette b) {
-        return new Palette(name, colorPicker, mergeColors(a, b));
-    }
-
-    private static List<Color> mergeColors(Palette a, Palette b) {
-        return Stream.concat(Arrays.stream(a.palette), Arrays.stream(b.palette))
-                .distinct()
-                .collect(Collectors.toList());
-    }
+    protected abstract PredefinedPalette toPredefined();
 
     public static Palette parse(String name, List<String> args) {
         if (args.size() > 0) {
             Palette palette = Palette.get(args.get(0));
             if (palette == null) {
-                ColorPicker colorPicker = args.stream()
-                        .filter(Objects::nonNull)
-                        .map(String::trim)
-                        .filter(s -> !s.isEmpty())
-                        .filter(s -> !s.startsWith("#"))
-                        .map(Palette::getColorPicker)
-                        .findFirst().orElseGet(BruteForcePicker::new);
-                palette = new Palette(name, colorPicker, args.stream()
-                        .filter(Objects::nonNull)
-                        .map(String::trim)
-                        .filter(s -> !s.isEmpty())
-                        .filter(s -> s.startsWith("#"))
-                        .map(Color::decode)
-                        .collect(Collectors.toSet()));
+                return PredefinedPalette.parsePredefined(name, args);
             }
             return palette;
         } else {
-            return Palette.DEFAULT;
+            return Palette.defaultPalette();
         }
     }
 
     public static Palette get(String name) {
         String param = name == null ? null : name.toLowerCase();
         return ALL.get(param);
-    }
-
-    public Palette(String name, Palette p) {
-        this(name, p.colorPicker, p.palette);
-    }
-
-    public Palette(String name, ColorPicker colorPicker, Color... palette) {
-        this.name = name;
-        this.palette = filterDuplicates(palette);
-        this.colorPicker = colorPicker;
-        if (name != null) {
-            ALL.put(name.toLowerCase(), this);
-        }
-    }
-
-    private Color[] filterDuplicates(Color[] palette) {
-        return Arrays.stream(palette)
-                .mapToInt(Color::getRGB)
-                .distinct()
-                .mapToObj(Color::new)
-                .toArray(Color[]::new);
-    }
-
-    public Palette(String name, Color... palette) {
-        this(name, new BruteForcePicker(), palette);
     }
 
     @Override
@@ -116,9 +60,7 @@ public class Palette {
         return closestColor(new Color(argb));
     }
 
-    public Color closestColor(Color c) {
-        return colorPicker.closestColor(c.getRGB(), palette);
-    }
+    public abstract Color closestColor(Color c);
 
     public static ColorPicker getColorPicker(String s) {
         String param = s == null ? null : s.toLowerCase();
@@ -126,6 +68,9 @@ public class Palette {
     }
 
     public void reset() {
-        colorPicker.reset();
+    }
+
+    public static Palette defaultPalette() {
+        return DefinedPalettes.BNW;
     }
 }
