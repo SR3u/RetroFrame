@@ -30,7 +30,7 @@ public class DroppingExecutor implements Executor {
         }
         int currentlyExecuting = queue.size();
         if (currentlyExecuting > queueDepth) {
-            log.error("Dropped execution because exceeded max queue depth " + currentlyExecuting + " > " + queueDepth);
+            log.warn("Dropped execution because exceeded max queue depth " + currentlyExecuting + " > " + queueDepth);
             queue.clear();
         }
         try {
