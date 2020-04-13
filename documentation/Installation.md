@@ -37,19 +37,19 @@ rm -f ./mediaItems.db
 DIR=$(cd -P -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd -P)
 cd "$DIR"
 cd ./RetroFrame
-java -jar ./target/photoframe-1.0-SNAPSHOT.jar -gui
+java -jar ./target/retroframe.jar -gui
 ```
 * Add execution flag to this script `chmod +x ./start.sh`
 <Br>Then ther is two options:
     1) CLI setup:
-        * Launch photoframe via `start.sh` and follow teh command line instructions to grant access to your Google Photo library
+        * Launch retroframe via `start.sh` and follow teh command line instructions to grant access to your Google Photo library
     2) GUI setup
-        * Launch photoframe via `start.sh` and wait until `settings.properties` file appears in `RetroFrame` folder.
+        * Launch retroframe via `start.sh` and wait until `settings.properties` file appears in `RetroFrame` folder.
         * Edit `settings.properties` in any text editor:
             * replace `client.enable=fakse` with `client.enable=true`
             * replace `java.awt.headless=true` with `java.awt.headless=false`
             * save file
-        * Restart photoframe via `start.sh` and follow the instructions in browser window, that will pop up.
+        * Restart retroframe via `start.sh` and follow the instructions in browser window, that will pop up.
 
 ## Configuration
 See [Settings.md](https://github.com/SR3u/RetroFrame/blob/master/documentation/Settings.md) for configuration reference.
