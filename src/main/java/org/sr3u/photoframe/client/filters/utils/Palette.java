@@ -88,11 +88,19 @@ public class Palette {
 
     public Palette(String name, ColorPicker colorPicker, Color... palette) {
         this.name = name;
-        this.palette = palette;
+        this.palette = filterDuplicates(palette);
         this.colorPicker = colorPicker;
         if (name != null) {
             ALL.put(name.toLowerCase(), this);
         }
+    }
+
+    private Color[] filterDuplicates(Color[] palette) {
+        return Arrays.stream(palette)
+                .mapToInt(Color::getRGB)
+                .distinct()
+                .mapToObj(Color::new)
+                .toArray(Color[]::new);
     }
 
     public Palette(String name, Color... palette) {

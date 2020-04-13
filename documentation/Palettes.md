@@ -32,6 +32,8 @@ See [Filters.md](https://github.com/SR3u/gphotorepo/blob/master/documentation/Fi
 * `CGA_Mode_5_High` -> [CGA graphic mode 5 palette high intensity.](https://en.wikipedia.org/wiki/Color_Graphics_Adapter#Standard_graphics_modes)
 * `CGA16` -> [CGA 16 color graphic palette](https://en.wikipedia.org/wiki/Color_Graphics_Adapter#Standard_graphics_modes)
 
+* `Crayola` -> [Standard Crayola crayon colors](https://en.wikipedia.org/wiki/List_of_Crayola_crayon_colors#Standard_colors)
+
 * `Grayscale` -> 256 levels grayscale palette.
 
 * `Macintosh` -> Same as BlackAndWhite. Two color black and white palette, as in MacintoshClassic
