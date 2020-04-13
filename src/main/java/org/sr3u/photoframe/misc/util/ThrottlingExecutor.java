@@ -16,18 +16,18 @@ import java.util.concurrent.Semaphore;
 @ThreadSafe
 public class ThrottlingExecutor implements Executor {
     private static final Logger log = LogManager.getLogger(ThrottlingExecutor.class);
-    private final Executor exec;
+    private final Executor delegate;
     private final Semaphore semaphore;
 
-    public ThrottlingExecutor(Executor exec, int queueDepth) {
-        this.exec = exec;
+    public ThrottlingExecutor(Executor delegate, int queueDepth) {
+        this.delegate = delegate;
         this.semaphore = new Semaphore(queueDepth);
     }
 
     public void submit(final Runnable command) throws InterruptedException {
         semaphore.acquire();
         try {
-            exec.execute(() -> {
+            delegate.execute(() -> {
                 try {
                     command.run();
                 } finally {

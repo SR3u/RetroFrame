@@ -5,6 +5,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.sr3u.photoframe.client.filters.Identity;
 import org.sr3u.photoframe.client.filters.ImageFilter;
+import org.sr3u.photoframe.misc.util.DroppingExecutor;
 import org.sr3u.photoframe.misc.util.ImageUtil;
 
 import javax.swing.*;
@@ -14,8 +15,7 @@ import java.awt.image.ConvolveOp;
 import java.awt.image.Kernel;
 import java.util.Arrays;
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
+import java.util.concurrent.Executor;
 
 class ImagePanel extends JComponent {
 
@@ -26,7 +26,7 @@ class ImagePanel extends JComponent {
     private Image originalImage;
     private Image blurryBackgroundImage;
     BufferedImageOp blur = createBlurOp();
-    private ExecutorService executorService;
+    private Executor executor = new DroppingExecutor(1, 2);
 
     int previousWidth = 0;
     int previousHeight = 0;
@@ -44,7 +44,6 @@ class ImagePanel extends JComponent {
 
     public ImagePanel(ImageFilter imageFilter) {
         this.imageFilter = imageFilter;
-        executorService = Executors.newSingleThreadExecutor();
     }
 
     @Override
@@ -95,7 +94,7 @@ class ImagePanel extends JComponent {
                 e.printStackTrace();
             }
             forceRedraw();
-        });
+        }, executor);
     }
 
     private void forceRedraw() {
