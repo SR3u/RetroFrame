@@ -41,6 +41,8 @@ public class Item {
     private MediaType mediaType;
     @DatabaseField
     private boolean display = true;
+    @DatabaseField
+    private boolean updateDisplay = true;
 
 
     public Item(MediaItem mediaItem, boolean display) {
@@ -60,6 +62,7 @@ public class Item {
             mediaType = MediaType.UNKNOWN;
         }
         this.display = display;
+        this.updateDisplay = true;
     }
 
     public static long defaultCleanupTimestamp() {

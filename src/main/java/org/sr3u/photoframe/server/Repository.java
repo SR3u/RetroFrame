@@ -13,6 +13,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.sr3u.photoframe.misc.util.DateUtil;
 import org.sr3u.photoframe.misc.util.ImageUtil;
+import org.sr3u.photoframe.server.data.DisplayStatus;
 import org.sr3u.photoframe.server.data.ImageWithMetadata;
 import org.sr3u.photoframe.server.data.Item;
 import org.sr3u.photoframe.server.data.MediaType;
@@ -66,7 +67,10 @@ public class Repository {
             try {
                 Item random;
                 synchronized (this) {
-                    random = dao.queryBuilder().orderByRaw("RANDOM()").where().eq("mediaType", MediaType.IMAGE).and().eq("display", true).queryForFirst();
+                    random = dao.queryBuilder().orderByRaw("RANDOM()")
+                            .where()
+                            .eq("mediaType", MediaType.IMAGE).and().eq("display", true)
+                            .queryForFirst();
                 }
                 MediaItem mediaItem = gClient.getMediaItem(random.getGoogleID());
                 BufferedImage image = ImageIO.read(new URL(mediaItem.getBaseUrl() + ImageUtil.googlePhotoSize(size)));
@@ -92,7 +96,10 @@ public class Repository {
                 log.info("Refresh: Getting all media, for backup purposes");
                 refresh(null, false);
             }
+            log.info("Refresh: CLEANUP");
             cleanup();
+            log.info("Refresh: handling DisplayUpdate");
+            handleUdpateDisplay();
         } catch (Throwable e) {
             log.error(e);
             e.printStackTrace();
@@ -123,6 +130,24 @@ public class Repository {
         }
     }
 
+    private void handleUdpateDisplay() {
+        long cleanupTimestamp = DateUtil.timestamp(new Date());
+        try {
+            for (Item item : dao.queryBuilder().where().eq("updateDisplay", true).query()) {
+                item.setUpdateDisplay(true);
+                dao.update(item);
+            }
+            DeleteBuilder<Item, String> deleteBuilder = dao.deleteBuilder();
+            deleteBuilder.where().lt("validUntil", cleanupTimestamp);
+            synchronized (this) {
+                deleteBuilder.delete();
+            }
+        } catch (SQLException e) {
+            log.error(e);
+            e.printStackTrace();
+        }
+    }
+
     private Date refresh(Date refreshStartDate, String albumName, boolean display) {
         Iterator<MediaItem> iterator = getMediaIterator(refreshStartDate, albumName);
         Date refreshStarted = new Date();
@@ -140,11 +165,21 @@ public class Repository {
                     List<Item> item = dao.queryForEq("googleID", next.getId());
                     if (item.isEmpty()) {
                         Item newItem = new Item(next, display);
+                        if(display) {
+                            newItem.setUpdateDisplay(false);
+                        }
                         dao.create(newItem);
                         eventSystem.fireEvent(new NewItemEvent(refreshStarted, newItem, next, gClient, dao));
                     } else {
                         Item item1 = item.get(0);
-                        item1.setValidUntil(validUntil);
+                        if (item1.isUpdateDisplay()) {
+                            item1.setDisplay(display);
+                        }
+                        if(display) {
+                            item1.setUpdateDisplay(false);
+                        } else {
+                            item1.setUpdateDisplay(true);
+                        }
                         eventSystem.fireEvent(new UpdatedItemEvent(refreshStarted, item1, next, gClient, dao));
                     }
                 }
