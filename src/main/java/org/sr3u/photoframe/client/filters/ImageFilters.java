@@ -86,6 +86,7 @@ public enum ImageFilters {
                 .orElseThrow();
         List<String> finalParameters = parameters;
         return () -> aClass
+                .getConstructor()
                 .newInstance()
                 .init(finalParameters);
     }
