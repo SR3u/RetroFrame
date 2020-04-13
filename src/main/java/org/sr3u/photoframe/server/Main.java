@@ -1,12 +1,7 @@
 package org.sr3u.photoframe.server;
 
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
-import com.google.gson.stream.JsonReader;
 import com.google.photos.library.v1.PhotosLibraryClient;
 import com.j256.ormlite.logger.LocalLog;
-import lombok.Builder;
-import lombok.Data;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.sr3u.photoframe.client.ClientThread;
@@ -18,13 +13,11 @@ import org.sr3u.photoframe.settings.Settings;
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.*;
-import java.lang.reflect.Type;
-import java.net.Socket;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.IOException;
+import java.io.PrintStream;
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -46,19 +39,7 @@ public class Main {
         eventsSystem = new EventSystem();
     }
 
-    private static final Type REVIEW_TYPE = new TypeToken<List<DisplayServer>>() {
-    }.getType();
-
-    private static List<DisplayServer> displayServers = new ArrayList<>();
-
     public static void main(String[] args) {
-        try {
-            displayServers = readServersFromFile(DISPLAY_SERVERS_JSON);
-        } catch (FileNotFoundException e) {
-            log.error(e);
-            e.printStackTrace();
-            displayServers = Collections.emptyList();
-        }
         System.setProperty(LocalLog.LOCAL_LOG_LEVEL_PROPERTY, "ERROR");
         System.setProperty("com.j256.ormlite.*", "ERROR");
         System.setProperty("log4j.com.j256.ormlite.*", "ERROR");
@@ -76,7 +57,6 @@ public class Main {
                 }*/
                 Repository repository = new Repository(client, eventsSystem);
                 scheduleRefresh(repository);
-                scheduleSending(repository);
                 new ServerThread(repository, settings.getServer().getPort()).start();
             }
             if (settings.isClientEnabled()) {
@@ -88,35 +68,6 @@ public class Main {
         }
     }
 
-    private static void scheduleSending(Repository repository) {
-        ScheduledExecutorService ses = Executors.newSingleThreadScheduledExecutor();
-        ses.scheduleAtFixedRate(() -> {
-            try {
-                for (DisplayServer dServer : displayServers) {
-                    try {
-                        sendRandomPhoto(repository, dServer);
-                    } catch (Throwable e) {
-                        log.error(e);
-                        e.printStackTrace();
-                    }
-                }
-            } catch (Throwable e) {
-                log.error(e);
-                e.printStackTrace();
-            }
-        }, 0, 15, TimeUnit.SECONDS);
-    }
-
-    private static void sendRandomPhoto(Repository repository, DisplayServer server) throws IOException {
-        Socket socket = new Socket(server.getAddress(), server.getPort());
-        PrintStream out = new PrintStream(socket.getOutputStream());
-        out.flush();
-        ImageWithMetadata random = repository.getRandom(server.getScreenSize());
-        sendMetadata(out, random);
-        sendImage(server, out, random);
-        socket.close();
-    }
-
     public static void sendMetadata(PrintStream out, ImageWithMetadata random) throws IOException {
         String json = random.jsonMetadata();
         byte[] jsonBytes = json.getBytes(StandardCharsets.UTF_8);
@@ -124,10 +75,6 @@ public class Main {
         out.flush();
         out.write(jsonBytes);
         out.flush();
-    }
-
-    private static void sendImage(DisplayServer server, PrintStream out, ImageWithMetadata random) throws IOException {
-        sendImage(server.getScreenSize(), out, random);
     }
 
     public static void sendImage(Dimension size, PrintStream out, ImageWithMetadata random) throws IOException {
@@ -160,26 +107,4 @@ public class Main {
         return bytes[0] << 24 | (bytes[1] & 0xFF) << 16 | (bytes[2] & 0xFF) << 8 | (bytes[3] & 0xFF);
     }
 
-    public static List<DisplayServer> readServersFromFile(String filePath) throws FileNotFoundException {
-        Gson gson = new Gson();
-        JsonReader reader = new JsonReader(new FileReader(filePath));
-        return gson.fromJson(reader, REVIEW_TYPE);
-    }
-
-    @Data
-    @Builder
-    public static class DisplayServer implements Serializable {
-        @Builder.Default
-        private String address = "localhost";
-        @Builder.Default
-        private int port = 16385;
-        @Builder.Default
-        private int width = 600;
-        @Builder.Default
-        private int height = 448;
-
-        public Dimension getScreenSize() {
-            return new Dimension(width, height);
-        }
-    }
 }
