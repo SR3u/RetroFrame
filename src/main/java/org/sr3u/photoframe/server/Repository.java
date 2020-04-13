@@ -13,14 +13,10 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.sr3u.photoframe.misc.util.DateUtil;
 import org.sr3u.photoframe.misc.util.ImageUtil;
-import org.sr3u.photoframe.server.data.DisplayStatus;
 import org.sr3u.photoframe.server.data.ImageWithMetadata;
 import org.sr3u.photoframe.server.data.Item;
 import org.sr3u.photoframe.server.data.MediaType;
-import org.sr3u.photoframe.server.events.DeletedItemEvent;
-import org.sr3u.photoframe.server.events.EventSystem;
-import org.sr3u.photoframe.server.events.NewItemEvent;
-import org.sr3u.photoframe.server.events.UpdatedItemEvent;
+import org.sr3u.photoframe.server.events.*;
 import sr3u.streamz.streams.Streamex;
 
 import javax.imageio.ImageIO;
@@ -69,7 +65,7 @@ public class Repository {
                 synchronized (this) {
                     random = dao.queryBuilder().orderByRaw("RANDOM()")
                             .where()
-                            .eq("mediaType", MediaType.IMAGE).and().eq("display", true)
+                            .eq("mediaType", MediaType.IMAGE)
                             .queryForFirst();
                 }
                 MediaItem mediaItem = gClient.getMediaItem(random.getGoogleID());
@@ -145,22 +141,21 @@ public class Repository {
                     List<Item> item = dao.queryForEq("googleID", next.getId());
                     if (item.isEmpty()) {
                         Item newItem = new Item(next, display);
-                        if(display) {
-                            newItem.setUpdateDisplay(false);
+                        if (display) {
+                            dao.create(newItem);
+                            eventSystem.fireEvent(new NewItemEvent(refreshStarted, newItem, next, gClient, dao));
+                        } else {
+                            eventSystem.fireEvent(new RetrievedItemEvent(refreshStarted, newItem, next, gClient, dao));
                         }
-                        dao.create(newItem);
-                        eventSystem.fireEvent(new NewItemEvent(refreshStarted, newItem, next, gClient, dao));
                     } else {
                         Item item1 = item.get(0);
-                        if (item1.isUpdateDisplay()) {
-                            item1.setDisplay(display);
-                        }
-                        if(display) {
-                            item1.setUpdateDisplay(false);
+                        if (display) {
+                            item1.setValidUntil(validUntil);
+                            dao.update(item1);
+                            eventSystem.fireEvent(new UpdatedItemEvent(refreshStarted, item1, next, gClient, dao));
                         } else {
-                            item1.setUpdateDisplay(true);
+                            eventSystem.fireEvent(new RetrievedItemEvent(refreshStarted, item1, next, gClient, dao));
                         }
-                        eventSystem.fireEvent(new UpdatedItemEvent(refreshStarted, item1, next, gClient, dao));
                     }
                 }
             } catch (SQLException e) {

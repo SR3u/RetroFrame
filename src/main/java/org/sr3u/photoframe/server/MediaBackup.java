@@ -6,10 +6,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.sr3u.photoframe.server.data.Item;
 import org.sr3u.photoframe.server.data.MediaType;
-import org.sr3u.photoframe.server.events.DeletedItemEvent;
-import org.sr3u.photoframe.server.events.Event;
-import org.sr3u.photoframe.server.events.NewItemEvent;
-import org.sr3u.photoframe.server.events.UpdatedItemEvent;
+import org.sr3u.photoframe.server.events.*;
 import sr3u.streamz.functionals.Consumerex;
 
 import java.io.File;
@@ -42,6 +39,7 @@ public class MediaBackup implements Consumerex<Event> {
         String backupPath = Main.settings.getMedia().getBackupPath();
         e.ifType(NewItemEvent.class, event -> saveIfNeeded(backupPath, event))
                 .ifType(UpdatedItemEvent.class, event -> saveIfNeeded(backupPath, event))
+                .ifType(RetrievedItemEvent.class, event -> saveIfNeeded(backupPath, event))
                 .ifType(DeletedItemEvent.class, event -> {
                     moveToTrash(backupPath, event);
                 });
