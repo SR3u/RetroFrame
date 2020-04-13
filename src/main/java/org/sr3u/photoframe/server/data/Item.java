@@ -39,9 +39,11 @@ public class Item {
     private double aspectRatio;
     @DatabaseField
     private MediaType mediaType;
+    @DatabaseField
+    private boolean display = true;
 
 
-    public Item(MediaItem mediaItem) {
+    public Item(MediaItem mediaItem, boolean display) {
         this.googleID = mediaItem.getId();
         this.creationTimestamp = mediaItem.getMediaMetadata().getCreationTime().getSeconds();
         this.fileName = mediaItem.getFilename();
@@ -57,6 +59,7 @@ public class Item {
         } else {
             mediaType = MediaType.UNKNOWN;
         }
+        this.display = display;
     }
 
     public static long defaultCleanupTimestamp() {

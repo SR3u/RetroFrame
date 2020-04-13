@@ -86,9 +86,11 @@ public class Repository {
                 return;
             }
             log.info("Refresh: STARTED");
-            Date refreshStartDate = new Date();
-            while (refreshStartDate != null) {
-                refreshStartDate = refresh(refreshStartDate);
+            String albumName = Main.settings.getMedia().getAlbumName();
+            refresh(albumName, true);
+            if (isNotEmpty(albumName) && Main.settings.getMedia().isBackup()) {
+                log.info("Refresh: Getting all media, for backup purposes");
+                refresh(null, false);
             }
             cleanup();
         } catch (Throwable e) {
@@ -96,6 +98,13 @@ public class Repository {
             e.printStackTrace();
         }
         log.info("Refresh: DONE");
+    }
+
+    private void refresh(String albumName, boolean display) {
+        Date refreshStartDate = new Date();
+        while (refreshStartDate != null) {
+            refreshStartDate = refresh(refreshStartDate, albumName, false);
+        }
     }
 
     private void cleanup() {
@@ -114,19 +123,8 @@ public class Repository {
         }
     }
 
-    private Date refresh(Date refreshStartDate) {
-        Iterator<MediaItem> iterator = null;
-        String albumName = Main.settings.getMedia().getAlbumName();
-        if (albumName == null || albumName.trim().isEmpty()) {
-            iterator = getAllMedia(refreshStartDate).iterator();
-        } else {
-            Iterable<MediaItem> albumMedia = getAlbumMedia(refreshStartDate, albumName);
-            if (albumMedia == null) {
-                iterator = getAllMedia(refreshStartDate).iterator();
-            } else {
-                iterator = albumMedia.iterator();
-            }
-        }
+    private Date refresh(Date refreshStartDate, String albumName, boolean display) {
+        Iterator<MediaItem> iterator = getMediaIterator(refreshStartDate, albumName);
         Date refreshStarted = new Date();
         long validUntil = Item.defaultCleanupTimestamp();
         while (iterator.hasNext()) {
@@ -141,7 +139,7 @@ public class Repository {
                 synchronized (this) {
                     List<Item> item = dao.queryForEq("googleID", next.getId());
                     if (item.isEmpty()) {
-                        Item newItem = new Item(next);
+                        Item newItem = new Item(next, display);
                         dao.create(newItem);
                         eventSystem.fireEvent(new NewItemEvent(refreshStarted, newItem, next, gClient, dao));
                     } else {
@@ -156,6 +154,25 @@ public class Repository {
             }
         }
         return null;
+    }
+
+    private Iterator<MediaItem> getMediaIterator(Date refreshStartDate, String albumName) {
+        Iterator<MediaItem> iterator;
+        if (isNotEmpty(albumName)) {
+            Iterable<MediaItem> albumMedia = getAlbumMedia(refreshStartDate, albumName);
+            if (albumMedia == null) {
+                iterator = getAllMedia(refreshStartDate).iterator();
+            } else {
+                iterator = albumMedia.iterator();
+            }
+        } else {
+            iterator = getAllMedia(refreshStartDate).iterator();
+        }
+        return iterator;
+    }
+
+    private boolean isNotEmpty(String albumName) {
+        return albumName != null && !albumName.trim().isEmpty();
     }
 
     private Iterable<MediaItem> getAllMedia(Date refreshStartDate) {
