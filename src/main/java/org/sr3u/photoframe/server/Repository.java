@@ -43,7 +43,7 @@ public class Repository {
     @SneakyThrows
     public Repository(PhotosLibraryClient gClient, EventSystem eventSystem) {
         this.gClient = gClient;
-        defaultImage = ImageUtil.scaledImage(ImageIO.read(Repository.class.getResource("picture.png")), defaultSize);
+        defaultImage = ImageUtil.scaledImage(ImageIO.read(Repository.class.getResource("picture.svg")), defaultSize);
         Class.forName("org.sqlite.JDBC");
         JdbcConnectionSource connectionSource = new JdbcConnectionSource("jdbc:sqlite:" + Main.settings.getMedia().getDatabasePath());
         TableUtils.createTableIfNotExists(connectionSource, Item.class);
