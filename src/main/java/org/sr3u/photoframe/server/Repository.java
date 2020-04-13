@@ -66,7 +66,7 @@ public class Repository {
             try {
                 Item random;
                 synchronized (this) {
-                    random = dao.queryBuilder().orderByRaw("RANDOM()").where().eq("mediaType", MediaType.IMAGE).eq("display", true).queryForFirst();
+                    random = dao.queryBuilder().orderByRaw("RANDOM()").where().eq("mediaType", MediaType.IMAGE).and().eq("display", true).queryForFirst();
                 }
                 MediaItem mediaItem = gClient.getMediaItem(random.getGoogleID());
                 BufferedImage image = ImageIO.read(new URL(mediaItem.getBaseUrl() + ImageUtil.googlePhotoSize(size)));
