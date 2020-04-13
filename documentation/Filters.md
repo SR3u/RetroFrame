@@ -83,6 +83,7 @@ All dithering filters have the same `palette` parameter, as `applyPalette`.
 ### Aliases (Presets)
 * `Commodore64` -- Commodore 64 emulation (`resize 320 200 | Atkinson c64`)<br>
 * `Commodore64HD` -- Commodore 64 emulation, but without downscaling (`Atkinson c64`)<br>
+* `ColorPrinter` -- Lo-Fi color printer emulation (`Atkinson CMYK`)<br>
 * `CRT` -- Old Cathode Ray Tube screen (kinda) (`Trinitron`)<br>
 * `IbmPcCga` -- IBM PC CGA mode emulation (320x200, 4 colors from first palette) (`resize 320 200 | atkinson CGA`)<br>
 * `ImPcCgaHD` -- IBM PC CGA mode emulation without downscaling (4 colors from CGA first palette) (`atkinson CGA`)<br>
@@ -92,6 +93,7 @@ All dithering filters have the same `palette` parameter, as `applyPalette`.
 * `MacintoshHD` -- Macintosh Classic emulation, but without downscaling (`Atkinson Monochrome`)<br>
 * `MacintoshClassic` -- Macintosh Classic emulation (`resize 512 342 | Atkinson Monochrome`)<br>
 * `MacintoshClassicHD` -- Macintosh Classic emulation, but without downscaling (`Atkinson Monochrome`)<br>
+* `Printer` -- Lo-Fi color printer emulation (`Atkinson CMYK`) same as `ColorPrinter`<br>
 * `Trinitron` -- [Sony Trinitron](https://en.wikipedia.org/wiki/Trinitron) (kinda)<br>
 * `TV` -- Old TV (kinda) (`TrinitronH`)<br>  
 * `ZxSpectrum` -- ZX Spectrum emulation (`resize 348 256 | atkinson ZXFULL | buffer | Spectrum 32 24`)<br>

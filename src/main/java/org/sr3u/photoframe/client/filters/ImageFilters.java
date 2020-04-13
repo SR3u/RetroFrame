@@ -45,6 +45,8 @@ public enum ImageFilters {
         addAlias("Trinitron", "TrinitronV");
         addAlias("TV", "Trinitron");
         addAlias("CRT", "Trinitron");
+        addAlias("ColorPrinter", "Atkinson CMYK");
+        addAlias("Printer", "ColorPrinter");
     }
 
     private void addAlias(String alias, String value) {
