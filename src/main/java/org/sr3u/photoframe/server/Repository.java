@@ -103,7 +103,7 @@ public class Repository {
     private void refresh(String albumName, boolean display) {
         Date refreshStartDate = new Date();
         while (refreshStartDate != null) {
-            refreshStartDate = refresh(refreshStartDate, albumName, false);
+            refreshStartDate = refresh(refreshStartDate, albumName, display);
         }
     }
 
