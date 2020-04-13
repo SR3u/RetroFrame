@@ -55,6 +55,12 @@ See [Filters.md](https://github.com/SR3u/gphotorepo/blob/master/documentation/Fi
 * `Windows20` -> [Microsoft Windows default 20-color palette](https://en.wikipedia.org/wiki/List_of_software_palettes#Microsoft_Windows_default_20-color_palette)
 * `Windows` -> same as `Windows16` [Microsoft Windows default 16-color palette](https://en.wikipedia.org/wiki/List_of_software_palettes#Microsoft_Windows_default_16-color_palette)
 
+* `X11` -> Palette of [X11 named colors](https://en.wikipedia.org/wiki/X11_color_names#Color_name_chart)
+* `X11ext` -> [Full X11 named colors](https://en.wikipedia.org/wiki/X11_color_names)
+* `X11ext_noGray` -> [XTERM](https://en.wikipedia.org/wiki/X11_color_names) without gray variations
+* `X11full` -> [Full X11 named colors](https://en.wikipedia.org/wiki/X11_color_names)
+* `X.org` -> Palette of [X11 named colors](https://en.wikipedia.org/wiki/X11_color_names#Color_name_chart)
+* `Xorg` -> Palette of [X11 named colors](https://en.wikipedia.org/wiki/X11_color_names#Color_name_chart)
 * `XTERM` -> [XTERM](https://en.wikipedia.org/wiki/Xterm) [256 Color palette](https://commons.wikimedia.org/wiki/File:Xterm_256color_chart.svg)
 
 * `yellow` -> 256 levels of yellow color

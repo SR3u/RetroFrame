@@ -4,6 +4,7 @@ import java.awt.*;
 import java.util.List;
 import java.util.*;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class Palette {
     private static final Map<String, Palette> ALL = new HashMap<>();
@@ -35,6 +36,20 @@ public class Palette {
 
     public static Palette parse(String name, String paletteString) {
         return parse(name, Arrays.asList(paletteString.split(" ")));
+    }
+
+    public static Palette merge(String name, Palette a, Palette b) {
+        return new Palette(name, mergeColors(a, b));
+    }
+
+    public static Palette merge(String name, ColorPicker colorPicker, Palette a, Palette b) {
+        return new Palette(name, colorPicker, mergeColors(a, b));
+    }
+
+    private static List<Color> mergeColors(Palette a, Palette b) {
+        return Stream.concat(Arrays.stream(a.palette), Arrays.stream(b.palette))
+                .distinct()
+                .collect(Collectors.toList());
     }
 
     public static Palette parse(String name, List<String> args) {
