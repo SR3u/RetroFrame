@@ -19,28 +19,18 @@ public class EventSystem {
             Main.settings.getProcessingTreads() * 2);
 
     public void registerHandler(Consumerex<Event> eventHandler) {
-        try {
-            executor.submit(() -> eventHandlers.add(eventHandler));
-        } catch (InterruptedException e) {
-            log.error(e);
-            e.printStackTrace();
-        }
+        executor.execute(() -> eventHandlers.add(eventHandler));
     }
 
     public void fireEvent(Event event) {
-        try {
-            executor.submit(() -> Streamex.ofStream(eventHandlers.stream())
-                    .forEach(e -> {
-                        try {
-                            e.accept(event);
-                        } catch (Exception ex) {
-                            ex.printStackTrace();
-                        }
-                    }));
-        } catch (InterruptedException e) {
-            log.error(e);
-            e.printStackTrace();
-        }
+        executor.execute(() -> Streamex.ofStream(eventHandlers.stream())
+                .forEach(e -> {
+                    try {
+                        e.accept(event);
+                    } catch (Exception ex) {
+                        ex.printStackTrace();
+                    }
+                }));
     }
 
 }
