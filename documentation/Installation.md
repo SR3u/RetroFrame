@@ -19,7 +19,7 @@ cd ./RetroFrame
 mkdir ./credentials
 git fetch
 git pull origin master
-mvn package
+mvn clean package
 rm -f ./mediaItems.db
 ```
 * Add execution flag to this script `chmod +x ./update.sh`
