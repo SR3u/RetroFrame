@@ -62,7 +62,9 @@ public class ImageWindow {
         frame.add(imagePanel, BorderLayout.CENTER);
         frame.setVisible(true);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        metadataLabel = new OutlineLabel("Waiting for server...");
+        if(metadataLabel == null) {
+            metadataLabel = new OutlineLabel("Waiting for server...");
+        }
         imagePanel.add(metadataLabel, BorderLayout.SOUTH);
         frame.setTitle(TITLE_NAME);
         frame.addComponentListener(new ComponentAdapter() {
