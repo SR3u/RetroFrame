@@ -1,6 +1,7 @@
 package org.sr3u.photoframe.client;
 
 import com.google.common.base.Preconditions;
+import lombok.Getter;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.sr3u.photoframe.client.filters.ImageFilter;
@@ -11,6 +12,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
+import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
 import java.io.BufferedInputStream;
 import java.io.InputStream;
@@ -21,23 +23,34 @@ import java.util.Date;
 import java.util.Map;
 import java.util.Optional;
 
+@Getter
 public class ImageWindow {
     public static final String TITLE_NAME = "Retro Frame ";
+    private final ImageFilter imageFilter;
     JFrame frame;
     ImagePanel imagePanel;
     OutlineLabel metadataLabel;
     private static final Logger log = LogManager.getLogger(ImageWindow.class);
+    private boolean fullScreen = false;
 
     public ImageWindow(boolean fullScreen, ImageFilter imageFilter) {
+        this.imageFilter = imageFilter;
+        createComponents(fullScreen);
+    }
+
+    private void createComponents(boolean fullScreen) {
         frame = new JFrame();
         setIcon();
-        imagePanel = new ImagePanel(imageFilter);
+        if (imagePanel == null) {
+            imagePanel = new ImagePanel(imageFilter);
+        }
         handleTransparency();
         //frame.setLayout(new GridLayout(1, 1, 0, 0));
         frame.setLayout(new BorderLayout());
         frame.setSize(320, 240);
+        this.fullScreen = fullScreen;
         if (fullScreen) {
-            enableOSXFullscreen(frame);
+            fullScreen();
         }
         imagePanel.setLayout(new BorderLayout());
         frame.add(imagePanel, BorderLayout.CENTER);
@@ -57,6 +70,10 @@ public class ImageWindow {
             }
         });
         metadataLabel.setVisible(Main.settings.getClient().isShowMetadata());
+        PopupClickListener popupClickListener = new PopupClickListener(this);
+        for (Component component : frame.getComponents()) {
+            component.addMouseListener(popupClickListener);
+        }
     }
 
     private void setIcon() {
@@ -126,7 +143,7 @@ public class ImageWindow {
         }
     }
 
-    private static <T> Optional<T> extract(Map map, Object key, Class<T> clazz) {
+    private static <T> Optional<T> extract(@SuppressWarnings("rawtypes") Map map, Object key, Class<T> clazz) {
         if (map.get(key) != null && clazz.isInstance(map.get(key))) {
             return Optional.of(clazz.cast(map.get(key)));
         }
@@ -158,21 +175,37 @@ public class ImageWindow {
     }
 
     @SuppressWarnings({"unchecked", "rawtypes"})
-    public static void enableOSXFullscreen(JFrame window) {
-        Preconditions.checkNotNull(window);
+    private void fullScreen() {
+        Preconditions.checkNotNull(frame);
         try {
             Class util = Class.forName("com.apple.eawt.FullScreenUtilities");
-            Class params[] = new Class[]{Window.class, Boolean.TYPE};
+            Class[] params = new Class[]{Window.class, Boolean.TYPE};
             Method method = util.getMethod("setWindowCanFullScreen", params);
-            method.invoke(util, window, true);
+            method.invoke(util, frame, true);
         } catch (ClassNotFoundException e1) {
-            window.setExtendedState(JFrame.MAXIMIZED_BOTH);
-            window.setUndecorated(true);
-            window.setVisible(true);
+            frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
+            frame.setUndecorated(true);
+            frame.setVisible(true);
         } catch (Exception e) {
             log.error(e);
             e.printStackTrace();
         }
     }
 
+    public void enterFullScreen() {
+        toggleFullScreen(true);
+    }
+
+    public void exitFullScreen() {
+        toggleFullScreen(false);
+    }
+
+    private void toggleFullScreen(boolean fullScreen) {
+        JFrame frame = this.frame;
+        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        String title = frame.getTitle();
+        createComponents(fullScreen);
+        this.frame.setTitle(title);
+        frame.dispatchEvent(new WindowEvent(frame, WindowEvent.WINDOW_CLOSING));
+    }
 }
