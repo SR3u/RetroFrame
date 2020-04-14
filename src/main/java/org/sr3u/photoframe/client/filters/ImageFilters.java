@@ -48,7 +48,8 @@ public enum ImageFilters {
         addAlias("ColorPrinter", "Atkinson CMYK");
         addAlias("Printer", "ColorPrinter");
         addAlias("Drawing", "applyPalette Crayola");
-        addAlias("GameBoy", "Atkinson GameBoy");
+        addAlias("GameBoyHD", "Atkinson GameBoy");
+        addAlias("GameBoy", "resize 160 144 | Atkinson GameBoy");
     }
 
     private void addAlias(String alias, String value) {
