@@ -22,6 +22,7 @@ import java.util.Map;
 import java.util.Optional;
 
 public class ImageWindow {
+    public static final String TITLE_NAME = "Retro Frame ";
     JFrame frame;
     ImagePanel imagePanel;
     OutlineLabel metadataLabel;
@@ -44,7 +45,7 @@ public class ImageWindow {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         metadataLabel = new OutlineLabel("Waiting for server...");
         imagePanel.add(metadataLabel, BorderLayout.SOUTH);
-        frame.setTitle("Photo Frame");
+        frame.setTitle(TITLE_NAME);
         frame.addComponentListener(new ComponentAdapter() {
             @Override
             public void componentResized(ComponentEvent evt) {
@@ -107,7 +108,7 @@ public class ImageWindow {
                 } else {
                     metadataLabel.setText("");
                 }
-                frame.setTitle("Photo Frame " + metaDataRendered);
+                frame.setTitle(TITLE_NAME + metaDataRendered);
                 frame.invalidate();
                 frame.validate();
                 frame.repaint();
