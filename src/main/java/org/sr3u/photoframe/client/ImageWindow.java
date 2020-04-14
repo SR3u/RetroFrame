@@ -26,7 +26,6 @@ import java.util.Optional;
 public class ImageWindow {
     public static final String TITLE_NAME = "Retro Frame ";
     public static final KeyStroke ALT_ENTER = KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, InputEvent.ALT_DOWN_MASK);
-    ;
     private static final Object FULLSCREEN_ACTION = ImageWindow.class.getCanonicalName() + ".fullScreenAction";
     private final ImageFilter imageFilter;
     JFrame frame;
@@ -92,9 +91,9 @@ public class ImageWindow {
         Toolkit kit = Toolkit.getDefaultToolkit();
         Image img = kit.createImage(url);
         frame.setIconImage(img);
-        //this is new since JDK 9
-        final Taskbar taskbar = Taskbar.getTaskbar();
         try {
+            //this is new since JDK 9
+            final Taskbar taskbar = Taskbar.getTaskbar();
             //set icon for mac os (and other systems which do support this method)
             taskbar.setIconImage(img);
         } catch (UnsupportedOperationException e) {
