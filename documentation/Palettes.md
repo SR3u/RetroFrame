@@ -36,6 +36,7 @@ See [Filters.md](https://github.com/SR3u/gphotorepo/blob/master/documentation/Fi
 
 * `Crayola` -> [Standard Crayola crayon colors](https://en.wikipedia.org/wiki/List_of_Crayola_crayon_colors#Standard_colors)
 
+* `GameBoy` -> [Original Nintendo GameBoy palette](https://en.wikipedia.org/wiki/List_of_video_game_console_palettes#Game_Boy) 
 * `Grayscale` -> 256 levels grayscale palette.
 
 * `Macintosh` -> Same as BlackAndWhite. Two color black and white palette, as in MacintoshClassic

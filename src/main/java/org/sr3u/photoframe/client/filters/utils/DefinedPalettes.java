@@ -177,4 +177,6 @@ public class DefinedPalettes {
             "#664228 #FA9D5A #EDC9AF #FFCBA4 #805533 #FDD5B1 #EED9C4 #665233 #837050 #E6BC5C #D9D6CF " +
             "#92926E #E6BE8A #C9C0BB #DA8A67 #C88A65 #000000 #736A62 #8B8680 #C8C8CD #FFFFFF").toPredefined();
 
+    public static final PredefinedPalette GAMEBOY = Palette.parse("GameBoy", "luminance #0F380F #306230 #8BAC0F #9BBC0F").toPredefined();
+
 }

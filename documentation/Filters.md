@@ -86,6 +86,7 @@ All dithering filters have the same `palette` parameter, as `applyPalette`.
 * `ColorPrinter` -- Lo-Fi color printer emulation (`Atkinson CMYK`)<br>
 * `CRT` -- Old Cathode Ray Tube screen (kinda) (`Trinitron`)<br>
 * `Drawing`  -- Drawing effect (`applyPalette Crayola`)<br>
+* `GameBoy` -> [Original Nintendo GameBoy](https://en.wikipedia.org/wiki/List_of_video_game_console_palettes#Game_Boy) (`Atkinson GameBoy`)<br>
 * `IbmPcCga` -- IBM PC CGA mode emulation (320x200, 4 colors from first palette) (`resize 320 200 | atkinson CGA`)<br>
 * `ImPcCgaHD` -- IBM PC CGA mode emulation without downscaling (4 colors from CGA first palette) (`atkinson CGA`)<br>
 * `IBM_PC_CGA` -- IBM PC CGA mode emulation (320x200, 4 colors from first palette) (`resize 320 200 | atkinson CGA`)<br>
