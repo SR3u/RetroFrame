@@ -26,7 +26,6 @@ import java.util.Optional;
 public class ImageWindow {
     public static final String TITLE_NAME = "Retro Frame ";
     public static final KeyStroke ALT_ENTER = KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, InputEvent.ALT_DOWN_MASK);
-    ;
     private static final Object FULLSCREEN_ACTION = ImageWindow.class.getCanonicalName() + ".fullScreenAction";
     private final ImageFilter imageFilter;
     JFrame frame;
@@ -35,6 +34,9 @@ public class ImageWindow {
     private static final Logger log = LogManager.getLogger(ImageWindow.class);
     private boolean fullScreen = false;
     private AbstractAction fullScreenAction;
+
+    private Dimension regularSize = new Dimension(320, 240);
+    private Point regularLocation = new Point(0, 0);
 
     public ImageWindow(boolean fullScreen, ImageFilter imageFilter) {
         this.imageFilter = imageFilter;
@@ -50,7 +52,8 @@ public class ImageWindow {
         handleTransparency();
         //frame.setLayout(new GridLayout(1, 1, 0, 0));
         frame.setLayout(new BorderLayout());
-        frame.setSize(320, 240);
+        frame.setSize(regularSize);
+        frame.setLocation(regularLocation);
         this.fullScreen = fullScreen;
         if (fullScreen) {
             fullScreen();
@@ -65,11 +68,23 @@ public class ImageWindow {
         frame.addComponentListener(new ComponentAdapter() {
             @Override
             public void componentResized(ComponentEvent evt) {
+                if (!isFullScreen()) {
+                    regularSize = frame.getSize();
+                    regularLocation = frame.getLocation();
+                }
                 frame.repaint();
                 imagePanel.setSize(frame.getSize());
                 frame.invalidate();
                 frame.validate();
                 frame.repaint();
+            }
+
+            @Override
+            public void componentMoved(ComponentEvent evt) {
+                if (!isFullScreen()) {
+                    regularSize = frame.getSize();
+                    regularLocation = frame.getLocation();
+                }
             }
         });
         metadataLabel.setVisible(Main.settings.getClient().isShowMetadata());
@@ -92,14 +107,14 @@ public class ImageWindow {
         Toolkit kit = Toolkit.getDefaultToolkit();
         Image img = kit.createImage(url);
         frame.setIconImage(img);
-        //this is new since JDK 9
-        final Taskbar taskbar = Taskbar.getTaskbar();
         try {
+            //this is new since JDK 9
+            final Taskbar taskbar = Taskbar.getTaskbar();
             //set icon for mac os (and other systems which do support this method)
             taskbar.setIconImage(img);
-        } catch (final UnsupportedOperationException e) {
+        } catch (UnsupportedOperationException e) {
             log.error("The os does not support: 'Taskbar.setIconImage'");
-        } catch (final SecurityException e) {
+        } catch (SecurityException e) {
             log.error("There was a security exception for: 'Taskbar.setIconImage'");
         }
     }
