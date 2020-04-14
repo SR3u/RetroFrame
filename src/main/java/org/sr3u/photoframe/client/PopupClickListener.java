@@ -5,9 +5,11 @@ import java.awt.event.MouseEvent;
 
 public class PopupClickListener extends MouseAdapter {
     private final ImageWindow mainWindow;
+    private final PopupMenu menu;
 
     public PopupClickListener(ImageWindow mainWindow) {
         this.mainWindow = mainWindow;
+        this.menu = new PopupMenu(mainWindow);
     }
 
     public void mousePressed(MouseEvent e) {
@@ -21,7 +23,6 @@ public class PopupClickListener extends MouseAdapter {
     }
 
     private void doPop(MouseEvent e) {
-        PopupMenu menu = new PopupMenu(mainWindow);
         menu.show(e.getComponent(), e.getX(), e.getY());
     }
 }

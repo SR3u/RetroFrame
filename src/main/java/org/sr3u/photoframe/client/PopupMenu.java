@@ -1,6 +1,7 @@
 package org.sr3u.photoframe.client;
 
 import javax.swing.*;
+import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 
 public class PopupMenu extends JPopupMenu {
@@ -12,9 +13,13 @@ public class PopupMenu extends JPopupMenu {
                 "Settings",
                 JOptionPane.ERROR_MESSAGE));
         if (mainWindow.isFullScreen()) {
-            addItem("Exit FullScreen", e -> exitFullscreen(mainWindow));
+            JMenuItem item = createItem("Exit FullScreen", e -> exitFullscreen(mainWindow));
+            item.setAccelerator(ImageWindow.ALT_ENTER);
+            add(item);
         } else {
-            addItem("FullScreen", e -> enterFullscreen(mainWindow));
+            JMenuItem item = createItem("FullScreen", e -> enterFullscreen(mainWindow));
+            item.setAccelerator(ImageWindow.ALT_ENTER);
+            add(item);
         }
         addItem("About", e -> JOptionPane.showMessageDialog(null,
                 "Authors:\n" +

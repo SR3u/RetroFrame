@@ -10,10 +10,9 @@ import org.sr3u.photoframe.server.Main;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ComponentAdapter;
-import java.awt.event.ComponentEvent;
-import java.awt.event.WindowEvent;
+import java.awt.event.*;
 import java.awt.image.BufferedImage;
+import java.beans.PropertyChangeListener;
 import java.io.BufferedInputStream;
 import java.io.InputStream;
 import java.lang.reflect.Method;
@@ -26,12 +25,16 @@ import java.util.Optional;
 @Getter
 public class ImageWindow {
     public static final String TITLE_NAME = "Retro Frame ";
+    public static final KeyStroke ALT_ENTER = KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, InputEvent.ALT_DOWN_MASK);
+    ;
+    private static final Object FULLSCREEN_ACTION = ImageWindow.class.getCanonicalName() + ".fullScreenAction";
     private final ImageFilter imageFilter;
     JFrame frame;
     ImagePanel imagePanel;
     OutlineLabel metadataLabel;
     private static final Logger log = LogManager.getLogger(ImageWindow.class);
     private boolean fullScreen = false;
+    private AbstractAction fullScreenAction;
 
     public ImageWindow(boolean fullScreen, ImageFilter imageFilter) {
         this.imageFilter = imageFilter;
@@ -71,9 +74,17 @@ public class ImageWindow {
         });
         metadataLabel.setVisible(Main.settings.getClient().isShowMetadata());
         PopupClickListener popupClickListener = new PopupClickListener(this);
+        fullScreenAction = new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                toggleFullScreen(!isFullScreen());
+            }
+        };
         for (Component component : frame.getComponents()) {
             component.addMouseListener(popupClickListener);
         }
+        imagePanel.getActionMap().put(FULLSCREEN_ACTION, fullScreenAction);
+        imagePanel.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(ALT_ENTER, FULLSCREEN_ACTION);
     }
 
     private void setIcon() {
