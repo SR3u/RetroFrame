@@ -35,6 +35,9 @@ public class ImageWindow {
     private boolean fullScreen = false;
     private AbstractAction fullScreenAction;
 
+    private Dimension regularSize = new Dimension(320, 240);
+    private Point regularLocation = new Point(0, 0);
+
     public ImageWindow(boolean fullScreen, ImageFilter imageFilter) {
         this.imageFilter = imageFilter;
         createComponents(fullScreen);
@@ -49,7 +52,8 @@ public class ImageWindow {
         handleTransparency();
         //frame.setLayout(new GridLayout(1, 1, 0, 0));
         frame.setLayout(new BorderLayout());
-        frame.setSize(320, 240);
+        frame.setSize(regularSize);
+        frame.setLocation(regularLocation);
         this.fullScreen = fullScreen;
         if (fullScreen) {
             fullScreen();
@@ -64,11 +68,23 @@ public class ImageWindow {
         frame.addComponentListener(new ComponentAdapter() {
             @Override
             public void componentResized(ComponentEvent evt) {
+                if (!isFullScreen()) {
+                    regularSize = frame.getSize();
+                    regularLocation = frame.getLocation();
+                }
                 frame.repaint();
                 imagePanel.setSize(frame.getSize());
                 frame.invalidate();
                 frame.validate();
                 frame.repaint();
+            }
+
+            @Override
+            public void componentMoved(ComponentEvent evt) {
+                if (!isFullScreen()) {
+                    regularSize = frame.getSize();
+                    regularLocation = frame.getLocation();
+                }
             }
         });
         metadataLabel.setVisible(Main.settings.getClient().isShowMetadata());
