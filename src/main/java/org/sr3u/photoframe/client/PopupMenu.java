@@ -5,7 +5,9 @@ import javax.swing.*;
 public class PopupMenu extends JPopupMenu {
     public PopupMenu(ImageWindow mainWindow) {
         addItem("Settings", e -> JOptionPane.showMessageDialog(null,
-                "Not implemented yet",
+                "Not implemented yet\n" +
+                        "Please edit settings.properties file located in "+System.getProperty("user.dir")+"\n" +
+                        "And then restart the app",
                 "Settings",
                 JOptionPane.ERROR_MESSAGE));
         if (mainWindow.isFullScreen()) {
