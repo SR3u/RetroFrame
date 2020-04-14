@@ -97,9 +97,9 @@ public class ImageWindow {
         try {
             //set icon for mac os (and other systems which do support this method)
             taskbar.setIconImage(img);
-        } catch (final UnsupportedOperationException e) {
+        } catch (UnsupportedOperationException e) {
             log.error("The os does not support: 'Taskbar.setIconImage'");
-        } catch (final SecurityException e) {
+        } catch (SecurityException e) {
             log.error("There was a security exception for: 'Taskbar.setIconImage'");
         }
     }
