@@ -64,6 +64,16 @@ public class ImageWindow {
         Toolkit kit = Toolkit.getDefaultToolkit();
         Image img = kit.createImage(url);
         frame.setIconImage(img);
+        //this is new since JDK 9
+        final Taskbar taskbar = Taskbar.getTaskbar();
+        try {
+            //set icon for mac os (and other systems which do support this method)
+            taskbar.setIconImage(img);
+        } catch (final UnsupportedOperationException e) {
+            log.error("The os does not support: 'Taskbar.setIconImage'");
+        } catch (final SecurityException e) {
+            log.error("There was a security exception for: 'Taskbar.setIconImage'");
+        }
     }
 
     private void handleTransparency() {
