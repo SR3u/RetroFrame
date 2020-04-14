@@ -1,6 +1,7 @@
 package org.sr3u.photoframe.client;
 
 import javax.swing.*;
+import java.awt.event.KeyEvent;
 
 public class PopupMenu extends JPopupMenu {
     public PopupMenu(ImageWindow mainWindow) {
@@ -11,12 +12,18 @@ public class PopupMenu extends JPopupMenu {
                 "Settings",
                 JOptionPane.ERROR_MESSAGE));
         if (mainWindow.isFullScreen()) {
-            addItem("Exit FullScreen", e -> exitFullscreen(mainWindow));
+            JMenuItem item = createItem("Exit FullScreen", e -> exitFullscreen(mainWindow));
+            item.setMnemonic(KeyEvent.VK_ENTER);
+            add(item);
         } else {
-            addItem("FullScreen", e -> enterFullscreen(mainWindow));
+            JMenuItem item = createItem("FullScreen", e -> enterFullscreen(mainWindow));
+            item.setMnemonic(KeyEvent.VK_ENTER);
+            add(item);
         }
         addItem("About", e -> JOptionPane.showMessageDialog(null,
-                "Created by SR3u and 4113556",
+                "Authors:\n" +
+                        "   SR3u    -- code\n" +
+                        "   4113556 -- logo design",
                 "About " + ImageWindow.TITLE_NAME,
                 JOptionPane.INFORMATION_MESSAGE));
     }
@@ -29,9 +36,15 @@ public class PopupMenu extends JPopupMenu {
         mainWindow.enterFullScreen();
     }
 
-    private void addItem(String name, MouseReleaseListener mouseReleaseListener) {
-        JMenuItem settingsItem = new JMenuItem(name);
-        settingsItem.addMouseListener(mouseReleaseListener);
-        add(settingsItem);
+    private JMenuItem addItem(String name, MouseReleaseListener mouseReleaseListener) {
+        JMenuItem item = createItem(name, mouseReleaseListener);
+        add(item);
+        return item;
+    }
+
+    private JMenuItem createItem(String name, MouseReleaseListener mouseReleaseListener) {
+        JMenuItem item = new JMenuItem(name);
+        item.addMouseListener(mouseReleaseListener);
+        return item;
     }
 }
