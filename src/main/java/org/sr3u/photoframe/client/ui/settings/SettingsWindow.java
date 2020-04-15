@@ -62,7 +62,7 @@ public class SettingsWindow {
             public void windowClosing(java.awt.event.WindowEvent windowEvent) {
                 String[] buttons = {"Save", "Save and restart", "Don't save"};
 
-                int rc = JOptionPane.showOptionDialog(null, "Question ?", "Confirmation",
+                int rc = JOptionPane.showOptionDialog(null, "Save settings?", "Save settings?",
                         JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, buttons, buttons[2]);
                 switch (rc) {
                     case 0:
