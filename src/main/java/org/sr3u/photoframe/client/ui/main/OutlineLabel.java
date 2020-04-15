@@ -1,4 +1,4 @@
-package org.sr3u.photoframe.client;
+package org.sr3u.photoframe.client.ui.main;
 
 import javax.swing.*;
 import java.awt.*;

@@ -4,6 +4,7 @@ import lombok.Builder;
 import lombok.Value;
 
 import java.io.*;
+import java.util.Map;
 import java.util.Properties;
 
 @Value
@@ -36,7 +37,7 @@ public class Settings implements Fillable {
         return load(properties);
     }
 
-    private void save(String fileName) {
+    public void save(String fileName) {
         Properties properties = getProperties();
         try {
             properties.store(new FileOutputStream(new File(fileName)), null);
@@ -53,7 +54,15 @@ public class Settings implements Fillable {
         return properties;
     }
 
-    private static Settings load(Properties properties) {
+    public Map<String,Class<?>> getPropertiesClasses() {
+        Map<String, Class<?>> properties = this.toPropertiesClasses();
+        properties.putAll(this.server.toPropertiesClasses());
+        properties.putAll(this.client.toPropertiesClasses());
+        properties.putAll(this.media.toPropertiesClasses());
+        return properties;
+    }
+
+    public static Settings load(Properties properties) {
         SettingsBuilder builder = Settings.builder();
         builder.server(Server.load(properties));
         builder.client(Client.load(properties));

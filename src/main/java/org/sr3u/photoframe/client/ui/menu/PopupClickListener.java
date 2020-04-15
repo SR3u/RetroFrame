@@ -1,4 +1,6 @@
-package org.sr3u.photoframe.client;
+package org.sr3u.photoframe.client.ui.menu;
+
+import org.sr3u.photoframe.client.ui.main.ImageWindow;
 
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -12,14 +14,18 @@ public class PopupClickListener extends MouseAdapter {
         this.menu = new PopupMenu(mainWindow);
     }
 
+    @Override
     public void mousePressed(MouseEvent e) {
-        if (e.isPopupTrigger())
+        if (e.isPopupTrigger()) {
             doPop(e);
+        }
     }
 
+    @Override
     public void mouseReleased(MouseEvent e) {
-        if (e.isPopupTrigger())
+        if (e.isPopupTrigger()) {
             doPop(e);
+        }
     }
 
     private void doPop(MouseEvent e) {

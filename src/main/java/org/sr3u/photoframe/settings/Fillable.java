@@ -1,6 +1,8 @@
 package org.sr3u.photoframe.settings;
 
 import java.lang.reflect.Field;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Properties;
 
 public interface Fillable {
@@ -52,5 +54,18 @@ public interface Fillable {
             }
         }
         return properties;
+    }
+
+    default Map<String, Class<?>> toPropertiesClasses() {
+        Map<String, Class<?>> result = new HashMap<>();
+        Field[] fields = this.getClass().getDeclaredFields();
+        for (Field field : fields) {
+            if (field.isAnnotationPresent(PropertyMap.class)) {
+                field.setAccessible(true);
+                PropertyMap annotation = field.getAnnotation(PropertyMap.class);
+                result.put(annotation.value(), field.getType());
+            }
+        }
+        return result;
     }
 }

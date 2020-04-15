@@ -1,17 +1,15 @@
-package org.sr3u.photoframe.client;
+package org.sr3u.photoframe.client.ui.menu;
+
+import org.sr3u.photoframe.client.ui.MouseReleaseListener;
+import org.sr3u.photoframe.client.ui.main.ImageWindow;
+import org.sr3u.photoframe.client.ui.settings.SettingsWindow;
+import org.sr3u.photoframe.server.Main;
 
 import javax.swing.*;
-import java.awt.event.InputEvent;
-import java.awt.event.KeyEvent;
 
 public class PopupMenu extends JPopupMenu {
     public PopupMenu(ImageWindow mainWindow) {
-        addItem("Settings", e -> JOptionPane.showMessageDialog(null,
-                "Not implemented yet\n" +
-                        "Please edit settings.properties file located in " + System.getProperty("user.dir") + "\n" +
-                        "And then restart the app",
-                "Settings",
-                JOptionPane.ERROR_MESSAGE));
+        addItem("Settings", e -> new SettingsWindow(Main.settings));
         if (mainWindow.isFullScreen()) {
             JMenuItem item = createItem("Exit FullScreen", e -> exitFullscreen(mainWindow));
             item.setAccelerator(ImageWindow.ALT_ENTER);

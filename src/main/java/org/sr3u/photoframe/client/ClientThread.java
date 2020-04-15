@@ -6,6 +6,7 @@ import org.apache.logging.log4j.Logger;
 import org.sr3u.photoframe.client.filters.Identity;
 import org.sr3u.photoframe.client.filters.ImageFilter;
 import org.sr3u.photoframe.client.filters.ImageFilters;
+import org.sr3u.photoframe.client.ui.main.ImageWindow;
 import org.sr3u.photoframe.server.Main;
 
 import java.awt.*;

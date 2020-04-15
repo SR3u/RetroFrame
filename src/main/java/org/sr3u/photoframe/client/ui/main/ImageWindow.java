@@ -1,10 +1,11 @@
-package org.sr3u.photoframe.client;
+package org.sr3u.photoframe.client.ui.main;
 
 import com.google.common.base.Preconditions;
 import lombok.Getter;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.sr3u.photoframe.client.filters.ImageFilter;
+import org.sr3u.photoframe.client.ui.menu.PopupClickListener;
 import org.sr3u.photoframe.server.Main;
 
 import javax.imageio.ImageIO;
@@ -12,7 +13,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.image.BufferedImage;
-import java.beans.PropertyChangeListener;
 import java.io.BufferedInputStream;
 import java.io.InputStream;
 import java.lang.reflect.Method;

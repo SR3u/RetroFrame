@@ -1,4 +1,4 @@
-package org.sr3u.photoframe.client;
+package org.sr3u.photoframe.client.ui;
 
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
