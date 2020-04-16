@@ -10,12 +10,13 @@ import sr3u.streamz.streams.Streamex;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
 public class FiltersWindow extends ScrollableWindow {
 
-    private final List<FilterPanel> filterPanels;
+    private final List<UpDownButtonsPanel> allPanels;
     private final TechnicalFilterPanel technicalFilterPanel;
     private final ImageWindow imageWindow;
 
@@ -24,8 +25,7 @@ public class FiltersWindow extends ScrollableWindow {
         public void add(TechnicalFilterPanel panel) {
             scrollPaneContent.remove(technicalFilterPanel);
             FilterPanel identity = new FilterPanel("identity", "");
-            scrollPaneContent.add(identity);
-            filterPanels.add(identity);
+            addPanel(identity);
             identity.setDelegate(this);
             scrollPaneContent.add(technicalFilterPanel);
             forceRepaint();
@@ -33,27 +33,47 @@ public class FiltersWindow extends ScrollableWindow {
 
         @Override
         public void delete(FilterPanel panel) {
-            scrollPaneContent.remove(panel);
-            filterPanels.remove(panel);
+            removePanel(panel);
             panel.setDelegate(null);
             forceRepaint();
         }
 
         @Override
         public void down(UpDownButtonsPanel panel) {
-            //TODO
-            forceRepaint();
+            updateIndices(panel);
         }
 
         @Override
         public void up(UpDownButtonsPanel panel) {
-            //TODO
+            updateIndices(panel);
+        }
+
+        private void updateIndices(UpDownButtonsPanel panel) {
+            allPanels.forEach(scrollPaneContent::remove);
+            List<UpDownButtonsPanel> tmp = new ArrayList<>(allPanels.size());
+            allPanels.stream().filter(p -> panel != p).forEach(tmp::add);
+            if (panel.getIndex() < 0) {
+                panel.setIndex(0);
+            }
+            if (panel.getIndex() >= allPanels.size()) {
+                panel.setIndex(allPanels.size() - 1);
+            }
+            tmp.add(panel.getIndex(), panel);
+            allPanels.clear();
+            for (int i = 0; i < tmp.size(); i++) {
+                UpDownButtonsPanel current = tmp.get(i);
+                scrollPaneContent.add(current);
+                current.setIndex(i);
+                allPanels.add(current);
+            }
             forceRepaint();
         }
 
         @Override
         public void apply() {
-            String newFilterChain = Streamex.ofStream(filterPanels.stream())
+            String newFilterChain = Streamex.ofStream(allPanels.stream())
+                    .filter(p -> p instanceof FilterPanel)
+                    .map(p -> (FilterPanel) p)
                     .map(FilterPanel::toFilterDescriptor)
                     .mapToString(FilterDescriptor::toString)
                     .joined(" | ");
@@ -88,7 +108,7 @@ public class FiltersWindow extends ScrollableWindow {
         this.imageWindow = imageWindow;
         String imageFitlerChain = Main.settings.getClient().getImageFitlerChain();
         List<FilterDescriptor> filterDescriptors = ImageFilters.parseDescriptors(imageFitlerChain);
-        filterPanels = filterDescriptors.stream()
+        allPanels = filterDescriptors.stream()
                 .map(FilterPanel::new)
                 .peek(fp -> fp.setMinimumSize(new Dimension(32, 32)))
                 .peek(scrollPaneContent::add)
@@ -96,8 +116,18 @@ public class FiltersWindow extends ScrollableWindow {
                 .collect(Collectors.toList());
         technicalFilterPanel = new TechnicalFilterPanel();
         technicalFilterPanel.setDelegate(panelDelegate);
-        scrollPaneContent.add(technicalFilterPanel);
+        addPanel(technicalFilterPanel);
         frame.pack();
         frame.setVisible(true);
+    }
+
+    private void addPanel(UpDownButtonsPanel panel) {
+        scrollPaneContent.add(panel);
+        allPanels.add(panel);
+    }
+
+    private void removePanel(UpDownButtonsPanel panel) {
+        scrollPaneContent.remove(panel);
+        allPanels.remove(panel);
     }
 }
