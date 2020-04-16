@@ -13,7 +13,7 @@ import java.util.Properties;
 public class Settings implements Fillable {
     @Builder.Default
     @PropertyMap("java.awt.headless")
-    boolean java_awt_headless = true;
+    boolean java_awt_headless = false;
     @Builder.Default
     @PropertyMap("processingThreads")
     int processingTreads = Math.max(Runtime.getRuntime().availableProcessors() - 2, 1);
@@ -96,6 +96,7 @@ public class Settings implements Fillable {
         @PropertyMap("media.mediaItemExpiryTime")
         public long mediaItemExpiryTime = 3000;
 
+        @SuppressWarnings("ConstantConditions")
         public boolean isBackup() {
             return backup && backupPath != null;
         }
@@ -112,7 +113,7 @@ public class Settings implements Fillable {
     public static class Client implements Fillable {
         @Builder.Default
         @PropertyMap("client.enable")
-        boolean enable = false;
+        boolean enable = true;
         @Builder.Default
         @PropertyMap("client.fullscreen")
         boolean fullScreen = false;

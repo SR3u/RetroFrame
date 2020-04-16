@@ -1,10 +1,10 @@
 # Settings
 Settings are stored in `settings.properties` file in working directory. It is a [standard Java properties](https://en.wikipedia.org/wiki/.properties) file.<br>
 Here is a reference to its keys and values:<br>
-* `java.awt.headless` -- overrides system variable, needs to be false for gui startup (*default:* `true`)
+* `java.awt.headless` -- overrides system variable, needs to be false for gui startup (*default:* `false`)
 * `client.server.address` -- server instance address  (*default:* `locahost`)
 * `client.server.port` -- server instance port  (*default:* `4242`)
-* `client.enable` -- enable client gui startup, is overridden by java.awt.headless (*default:* `false`)
+* `client.enable` -- enable client gui startup, is overridden by java.awt.headless (*default:* `true`)
 * `client.showMetadata` -- Show metadata while displaying image? (*default:* `true`)
 * `client.fullscreen` -- launch client window in full screen (*default:* `false`)
 * `client.refreshDelay` -- how many milliseconds each photo is shown (*default:* `60000`)
