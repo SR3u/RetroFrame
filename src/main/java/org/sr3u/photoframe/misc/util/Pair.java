@@ -1,4 +1,4 @@
-package org.sr3u.photoframe.client.ui.settings;
+package org.sr3u.photoframe.misc.util;
 
 import lombok.AllArgsConstructor;
 import lombok.Value;

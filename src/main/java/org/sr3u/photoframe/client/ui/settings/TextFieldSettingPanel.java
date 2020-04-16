@@ -10,7 +10,7 @@ public abstract class TextFieldSettingPanel<T> extends SettingPanel<T> {
         super(name);
         this.value = new JTextField();
         this.value.setText(value);
-        this.value.setMinimumSize(new Dimension(100, 100));
+        this.value.setMinimumSize(new Dimension(32, 32));
         this.add(this.value);
     }
 

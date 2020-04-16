@@ -27,7 +27,7 @@ public class ImageWindow {
     public static final String TITLE_NAME = "Retro Frame ";
     public static final KeyStroke ALT_ENTER = KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, InputEvent.ALT_DOWN_MASK);
     private static final Object FULLSCREEN_ACTION = ImageWindow.class.getCanonicalName() + ".fullScreenAction";
-    private final ImageFilter imageFilter;
+    private ImageFilter imageFilter;
     JFrame frame;
     ImagePanel imagePanel;
     OutlineLabel metadataLabel;
@@ -62,7 +62,7 @@ public class ImageWindow {
         frame.add(imagePanel, BorderLayout.CENTER);
         frame.setVisible(true);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        if(metadataLabel == null) {
+        if (metadataLabel == null) {
             metadataLabel = new OutlineLabel("Waiting for server...");
         }
         imagePanel.add(metadataLabel, BorderLayout.SOUTH);
@@ -76,9 +76,7 @@ public class ImageWindow {
                 }
                 frame.repaint();
                 imagePanel.setSize(frame.getSize());
-                frame.invalidate();
-                frame.validate();
-                frame.repaint();
+                forceRedraw();
             }
 
             @Override
@@ -164,11 +162,15 @@ public class ImageWindow {
                     metadataLabel.setText("");
                 }
                 frame.setTitle(TITLE_NAME + metaDataRendered);
-                frame.invalidate();
-                frame.validate();
-                frame.repaint();
+                forceRedraw();
             });
         }
+    }
+
+    private void forceRedraw() {
+        frame.invalidate();
+        frame.validate();
+        frame.repaint();
     }
 
     private static <T> Optional<T> extract(@SuppressWarnings("rawtypes") Map map, Object key, Class<T> clazz) {
@@ -235,5 +237,10 @@ public class ImageWindow {
         createComponents(fullScreen);
         this.frame.setTitle(title);
         frame.dispatchEvent(new WindowEvent(frame, WindowEvent.WINDOW_CLOSING));
+    }
+
+    public void setImageFilter(ImageFilter imageFilter) {
+        this.imageFilter = imageFilter;
+        this.imagePanel.setImageFilter(imageFilter).thenAccept(v -> forceRedraw());
     }
 }

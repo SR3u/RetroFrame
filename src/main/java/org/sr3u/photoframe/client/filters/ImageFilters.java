@@ -9,6 +9,7 @@ import sr3u.streamz.optionals.Optionalex;
 import java.lang.reflect.Modifier;
 import java.util.*;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public enum ImageFilters {
 
@@ -52,12 +53,19 @@ public enum ImageFilters {
         addAlias("GameBoy", "resize 160 144 | Atkinson GameBoy");
     }
 
+    public static List<String> getAllAvailable() {
+        return Stream.concat(
+                INSTANCE.byAlias.keySet().stream(),
+                INSTANCE.bySimpleName.keySet().stream()
+        ).sorted().collect(Collectors.toList());
+    }
+
     private void addAlias(String alias, String value) {
         byAlias.put(alias.toLowerCase(), () -> parse(value));
     }
 
     public static ImageFilter parse(String chainString) {
-        String[] split = chainString.split("\\s*\\|\\s*");
+        String[] split = splitChain(chainString);
         ImageFilterChain.ImageFilterChainBuilder builder = ImageFilterChain.builder();
         for (String param : split) {
             ImageFilter filter = INSTANCE.get(param);
@@ -66,11 +74,36 @@ public enum ImageFilters {
         return builder.unwrapChains().build();
     }
 
+    public static List<FilterDescriptor> parseDescriptors(String chainString) {
+        return Arrays.stream(splitChain(chainString))
+                .map(INSTANCE::parseFilterDescriptor)
+                .collect(Collectors.toList());
+    }
+
+    private static String[] splitChain(String chainString) {
+        return chainString.split("\\s*\\|\\s*");
+    }
+
     public ImageFilter get(String paramString) {
         return getSupplier(paramString).wrap().get();
     }
 
     Supplierex<ImageFilter> getSupplier(String paramString) {
+        FilterDescriptor pair = parseFilterDescriptor(paramString);
+        String name = pair.getName();
+        List<String> parameters = pair.getParameters();
+        if (byAlias.containsKey(name)) {
+            return byAlias.get(name);
+        }
+        Class<? extends ImageFilter> aClass = Optionalex.ofNullable(bySimpleName.getOrDefault(name, byFullName.get(name)))
+                .orElseThrow();
+        return () -> aClass
+                .getConstructor()
+                .newInstance()
+                .init(parameters);
+    }
+
+    private FilterDescriptor parseFilterDescriptor(String paramString) {
         String[] split = paramString.split(" ");
         String name = split[0].toLowerCase();
         List<String> parameters = new ArrayList<>();
@@ -82,15 +115,6 @@ public enum ImageFilters {
                     .map(String::trim)
                     .collect(Collectors.toList());
         }
-        if (byAlias.containsKey(name)) {
-            return byAlias.get(name);
-        }
-        Class<? extends ImageFilter> aClass = Optionalex.ofNullable(bySimpleName.getOrDefault(name, byFullName.get(name)))
-                .orElseThrow();
-        List<String> finalParameters = parameters;
-        return () -> aClass
-                .getConstructor()
-                .newInstance()
-                .init(finalParameters);
+        return new FilterDescriptor(name, parameters);
     }
 }

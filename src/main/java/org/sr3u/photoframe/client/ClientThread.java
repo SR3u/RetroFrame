@@ -60,7 +60,7 @@ public class ClientThread extends Thread {
                     out.flush();
                     int metadataSize = Main.intFromByteArray(in.readNBytes(4));
                     String json = new String(in.readNBytes(metadataSize));
-                    Map<String, Object> metaData = GSON.fromJson(json, Map.class);
+                    Map<String, Object> metaData = GSON.<Map>fromJson(json, Map.class);
                     int imageSize = Main.intFromByteArray(in.readNBytes(4));
                     log.info("Metadata: " + json);
                     imageWindow.displayImageAndMetadata(in, metaData);

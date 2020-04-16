@@ -1,6 +1,7 @@
 package org.sr3u.photoframe.settings;
 
 import lombok.Builder;
+import lombok.Data;
 import lombok.Value;
 
 import java.io.*;
@@ -54,7 +55,7 @@ public class Settings implements Fillable {
         return properties;
     }
 
-    public Map<String,Class<?>> getPropertiesClasses() {
+    public Map<String, Class<?>> getPropertiesClasses() {
         Map<String, Class<?>> properties = this.toPropertiesClasses();
         properties.putAll(this.server.toPropertiesClasses());
         properties.putAll(this.client.toPropertiesClasses());
@@ -106,7 +107,7 @@ public class Settings implements Fillable {
         }
     }
 
-    @Value
+    @Data
     @Builder
     public static class Client implements Fillable {
         @Builder.Default

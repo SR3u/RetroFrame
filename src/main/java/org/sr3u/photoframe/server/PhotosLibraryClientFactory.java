@@ -27,7 +27,7 @@ import java.util.List;
 public class PhotosLibraryClientFactory {
     private static final java.io.File DATA_STORE_DIR =
             //new java.io.File(PhotosLibraryClientFactory.class.getResource("/").getPath(), "credentials");
-            new java.io.File("./","credentials");
+            new java.io.File("./", "credentials");
     private static final JsonFactory JSON_FACTORY = JacksonFactory.getDefaultInstance();
     private static final int LOCAL_RECEIVER_PORT = 61984;
 
