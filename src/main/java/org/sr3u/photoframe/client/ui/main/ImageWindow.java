@@ -5,6 +5,7 @@ import lombok.Getter;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.sr3u.photoframe.client.filters.ImageFilter;
+import org.sr3u.photoframe.client.ui.ClientWindow;
 import org.sr3u.photoframe.client.ui.menu.PopupClickListener;
 import org.sr3u.photoframe.server.Main;
 
@@ -16,19 +17,17 @@ import java.awt.image.BufferedImage;
 import java.io.BufferedInputStream;
 import java.io.InputStream;
 import java.lang.reflect.Method;
-import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Map;
 import java.util.Optional;
 
 @Getter
-public class ImageWindow {
+public class ImageWindow extends ClientWindow {
     public static final String TITLE_NAME = "Retro Frame ";
     public static final KeyStroke ALT_ENTER = KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, InputEvent.ALT_DOWN_MASK);
     private static final Object FULLSCREEN_ACTION = ImageWindow.class.getCanonicalName() + ".fullScreenAction";
-    private final ImageFilter imageFilter;
-    JFrame frame;
+    private ImageFilter imageFilter;
     ImagePanel imagePanel;
     OutlineLabel metadataLabel;
     private static final Logger log = LogManager.getLogger(ImageWindow.class);
@@ -39,13 +38,12 @@ public class ImageWindow {
     private Point regularLocation = new Point(0, 0);
 
     public ImageWindow(boolean fullScreen, ImageFilter imageFilter) {
+        super();
         this.imageFilter = imageFilter;
         createComponents(fullScreen);
     }
 
     private void createComponents(boolean fullScreen) {
-        frame = new JFrame();
-        setIcon();
         if (imagePanel == null) {
             imagePanel = new ImagePanel(imageFilter);
         }
@@ -62,7 +60,7 @@ public class ImageWindow {
         frame.add(imagePanel, BorderLayout.CENTER);
         frame.setVisible(true);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        if(metadataLabel == null) {
+        if (metadataLabel == null) {
             metadataLabel = new OutlineLabel("Waiting for server...");
         }
         imagePanel.add(metadataLabel, BorderLayout.SOUTH);
@@ -76,9 +74,7 @@ public class ImageWindow {
                 }
                 frame.repaint();
                 imagePanel.setSize(frame.getSize());
-                frame.invalidate();
-                frame.validate();
-                frame.repaint();
+                forceRedraw();
             }
 
             @Override
@@ -102,23 +98,6 @@ public class ImageWindow {
         }
         imagePanel.getActionMap().put(FULLSCREEN_ACTION, fullScreenAction);
         imagePanel.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(ALT_ENTER, FULLSCREEN_ACTION);
-    }
-
-    private void setIcon() {
-        URL url = ClassLoader.getSystemResource("org/sr3u/photoframe/client/icon.png");
-        Toolkit kit = Toolkit.getDefaultToolkit();
-        Image img = kit.createImage(url);
-        frame.setIconImage(img);
-        try {
-            //this is new since JDK 9
-            final Taskbar taskbar = Taskbar.getTaskbar();
-            //set icon for mac os (and other systems which do support this method)
-            taskbar.setIconImage(img);
-        } catch (UnsupportedOperationException e) {
-            log.error("The os does not support: 'Taskbar.setIconImage'");
-        } catch (SecurityException e) {
-            log.error("There was a security exception for: 'Taskbar.setIconImage'");
-        }
     }
 
     private void handleTransparency() {
@@ -164,11 +143,15 @@ public class ImageWindow {
                     metadataLabel.setText("");
                 }
                 frame.setTitle(TITLE_NAME + metaDataRendered);
-                frame.invalidate();
-                frame.validate();
-                frame.repaint();
+                forceRedraw();
             });
         }
+    }
+
+    private void forceRedraw() {
+        frame.invalidate();
+        frame.validate();
+        frame.repaint();
     }
 
     private static <T> Optional<T> extract(@SuppressWarnings("rawtypes") Map map, Object key, Class<T> clazz) {
@@ -235,5 +218,10 @@ public class ImageWindow {
         createComponents(fullScreen);
         this.frame.setTitle(title);
         frame.dispatchEvent(new WindowEvent(frame, WindowEvent.WINDOW_CLOSING));
+    }
+
+    public void setImageFilter(ImageFilter imageFilter) {
+        this.imageFilter = imageFilter;
+        this.imagePanel.setImageFilter(imageFilter).thenAccept(v -> forceRedraw());
     }
 }

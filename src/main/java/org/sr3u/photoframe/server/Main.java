@@ -116,7 +116,7 @@ public class Main {
         final File currentJar = new File(Main.class.getProtectionDomain().getCodeSource().getLocation().toURI());
 
         /* is it a jar file? */
-        if(!currentJar.getName().endsWith(".jar")) {
+        if (!currentJar.getName().endsWith(".jar")) {
             return;
         }
 

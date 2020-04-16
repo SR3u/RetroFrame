@@ -5,7 +5,8 @@ import com.google.common.collect.ImmutableList;
 import java.util.List;
 
 public final class Resources {
-    private Resources() {}
+    private Resources() {
+    }
 
     public static final String TITLE = "Photos Library API Sample";
     public static final String GOOGLE_PHOTOS_ICON_RESOURCE = "google_photos.png";

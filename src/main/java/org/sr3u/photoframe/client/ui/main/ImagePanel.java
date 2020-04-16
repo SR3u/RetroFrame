@@ -21,7 +21,7 @@ class ImagePanel extends JComponent {
 
     private static final Logger log = LogManager.getLogger(ImagePanel.class);
 
-    private final ImageFilter imageFilter;
+    private ImageFilter imageFilter;
     private Image image;
     private Image originalImage;
     private Image blurryBackgroundImage;
@@ -49,7 +49,7 @@ class ImagePanel extends JComponent {
     @Override
     public void setSize(Dimension d) {
         super.setSize(d);
-        adjustSize(d.getWidth(), d.getHeight());
+        adjustSize(d.getWidth(), d.getHeight(), imageFilter);
     }
 
     @Override
@@ -59,11 +59,18 @@ class ImagePanel extends JComponent {
     }
 
     private CompletableFuture<Void> adjustSize(double width, double height) {
+        return adjustSize(width, height, null);
+    }
+
+    private CompletableFuture<Void> adjustSize(double width, double height, ImageFilter imageFilter) {
         boolean sizeChanged = (previousWidth != width &&
                 previousHeight != height);
-        boolean shouldRepaint = sizeChanged || forceAdjustSize;
+        boolean shouldRepaint = sizeChanged || forceAdjustSize || (imageFilter != null);
         if (originalImage != null && shouldRepaint) {
-            return applyFiltersAsync(width, height).thenAccept(v -> {
+            if (imageFilter == null) {
+                imageFilter = this.imageFilter;
+            }
+            return applyFiltersAsync(width, height, imageFilter).thenAccept(v -> {
                 previousWidth = (int) width;
                 previousHeight = (int) height;
                 forceAdjustSize = false;
@@ -77,7 +84,7 @@ class ImagePanel extends JComponent {
         return blur.filter(ImageUtil.buffer(scaledInstance), null).getScaledInstance((int) (width + (width / 5)), (int) (height + height / 5), Image.SCALE_FAST);
     }
 
-    private CompletableFuture<Void> applyFiltersAsync(double width, double height) {
+    private CompletableFuture<Void> applyFiltersAsync(double width, double height, final ImageFilter imageFilter) {
         return CompletableFuture.runAsync(() -> {
             if (originalImage == null) {
                 return;
@@ -141,5 +148,10 @@ class ImagePanel extends JComponent {
 
     private int avg(int a, int b) {
         return (a - b) / 2;
+    }
+
+    public CompletableFuture<Void> setImageFilter(ImageFilter imageFilter) {
+        this.imageFilter = imageFilter;
+        return adjustSize(getWidth(), getHeight(), imageFilter).thenAccept(v -> forceRedraw());
     }
 }

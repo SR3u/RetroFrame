@@ -3,6 +3,7 @@ package org.sr3u.photoframe.client.ui.settings;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.sr3u.photoframe.client.ui.main.ImageWindow;
+import org.sr3u.photoframe.misc.util.Pair;
 import org.sr3u.photoframe.server.Main;
 import org.sr3u.photoframe.settings.Settings;
 import sr3u.streamz.streams.Streamex;
@@ -17,10 +18,9 @@ import java.util.Properties;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public class SettingsWindow {
+public class SettingsWindow extends ScrollableWindow {
     private static final Logger log = LogManager.getLogger(SettingsWindow.class);
 
-    public static final Dimension MINIMUM_SIZE = new Dimension(200, 200);
     private final Settings currentSettings;
     private final Properties settings;
     private final Map<String, Class<?>> settingsClasses;
@@ -37,26 +37,12 @@ public class SettingsWindow {
             new Pair<>(String.class, StringSettingPanel.class)
     ).collect(Collectors.toMap(Pair::getKey, Pair::getValue, (a, b) -> b));
 
-    JFrame frame;
-    JScrollPane scrollPane;
-    JPanel scrollPaneContent;
-
     public SettingsWindow(Settings currentSettings) {
-        frame = new JFrame();
-        frame.setTitle(ImageWindow.TITLE_NAME + " Settings");
-        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        frame.setMinimumSize(MINIMUM_SIZE);
-        scrollPane = new JScrollPane();
-        scrollPane.setMinimumSize(MINIMUM_SIZE);
-        scrollPaneContent = new JPanel();
-        scrollPaneContent.setMinimumSize(MINIMUM_SIZE);
-        scrollPaneContent.setLayout(new BoxLayout(scrollPaneContent, BoxLayout.Y_AXIS));
-        scrollPane.setViewportView(scrollPaneContent);
+        super(ImageWindow.TITLE_NAME + " Settings");
         this.currentSettings = currentSettings;
         this.settings = currentSettings.getProperties();
         settingsClasses = currentSettings.getPropertiesClasses();
         fillSettings();
-        frame.add(scrollPane);
         frame.addWindowListener(new java.awt.event.WindowAdapter() {
             @Override
             public void windowClosing(java.awt.event.WindowEvent windowEvent) {
@@ -103,7 +89,7 @@ public class SettingsWindow {
                     return panelClass.getConstructor(String.class, String.class).newInstance(p.getKey(), p.getValue());
                 }).collect(Collectors.toList());
         settingPanels.forEach(sp -> {
-            sp.setMinimumSize(new Dimension(32, 100));
+            sp.setMinimumSize(new Dimension(32, 32));
             scrollPaneContent.add(sp);
         });
 
