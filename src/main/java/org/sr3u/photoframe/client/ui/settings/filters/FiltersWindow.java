@@ -26,16 +26,17 @@ public class FiltersWindow extends ScrollableWindow {
             scrollPaneContent.remove(technicalFilterPanel);
             FilterPanel identity = new FilterPanel("identity", "");
             addPanel(identity);
+            identity.setIndex(panel.getIndex());
             identity.setDelegate(this);
             scrollPaneContent.add(technicalFilterPanel);
-            forceRepaint();
+            up(identity);
         }
 
         @Override
         public void delete(FilterPanel panel) {
             removePanel(panel);
             panel.setDelegate(null);
-            forceRepaint();
+            updateIndices(null);
         }
 
         @Override
@@ -51,14 +52,16 @@ public class FiltersWindow extends ScrollableWindow {
         private void updateIndices(UpDownButtonsPanel panel) {
             allPanels.forEach(scrollPaneContent::remove);
             List<UpDownButtonsPanel> tmp = new ArrayList<>(allPanels.size());
-            allPanels.stream().filter(p -> panel != p).forEach(tmp::add);
-            if (panel.getIndex() < 0) {
-                panel.setIndex(0);
+            allPanels.stream().filter(p -> p != panel).forEach(tmp::add);
+            if (panel != null) {
+                if (panel.getIndex() < 0) {
+                    panel.setIndex(0);
+                }
+                if (panel.getIndex() >= allPanels.size()) {
+                    panel.setIndex(allPanels.size() - 1);
+                }
+                tmp.add(panel.getIndex(), panel);
             }
-            if (panel.getIndex() >= allPanels.size()) {
-                panel.setIndex(allPanels.size() - 1);
-            }
-            tmp.add(panel.getIndex(), panel);
             allPanels.clear();
             for (int i = 0; i < tmp.size(); i++) {
                 UpDownButtonsPanel current = tmp.get(i);
@@ -117,6 +120,8 @@ public class FiltersWindow extends ScrollableWindow {
         technicalFilterPanel = new TechnicalFilterPanel();
         technicalFilterPanel.setDelegate(panelDelegate);
         addPanel(technicalFilterPanel);
+        technicalFilterPanel.setIndex(allPanels.size() - 1);
+        panelDelegate.down(technicalFilterPanel);
         frame.pack();
         frame.setVisible(true);
     }
