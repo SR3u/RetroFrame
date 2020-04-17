@@ -94,6 +94,9 @@ public class FilterPanel extends UpDownButtonsPanel {
 
     public FilterDescriptor toFilterDescriptor(boolean ignoreErrors) {
         String name = (String) this.name.getSelectedItem();
+        if (name != null) {
+            name = name.trim().toLowerCase();
+        }
         if (!ignoreErrors && !ImageFilters.getAllAvailable().contains(name)) {
             throw new RuntimeException("Invalid Filter " + name);
         }
@@ -102,6 +105,9 @@ public class FilterPanel extends UpDownButtonsPanel {
             parameters = this.parameters.getText().trim();
         } else {
             String selectedItem = (String) this.paletteParameter.getSelectedItem();
+            if (selectedItem != null) {
+                selectedItem = selectedItem.trim().toLowerCase();
+            }
             if (!ignoreErrors && !Palette.isValid(selectedItem)) {
                 throw new RuntimeException("Invalid Palette " + selectedItem);
             }
