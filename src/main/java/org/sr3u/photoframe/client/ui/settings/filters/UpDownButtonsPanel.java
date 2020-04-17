@@ -16,6 +16,10 @@ public class UpDownButtonsPanel extends JPanel {
     protected int index = 0;
 
     public UpDownButtonsPanel() {
+        init();
+    }
+
+    public void init() {
         this.add(up);
         this.add(down);
         up.addActionListener(e -> {

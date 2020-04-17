@@ -132,6 +132,7 @@ public class FiltersWindow extends ScrollableWindow {
                 .peek(fp -> fp.setMinimumSize(new Dimension(32, 32)))
                 .peek(scrollPaneContent::add)
                 .peek(fp -> fp.setDelegate(panelDelegate))
+                .peek(fp -> fp.setWindow(this))
                 .collect(Collectors.toList());
         technicalFilterPanel = new TechnicalFilterPanel();
         technicalFilterPanel.setDelegate(panelDelegate);
@@ -150,5 +151,11 @@ public class FiltersWindow extends ScrollableWindow {
     private void removePanel(UpDownButtonsPanel panel) {
         scrollPaneContent.remove(panel);
         allPanels.remove(panel);
+    }
+
+    public void forceRedraw() {
+        frame.invalidate();
+        frame.revalidate();
+        frame.repaint();
     }
 }

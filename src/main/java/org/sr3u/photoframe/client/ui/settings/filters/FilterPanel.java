@@ -1,6 +1,7 @@
 package org.sr3u.photoframe.client.ui.settings.filters;
 
 
+import lombok.Setter;
 import org.sr3u.photoframe.client.filters.FilterDescriptor;
 import org.sr3u.photoframe.client.filters.ImageFilter;
 import org.sr3u.photoframe.client.filters.ImageFilters;
@@ -11,15 +12,19 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class FilterPanel extends UpDownButtonsPanel {
-    protected final JComboBox<String> name;
-    protected final JTextField parameters;
-    protected final JComboBox<String> paletteParameter;
+    protected JComboBox<String> name;
+    protected JTextField parameters;
+    protected JComboBox<String> paletteParameter;
 
 
     protected final JButton delete = new JButton("x");
+
+    @Setter
+    private FiltersWindow window;
 
 
     public FilterPanel(FilterDescriptor filterDescriptor) {
@@ -31,10 +36,18 @@ public class FilterPanel extends UpDownButtonsPanel {
     }
 
     public FilterPanel(String name, String parameters) {
+        init(name, parameters);
+    }
+
+    public void init(String name, String parameters) {
+        super.init();
+        this.removeAll();
         List<String> allFilters = ImageFilters.getAllAvailable();
         this.name = new JComboBox<>(allFilters.toArray(new String[0]));
         this.name.setSelectedItem(name);
         this.name.setEditable(true);
+        this.name.getEditor().addActionListener(e -> refresh());
+        this.name.addActionListener(e -> refresh());
         this.add(this.name);
         ImageFilter.Info info = ImageFilters.aboutFilter(name);
         Component parametersComponent = null;
@@ -60,6 +73,16 @@ public class FilterPanel extends UpDownButtonsPanel {
         this.add(parametersComponent);
         this.delete.addActionListener(e -> getDelegate().delete(FilterPanel.this));
         this.add(this.delete);
+    }
+
+    private void refresh() {
+        try {
+            FilterDescriptor filterDescriptor = this.toFilterDescriptor();
+            this.init(filterDescriptor.getName(),
+                    String.join(" ", filterDescriptor.getParameters()));
+            Optional.ofNullable(window).ifPresent(FiltersWindow::forceRedraw);
+        } catch (Exception ignored) {
+        }
     }
 
     public FilterDescriptor toFilterDescriptor() {
