@@ -18,6 +18,6 @@ public class FloydSteinberg extends ErrDiffusionDither {
 
     @Override
     public String toString() {
-        return "Floyd Steinberg Dither";
+        return "Floyd Steinberg Dither " + paletteString();
     }
 }

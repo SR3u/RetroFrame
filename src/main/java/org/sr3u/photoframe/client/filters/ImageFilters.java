@@ -23,7 +23,8 @@ public enum ImageFilters {
     ));
 
     ImageFilters() {
-        Reflections reflections = new Reflections(new ConfigurationBuilder().setUrls(ClasspathHelper.forJavaClassPath()));
+        Reflections reflections =
+                new Reflections(new ConfigurationBuilder().setUrls(ClasspathHelper.forJavaClassPath()));
         Set<Class<? extends ImageFilter>> subTypesOf = reflections.getSubTypesOf(ImageFilter.class);
         for (Class<? extends ImageFilter> c : subTypesOf) {
             if (!excludedClasses.contains(c) && !c.isInterface() && !Modifier.isAbstract(c.getModifiers())) {
@@ -58,6 +59,10 @@ public enum ImageFilters {
                 INSTANCE.byAlias.keySet().stream(),
                 INSTANCE.bySimpleName.keySet().stream()
         ).sorted().collect(Collectors.toList());
+    }
+
+    public static boolean isValid(FilterDescriptor filterDescriptor) {
+        return INSTANCE.get(filterDescriptor.toString()) != null;
     }
 
     private void addAlias(String alias, String value) {
@@ -95,7 +100,8 @@ public enum ImageFilters {
         if (byAlias.containsKey(name)) {
             return byAlias.get(name);
         }
-        Class<? extends ImageFilter> aClass = Optionalex.ofNullable(bySimpleName.getOrDefault(name, byFullName.get(name)))
+        Class<? extends ImageFilter> aClass = Optionalex.ofNullable(bySimpleName.getOrDefault(name,
+                byFullName.get(name)))
                 .orElseThrow();
         return () -> aClass
                 .getConstructor()
@@ -116,5 +122,9 @@ public enum ImageFilters {
                     .collect(Collectors.toList());
         }
         return new FilterDescriptor(name, parameters);
+    }
+
+    public static ImageFilter.Info aboutFilter(String name) {
+        return INSTANCE.get(name).getInfo();
     }
 }

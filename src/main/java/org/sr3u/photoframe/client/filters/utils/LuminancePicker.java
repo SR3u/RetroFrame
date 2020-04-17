@@ -20,4 +20,9 @@ public class LuminancePicker extends BruteForcePicker {
         final double luma2 = (b.getRed() * 299 + b.getGreen() * 587 + b.getBlue() * 114) / 1000.0;
         return luma1 - luma2;
     }
+
+    @Override
+    public String getName() {
+        return "luminance";
+    }
 }

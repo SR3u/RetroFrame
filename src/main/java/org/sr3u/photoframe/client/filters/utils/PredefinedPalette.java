@@ -1,5 +1,7 @@
 package org.sr3u.photoframe.client.filters.utils;
 
+import sr3u.streamz.streams.Streamex;
+
 import java.awt.*;
 import java.util.Arrays;
 import java.util.Collection;
@@ -92,5 +94,15 @@ public class PredefinedPalette extends Palette {
 
     protected Color[] getColors() {
         return palette;
+    }
+
+    @Override
+    public String toString() {
+        if (name != null) {
+            return name;
+        }
+        return "Palette " + " " + colorPicker.getName() + " " + Streamex.of(getColors())
+                .mapToString(c -> String.format("#%02x%02x%02x", c.getRed(), c.getGreen(), c.getBlue()))
+                .joined(" ");
     }
 }

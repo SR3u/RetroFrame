@@ -1,5 +1,7 @@
 package org.sr3u.photoframe.client.ui.settings.filters;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.sr3u.photoframe.client.filters.FilterDescriptor;
 import org.sr3u.photoframe.client.filters.ImageFilter;
 import org.sr3u.photoframe.client.filters.ImageFilters;
@@ -15,6 +17,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class FiltersWindow extends ScrollableWindow {
+
+    private static final Logger log = LogManager.getLogger(FiltersWindow.class);
 
     private final List<UpDownButtonsPanel> allPanels;
     private final TechnicalFilterPanel technicalFilterPanel;
@@ -74,29 +78,41 @@ public class FiltersWindow extends ScrollableWindow {
 
         @Override
         public void apply() {
-            String newFilterChain = Streamex.ofStream(allPanels.stream())
-                    .filter(p -> p instanceof FilterPanel)
-                    .map(p -> (FilterPanel) p)
-                    .map(FilterPanel::toFilterDescriptor)
-                    .mapToString(FilterDescriptor::toString)
-                    .joined(" | ");
-            if (newFilterChain == null || newFilterChain.trim().isEmpty()) {
-                newFilterChain = "identity";
-            }
             try {
-                ImageFilter parsed = ImageFilters.parse(newFilterChain);
-                imageWindow.setImageFilter(parsed);
+                String newFilterChain = Streamex.ofStream(allPanels.stream())
+                        .filter(p -> p instanceof FilterPanel)
+                        .map(p -> (FilterPanel) p)
+                        .map(FilterPanel::toFilterDescriptor)
+                        .mapToString(FilterDescriptor::toString)
+                        .joined(" | ");
+                if (newFilterChain == null || newFilterChain.trim().isEmpty()) {
+                    newFilterChain = "identity";
+                }
+                try {
+                    ImageFilter parsed = ImageFilters.parse(newFilterChain);
+                    imageWindow.setImageFilter(parsed);
+                } catch (Exception e) {
+                    JOptionPane.showMessageDialog(frame, "Failed to set filters:\n" + newFilterChain,
+                            "ERROR", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+                Main.settings.getClient().setImageFitlerChain(newFilterChain);
             } catch (Exception e) {
-                JOptionPane.showMessageDialog(frame, "Failed to set filters:\n" + newFilterChain, "ERROR", JOptionPane.ERROR_MESSAGE);
-                return;
+                JOptionPane.showMessageDialog(frame, "Failed to set filters:\n" + e.getMessage(),
+                        "ERROR", JOptionPane.ERROR_MESSAGE);
+                throw new RuntimeException(e);
             }
-            Main.settings.getClient().setImageFitlerChain(newFilterChain);
         }
 
         @Override
         public void applyAndSave() {
-            apply();
-            Main.settings.save(Main.SETTINGS_PROPERTIES);
+            try {
+                apply();
+                Main.settings.save(Main.SETTINGS_PROPERTIES);
+            } catch (Exception e) {
+                log.error(e);
+                e.printStackTrace();
+            }
         }
     };
 

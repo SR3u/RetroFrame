@@ -20,6 +20,6 @@ public class Atkinson extends ErrDiffusionDither {
 
     @Override
     public String toString() {
-        return "Atkinson Dither";
+        return "Atkinson Dither " + paletteString();
     }
 }

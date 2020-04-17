@@ -3,6 +3,7 @@ package org.sr3u.photoframe.client.filters.utils;
 import java.awt.*;
 import java.util.List;
 import java.util.*;
+import java.util.stream.Collectors;
 
 public abstract class Palette {
     private static final Map<String, Palette> ALL = new HashMap<>();
@@ -28,6 +29,18 @@ public abstract class Palette {
         return parse(name, Arrays.asList(paletteString.split(" ")));
     }
 
+    public static List<String> allNames() {
+        return ALL.keySet().stream().sorted().collect(Collectors.toList());
+    }
+
+    public static boolean isValid(String selectedItem) {
+        Palette parse = parse(null, selectedItem);
+        if (parse instanceof PredefinedPalette) {
+            return parse.toPredefined().getColors().length > 0;
+        }
+        return parse != null;
+    }
+
     public Palette append(Palette... palettes) {
         return new MultiPalette(this).append(palettes);
     }
@@ -51,11 +64,6 @@ public abstract class Palette {
         return ALL.get(param);
     }
 
-    @Override
-    public String toString() {
-        return name;
-    }
-
     public Color closestColor(int argb) {
         return closestColor(new Color(argb));
     }
@@ -72,5 +80,13 @@ public abstract class Palette {
 
     public static Palette defaultPalette() {
         return DefinedPalettes.BNW;
+    }
+
+    @Override
+    public String toString() {
+        if (name != null) {
+            return name;
+        }
+        return super.toString();
     }
 }
