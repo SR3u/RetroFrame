@@ -113,6 +113,9 @@ public class DefinedPalettes {
     public static final MonochromeScale CYAN = new MonochromeScale("Cyan", Color.decode("#00FFFF"), 256);
     public static final MonochromeScale MAGENTA = new MonochromeScale("Magenta", Color.decode("#FF00FF"), 256);
     public static final MonochromeScale YELLOW = new MonochromeScale("Yellow", Color.decode("#FFFF00"), 256);
+    public static final MonochromeScale RED = new MonochromeScale("Red", Color.decode("#FF0000"), 256);
+    public static final MonochromeScale GREEN = new MonochromeScale("Green", Color.decode("#00FF00"), 256);
+    public static final MonochromeScale BLUE = new MonochromeScale("Blue", Color.decode("#0000FF"), 256);
     public static final Palette CMYK = new MultiPalette("CMYK", new LuminancePicker(), CYAN, MAGENTA, YELLOW, BNW);
 
     public static final PredefinedPalette XORG = Palette.parse("Xorg", "bruteforce " +
@@ -209,5 +212,7 @@ public class DefinedPalettes {
             "#FF0066 #FF0099 #FF00CC #FF00FF #FF3300 #FF3333 #FF3366 #FF3399 #FF33CC #FF33FF #FF6600 #FF6633 #FF6666 " +
             "#FF6699 #FF66CC #FF66FF #FF9900 #FF9933 #FF9966 #FF9999 #FF99CC #FF99FF #FFCC00 #FFCC33 #FFCC66 #FFCC99 " +
             "#FFCCCC #FFCCFF #FFFF00 #FFFF33 #FFFF66 #FFFF99 #FFFFCC #FFFFFF").toPredefined();
+
+    public static final Technicolor TECHNICOLOR = new Technicolor("Technicolor");
 
 }
