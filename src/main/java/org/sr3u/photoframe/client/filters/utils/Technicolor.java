@@ -6,18 +6,13 @@ import static org.sr3u.photoframe.client.filters.utils.ColorspaceUtil.*;
 
 public class Technicolor extends Palette {
 
-    private Palette orangeRed = new MonochromeScale(null, Color.decode("#FF00AB"), 256);
-    private Palette cyanGreen = new MonochromeScale(null, Color.decode("#00FF84"), 256);
-
     protected Technicolor(String name) {
         super(name);
     }
 
     @Override
     protected PredefinedPalette toPredefined() {
-        PredefinedPalette result = new PredefinedPalette(null, orangeRed.toPredefined());
-        result.append(cyanGreen.toPredefined());
-        return result;
+        return new MultiPalette(DefinedPalettes.RED, DefinedPalettes.CYAN).toPredefined();
     }
 
     @Override
