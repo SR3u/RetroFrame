@@ -32,7 +32,7 @@ public class Technicolor extends Palette {
         cmy2[MAGENTA_INDEX] = 0;
 
         float[] cmyR = new float[]{
-                Math.min(cmy1[CYAN_INDEX] + cmy2[CYAN_INDEX], 1),
+                Math.min((cmy1[CYAN_INDEX] + cmy2[CYAN_INDEX]) * 0.55f, 1),
                 Math.min(cmy1[MAGENTA_INDEX] + cmy2[MAGENTA_INDEX], 1),
                 Math.min(cmy1[YELLOW_INDEX] + cmy2[YELLOW_INDEX], 1)
         };
