@@ -32,4 +32,13 @@ public interface PaletteParser extends ImageFilter {
     }
 
     void setPalette(Palette palette);
+
+    @Override
+    default ImageFilter.Info getInfo() {
+        return Info.builder()
+                .paletteArgument(true)
+                .build();
+    }
+
+    String paletteString();
 }

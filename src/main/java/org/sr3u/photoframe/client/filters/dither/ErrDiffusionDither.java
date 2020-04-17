@@ -144,8 +144,14 @@ public abstract class ErrDiffusionDither implements Ditherer, PaletteParser {
 
     @Override
     public String toString() {
-        return "Error Diffusion Dither";
+        return "Error Diffusion Dither " + paletteString();
     }
+
+    @Override
+    public String paletteString() {
+        return palette.toString();
+    }
+
 
     @Override
     public void setPalette(Palette palette) {

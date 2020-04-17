@@ -62,4 +62,9 @@ public class BruteForcePicker implements ColorPicker {
     public static double normalizedDistance(Color c1, Color c2) {
         return squareDistance(c1, c2) / 195075.0;
     }
+
+    @Override
+    public String getName() {
+        return "bruteforce";
+    }
 }

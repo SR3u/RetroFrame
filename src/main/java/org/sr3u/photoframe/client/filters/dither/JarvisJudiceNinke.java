@@ -18,7 +18,7 @@ public class JarvisJudiceNinke extends ErrDiffusionDither {
 
     @Override
     public String toString() {
-        return "Jarvis Judice Ninke";
+        return "Jarvis Judice Ninke Dither " + paletteString();
     }
 
 }

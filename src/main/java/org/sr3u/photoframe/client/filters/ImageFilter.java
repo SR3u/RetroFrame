@@ -1,6 +1,8 @@
 package org.sr3u.photoframe.client.filters;
 
+import lombok.Builder;
 import lombok.Data;
+import lombok.Value;
 import sr3u.streamz.functionals.BiFunctionex;
 
 import java.awt.*;
@@ -24,8 +26,19 @@ public interface ImageFilter extends BiFunctionex<ImageFilter.Context, Image, Im
         return apply(image);
     }
 
+    default Info getInfo() {
+        return Info.builder().build();
+    }
+
     @Data
-    static class Context {
+    class Context {
         private Dimension originalSize;
+    }
+
+    @Value
+    @Builder
+    class Info {
+        @Builder.Default
+        boolean paletteArgument = false;
     }
 }

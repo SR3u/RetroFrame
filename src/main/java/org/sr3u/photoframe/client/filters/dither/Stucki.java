@@ -18,7 +18,7 @@ public class Stucki extends ErrDiffusionDither {
 
     @Override
     public String toString() {
-        return "Stucki";
+        return "Stucki Dither  " + paletteString();
     }
 
 }

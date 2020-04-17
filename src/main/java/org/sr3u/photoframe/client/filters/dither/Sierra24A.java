@@ -15,6 +15,6 @@ public class Sierra24A extends ErrDiffusionDither {
 
     @Override
     public String toString() {
-        return "Sierra Lite 2-4A";
+        return "Sierra Lite 2-4A Dither  " + paletteString();
     }
 }

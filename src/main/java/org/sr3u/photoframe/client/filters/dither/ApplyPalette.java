@@ -33,7 +33,7 @@ public final class ApplyPalette implements Ditherer, PaletteParser {
 
     @Override
     public String toString() {
-        return "No Dither";
+        return "ApplyPalette " + paletteString();
     }
 
     @Override
@@ -45,4 +45,10 @@ public final class ApplyPalette implements Ditherer, PaletteParser {
     public void reset() {
         this.palette.reset();
     }
+
+    @Override
+    public String paletteString() {
+        return palette.toString();
+    }
+
 }

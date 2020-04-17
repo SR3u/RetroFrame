@@ -15,4 +15,6 @@ public interface ColorPicker {
     void reset();
 
     Color cachedColor(int rgb);
+
+    String getName();
 }

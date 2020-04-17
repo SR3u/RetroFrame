@@ -16,7 +16,7 @@ public class ClientWindow {
         setIcon();
     }
 
-    private void setIcon() {
+    protected void setIcon() {
         URL url = ClassLoader.getSystemResource("org/sr3u/photoframe/client/icon.png");
         Toolkit kit = Toolkit.getDefaultToolkit();
         Image img = kit.createImage(url);

@@ -56,6 +56,7 @@ See [Filters.md](https://github.com/SR3u/gphotorepo/blob/master/documentation/Fi
 * `RGB884` -> [8-8-4 levels RGB](https://en.wikipedia.org/wiki/List_of_software_palettes#8-8-4_levels_RGB)
 * `RISCOS` -> [RISC OS default palette](https://en.wikipedia.org/wiki/List_of_software_palettes#RISC_OS_default_palette)
 
+* `WebSafe` -> [216 web-safe colors palette](https://en.wikipedia.org/wiki/Web_colors#Web-safe_colors)
 * `Windows16` -> [Microsoft Windows default 16-color palette](https://en.wikipedia.org/wiki/List_of_software_palettes#Microsoft_Windows_default_16-color_palette)
 * `Windows20` -> [Microsoft Windows default 20-color palette](https://en.wikipedia.org/wiki/List_of_software_palettes#Microsoft_Windows_default_20-color_palette)
 * `Windows` -> same as `Windows16` [Microsoft Windows default 16-color palette](https://en.wikipedia.org/wiki/List_of_software_palettes#Microsoft_Windows_default_16-color_palette)
