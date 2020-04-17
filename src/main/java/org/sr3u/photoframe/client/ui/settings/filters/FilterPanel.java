@@ -80,14 +80,21 @@ public class FilterPanel extends UpDownButtonsPanel {
             FilterDescriptor filterDescriptor = this.toFilterDescriptor();
             this.init(filterDescriptor.getName(),
                     String.join(" ", filterDescriptor.getParameters()));
+            this.invalidate();
+            this.revalidate();
+            this.repaint();
             Optional.ofNullable(window).ifPresent(FiltersWindow::forceRedraw);
         } catch (Exception ignored) {
         }
     }
 
     public FilterDescriptor toFilterDescriptor() {
+        return toFilterDescriptor(false);
+    }
+
+    public FilterDescriptor toFilterDescriptor(boolean ignoreErrors) {
         String name = (String) this.name.getSelectedItem();
-        if (!ImageFilters.getAllAvailable().contains(name)) {
+        if (!ignoreErrors && !ImageFilters.getAllAvailable().contains(name)) {
             throw new RuntimeException("Invalid Filter " + name);
         }
         String parameters;
@@ -95,7 +102,7 @@ public class FilterPanel extends UpDownButtonsPanel {
             parameters = this.parameters.getText().trim();
         } else {
             String selectedItem = (String) this.paletteParameter.getSelectedItem();
-            if (!Palette.isValid(selectedItem)) {
+            if (!ignoreErrors && !Palette.isValid(selectedItem)) {
                 throw new RuntimeException("Invalid Palette " + selectedItem);
             }
             parameters = String.valueOf(selectedItem);
@@ -105,7 +112,7 @@ public class FilterPanel extends UpDownButtonsPanel {
                 .map(String::trim)
                 .filter(s -> !s.isEmpty())
                 .collect(Collectors.toList()));
-        if (!ImageFilters.isValid(filterDescriptor)) {
+        if (!ignoreErrors && !ImageFilters.isValid(filterDescriptor)) {
             throw new RuntimeException("Invalid Filter " + filterDescriptor);
         }
         return filterDescriptor;
