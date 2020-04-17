@@ -20,6 +20,7 @@ public class UpDownButtonsPanel extends JPanel {
     }
 
     public void init() {
+        this.removeAll();
         this.add(up);
         this.add(down);
         up.addActionListener(e -> {

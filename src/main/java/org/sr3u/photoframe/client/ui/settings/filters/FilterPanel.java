@@ -40,8 +40,8 @@ public class FilterPanel extends UpDownButtonsPanel {
     }
 
     public void init(String name, String parameters) {
-        super.init();
         this.removeAll();
+        super.init();
         List<String> allFilters = ImageFilters.getAllAvailable();
         this.name = new JComboBox<>(allFilters.toArray(new String[0]));
         this.name.setSelectedItem(name);
