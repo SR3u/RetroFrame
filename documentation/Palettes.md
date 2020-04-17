@@ -16,6 +16,7 @@ See [Filters.md](https://github.com/SR3u/gphotorepo/blob/master/documentation/Fi
 ## Available palette aliases (presets)
 
 * `BlackAndWhite` -> Two color black and white palette
+* `blue` -> 256 levels of blue color
 * `BRIGHT0` -> ZX Spectrum palette 0
 * `BRIGHT1` -> ZX Spectrum palette 1
 
@@ -38,23 +39,25 @@ See [Filters.md](https://github.com/SR3u/gphotorepo/blob/master/documentation/Fi
 
 * `GameBoy` -> [Original Nintendo GameBoy palette](https://en.wikipedia.org/wiki/List_of_video_game_console_palettes#Game_Boy) 
 * `Grayscale` -> 256 levels grayscale palette.
+* `green` -> 256 levels of green color
 
 * `Macintosh` -> Same as BlackAndWhite. Two color black and white palette, as in MacintoshClassic
 * `Macintosh16` -> [Apple Macintosh default 16-color palette](https://en.wikipedia.org/wiki/List_of_software_palettes#Apple_Macintosh_default_16-color_palette)
 * `Macintosh_System_4.1` -> Same as `Macintosh16` [Apple Macintosh default 16-color palette](https://en.wikipedia.org/wiki/List_of_software_palettes#Apple_Macintosh_default_16-color_palette)
 * `MacintoshII` -> Same as `Macintosh16` [Apple Macintosh default 16-color palette](https://en.wikipedia.org/wiki/List_of_software_palettes#Apple_Macintosh_default_16-color_palette)
 * `Macintosh2` ->  Same as `Macintosh16` [Apple Macintosh default 16-color palette](https://en.wikipedia.org/wiki/List_of_software_palettes#Apple_Macintosh_default_16-color_palette)
-
 * `magenta` -> 256 levels of magenta color
-
 * `monochrome` -> Two color black and white monochrome palette
 
+* `red` -> 256 levels of red color
 * `RGB222` -> 2 level RGB
 * `RGB666` -> [6 level RGB](https://en.wikipedia.org/wiki/List_of_software_palettes#6_level_RGB)
 * `RGB676` -> [6-7-6 levels RGB](https://en.wikipedia.org/wiki/List_of_software_palettes#6-7-6_levels_RGB)
 * `RGB685` -> [6-8-5 levels RGB](https://en.wikipedia.org/wiki/List_of_software_palettes#6-8-5_levels_RGB)
 * `RGB884` -> [8-8-4 levels RGB](https://en.wikipedia.org/wiki/List_of_software_palettes#8-8-4_levels_RGB)
 * `RISCOS` -> [RISC OS default palette](https://en.wikipedia.org/wiki/List_of_software_palettes#RISC_OS_default_palette)
+
+* `Technicolor` -> [Technicolor process 2 (Red Green subtractive)](https://en.wikipedia.org/wiki/Technicolor#Process_2) 
 
 * `WebSafe` -> [216 web-safe colors palette](https://en.wikipedia.org/wiki/Web_colors#Web-safe_colors)
 * `Windows16` -> [Microsoft Windows default 16-color palette](https://en.wikipedia.org/wiki/List_of_software_palettes#Microsoft_Windows_default_16-color_palette)

@@ -52,6 +52,8 @@ public enum ImageFilters {
         addAlias("Drawing", "applyPalette Crayola");
         addAlias("GameBoyHD", "Atkinson GameBoy");
         addAlias("GameBoy", "resize 160 144 | Atkinson GameBoy");
+        addAlias("Technicolor2", "applyPalette Technicolor");
+        addAlias("Technicolor", "Technicolor2");
     }
 
     public static List<String> getAllAvailable() {

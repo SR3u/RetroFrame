@@ -50,7 +50,7 @@ public class FilterPanel extends UpDownButtonsPanel {
         this.name.addActionListener(e -> refresh());
         this.add(this.name);
         ImageFilter.Info info = ImageFilters.aboutFilter(name);
-        Component parametersComponent = null;
+        Component parametersComponent;
         if (info.isPaletteArgument()) {
             this.parameters = null;
             List<String> strings = Streamex.ofStream(Palette.allNames().stream()).collect(Collectors.toList());
@@ -94,6 +94,9 @@ public class FilterPanel extends UpDownButtonsPanel {
 
     public FilterDescriptor toFilterDescriptor(boolean ignoreErrors) {
         String name = (String) this.name.getSelectedItem();
+        if (name != null) {
+            name = name.trim().toLowerCase();
+        }
         if (!ignoreErrors && !ImageFilters.getAllAvailable().contains(name)) {
             throw new RuntimeException("Invalid Filter " + name);
         }
@@ -102,7 +105,10 @@ public class FilterPanel extends UpDownButtonsPanel {
             parameters = this.parameters.getText().trim();
         } else {
             String selectedItem = (String) this.paletteParameter.getSelectedItem();
-            if (!ignoreErrors && !Palette.isValid(selectedItem)) {
+            if (selectedItem != null) {
+                selectedItem = selectedItem.trim().toLowerCase();
+            }
+            if (!ignoreErrors && !(selectedItem == null || selectedItem.trim().isEmpty()) && !Palette.isValid(selectedItem)) {
                 throw new RuntimeException("Invalid Palette " + selectedItem);
             }
             parameters = String.valueOf(selectedItem);

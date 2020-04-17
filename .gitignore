@@ -76,3 +76,4 @@ dependency-reduced-pom.xml
 /target/
 /credentials/
 /.idea/
+/hs_err_pid5608.log

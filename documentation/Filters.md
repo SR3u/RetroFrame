@@ -97,6 +97,8 @@ All dithering filters have the same `palette` parameter, as `applyPalette`.
 * `MacintoshClassic` -- Macintosh Classic emulation (`resize 512 342 | Atkinson Monochrome`)<br>
 * `MacintoshClassicHD` -- Macintosh Classic emulation, but without downscaling (`Atkinson Monochrome`)<br>
 * `Printer` -- Lo-Fi color printer emulation (`Atkinson CMYK`) same as `ColorPrinter`<br>
+* `Technicolor` -> [Technicolor process 2 (Two Stripes)](https://en.wikipedia.org/wiki/Technicolor#Process_2) (`applyPalette Technicolor`)<br>
+* `Technicolor2` -> [Technicolor process 2 (Two Stripes)](https://en.wikipedia.org/wiki/Technicolor#Process_2) (`applyPalette Technicolor`)<br>
 * `Trinitron` -- [Sony Trinitron](https://en.wikipedia.org/wiki/Trinitron) (kinda)<br>
 * `TV` -- Old TV (kinda) (`TrinitronH`)<br>  
 * `ZxSpectrum` -- ZX Spectrum emulation (`resize 348 256 | atkinson ZXFULL | buffer | Spectrum 32 24`)<br>
