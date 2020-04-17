@@ -44,6 +44,8 @@ public class ImageWindow extends ClientWindow {
     }
 
     private void createComponents(boolean fullScreen) {
+        frame = new JFrame();
+        setIcon();
         if (imagePanel == null) {
             imagePanel = new ImagePanel(imageFilter);
         }
@@ -212,12 +214,13 @@ public class ImageWindow extends ClientWindow {
     }
 
     private void toggleFullScreen(boolean fullScreen) {
-        JFrame frame = this.frame;
-        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        String title = frame.getTitle();
+        JFrame oldFrame = this.frame;
+        oldFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        String title = oldFrame.getTitle();
         createComponents(fullScreen);
         this.frame.setTitle(title);
-        frame.dispatchEvent(new WindowEvent(frame, WindowEvent.WINDOW_CLOSING));
+        forceRedraw();
+        oldFrame.dispatchEvent(new WindowEvent(oldFrame, WindowEvent.WINDOW_CLOSING));
     }
 
     public void setImageFilter(ImageFilter imageFilter) {
