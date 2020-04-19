@@ -11,7 +11,6 @@ public class ClientWindow {
     private static final Logger log = LogManager.getLogger(ClientWindow.class);
 
     protected JFrame frame = new JFrame();
-    private Point nearCenterOfScreen;
 
     public ClientWindow() {
         setIcon();
@@ -19,8 +18,7 @@ public class ClientWindow {
     }
 
     public void centerWindow() {
-        nearCenterOfScreen = centerPoint();
-        frame.setLocation(nearCenterOfScreen);
+        frame.setLocation(centerPoint());
     }
 
     public static Point centerPoint() {
