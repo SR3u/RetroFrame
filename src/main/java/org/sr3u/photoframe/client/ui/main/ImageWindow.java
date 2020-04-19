@@ -35,7 +35,7 @@ public class ImageWindow extends ClientWindow {
     private AbstractAction fullScreenAction;
 
     private Dimension regularSize = new Dimension(320, 240);
-    private Point regularLocation = new Point(0, 0);
+    private Point regularLocation = centerPoint();
 
     public ImageWindow(boolean fullScreen, ImageFilter imageFilter) {
         super();

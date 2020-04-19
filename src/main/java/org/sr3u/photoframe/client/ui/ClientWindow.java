@@ -11,9 +11,22 @@ public class ClientWindow {
     private static final Logger log = LogManager.getLogger(ClientWindow.class);
 
     protected JFrame frame = new JFrame();
+    private Point nearCenterOfScreen;
 
     public ClientWindow() {
         setIcon();
+        centerWindow();
+    }
+
+    public void centerWindow() {
+        nearCenterOfScreen = centerPoint();
+        frame.setLocation(nearCenterOfScreen);
+    }
+
+    public static Point centerPoint() {
+        return new Point(
+                (int) Math.max(GraphicsEnvironment.getLocalGraphicsEnvironment().getCenterPoint().getX() - 200, 50),
+                (int) Math.max(GraphicsEnvironment.getLocalGraphicsEnvironment().getCenterPoint().getY() - 200, 50));
     }
 
     protected void setIcon() {
