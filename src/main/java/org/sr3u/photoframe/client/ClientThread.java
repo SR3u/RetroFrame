@@ -27,7 +27,7 @@ public class ClientThread extends Thread {
     public static final Gson GSON = new Gson();
 
     private final ScheduledExecutorService execService = Executors.newSingleThreadScheduledExecutor();
-    private ImageWindow imageWindow;
+    private final ImageWindow imageWindow;
 
     private static Socket clientSocket;
     private static InputStream in;
@@ -74,6 +74,7 @@ public class ClientThread extends Thread {
                 String json = new String(in.readNBytes(metadataSize));
                 Map<String, Object> metaData = parseMetadata(json);
                 int imageSize = Main.intFromByteArray(in.readNBytes(4));
+                metaData.put("mem_size", imageSize);
                 log.info("Metadata: " + json);
                 imageWindow.displayImageAndMetadata(in, metaData);
             } catch (Exception e) {
