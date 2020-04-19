@@ -53,7 +53,6 @@ public class ClientThread extends Thread {
     @Override
     public void run() {
         updateImage();
-        scheduleRefresh();
     }
 
     private void scheduleRefresh() {
