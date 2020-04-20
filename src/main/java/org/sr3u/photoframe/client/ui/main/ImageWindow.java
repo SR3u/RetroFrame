@@ -4,6 +4,7 @@ import com.google.common.base.Preconditions;
 import lombok.Getter;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.sr3u.photoframe.client.ClientThread;
 import org.sr3u.photoframe.client.filters.ImageFilter;
 import org.sr3u.photoframe.client.ui.ClientWindow;
 import org.sr3u.photoframe.client.ui.menu.PopupClickListener;
@@ -27,6 +28,7 @@ public class ImageWindow extends ClientWindow {
     public static final String TITLE_NAME = "Retro Frame ";
     public static final KeyStroke ALT_ENTER = KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, InputEvent.ALT_DOWN_MASK);
     private static final Object FULLSCREEN_ACTION = ImageWindow.class.getCanonicalName() + ".fullScreenAction";
+    private final ClientThread clientThread;
     private ImageFilter imageFilter;
     ImagePanel imagePanel;
     OutlineLabel metadataLabel;
@@ -37,9 +39,10 @@ public class ImageWindow extends ClientWindow {
     private Dimension regularSize = new Dimension(320, 240);
     private Point regularLocation = centerPoint();
 
-    public ImageWindow(boolean fullScreen, ImageFilter imageFilter) {
+    public ImageWindow(boolean fullScreen, ImageFilter imageFilter, ClientThread clientThread) {
         super();
         this.imageFilter = imageFilter;
+        this.clientThread = clientThread;
         createComponents(fullScreen);
     }
 
@@ -88,7 +91,7 @@ public class ImageWindow extends ClientWindow {
             }
         });
         metadataLabel.setVisible(Main.settings.getClient().isShowMetadata());
-        PopupClickListener popupClickListener = new PopupClickListener(this);
+        PopupClickListener popupClickListener = new PopupClickListener(this, clientThread);
         fullScreenAction = new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {

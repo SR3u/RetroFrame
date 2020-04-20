@@ -29,9 +29,9 @@ public class ClientThread extends Thread {
     private final ScheduledExecutorService execService = Executors.newSingleThreadScheduledExecutor();
     private final ImageWindow imageWindow;
 
-    private static Socket clientSocket;
-    private static InputStream in;
-    private static BufferedWriter out;
+    private Socket clientSocket;
+    private InputStream in;
+    private BufferedWriter out;
 
     private final int port;
     private final String host;
@@ -47,19 +47,27 @@ public class ClientThread extends Thread {
             e.printStackTrace();
             imageFilter = new Identity();
         }
-        imageWindow = new ImageWindow(Main.settings.getClient().isFullScreen(), imageFilter);
+        imageWindow = new ImageWindow(Main.settings.getClient().isFullScreen(), imageFilter, this);
     }
 
     @Override
     public void run() {
-        updateImage();
+        updateImageAndSchedule();
     }
 
     private void scheduleRefresh() {
-        execService.schedule(this::updateImage, Main.settings.getClient().getRefreshDelay(), TimeUnit.MILLISECONDS);
+        execService.schedule(this::updateImageAndSchedule, Main.settings.getClient().getRefreshDelay(), TimeUnit.MILLISECONDS);
     }
 
-    private void updateImage() {
+    private void updateImageAndSchedule() {
+        updateImage(true);
+    }
+
+    public void updateImageOnce() {
+        updateImage(false);
+    }
+
+    private synchronized void updateImage(boolean schedule) {
         try {
             try {
                 clientSocket = new Socket(host, port);
@@ -110,7 +118,9 @@ public class ClientThread extends Thread {
             log.error(e);
             e.printStackTrace();
         } finally {
-            scheduleRefresh();
+            if (schedule) {
+                scheduleRefresh();
+            }
         }
     }
 

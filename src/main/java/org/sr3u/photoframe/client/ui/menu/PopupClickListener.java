@@ -1,5 +1,6 @@
 package org.sr3u.photoframe.client.ui.menu;
 
+import org.sr3u.photoframe.client.ClientThread;
 import org.sr3u.photoframe.client.ui.main.ImageWindow;
 
 import java.awt.event.MouseAdapter;
@@ -9,9 +10,9 @@ public class PopupClickListener extends MouseAdapter {
     private final ImageWindow mainWindow;
     private final PopupMenu menu;
 
-    public PopupClickListener(ImageWindow mainWindow) {
+    public PopupClickListener(ImageWindow mainWindow, ClientThread clientThread) {
         this.mainWindow = mainWindow;
-        this.menu = new PopupMenu(mainWindow);
+        this.menu = new PopupMenu(mainWindow, clientThread);
     }
 
     @Override

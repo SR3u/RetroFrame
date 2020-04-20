@@ -1,5 +1,6 @@
 package org.sr3u.photoframe.client.ui.menu;
 
+import org.sr3u.photoframe.client.ClientThread;
 import org.sr3u.photoframe.client.ui.MouseReleaseListener;
 import org.sr3u.photoframe.client.ui.main.ImageWindow;
 import org.sr3u.photoframe.client.ui.settings.SettingsWindow;
@@ -7,9 +8,15 @@ import org.sr3u.photoframe.client.ui.settings.filters.FiltersWindow;
 import org.sr3u.photoframe.server.Main;
 
 import javax.swing.*;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
 
 public class PopupMenu extends JPopupMenu {
-    public PopupMenu(ImageWindow mainWindow) {
+
+    private final Executor async = Executors.newSingleThreadScheduledExecutor();
+
+    public PopupMenu(ImageWindow mainWindow, ClientThread clientThread) {
+        addItem("Next", e -> async.execute(clientThread::updateImageOnce));
         addItem("Filters", e -> new FiltersWindow(mainWindow));
         addItem("Settings", e -> new SettingsWindow(Main.settings));
         if (mainWindow.isFullScreen()) {
