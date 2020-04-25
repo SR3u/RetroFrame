@@ -14,6 +14,6 @@ public class FilterDescriptor {
 
     @Override
     public String toString() {
-        return name + " " + Streamex.ofStream(parameters.stream()).mapToString().joined(" ");
+        return name + " " + Streamex.ofCollection(parameters).mapToString().joined(" ");
     }
 }

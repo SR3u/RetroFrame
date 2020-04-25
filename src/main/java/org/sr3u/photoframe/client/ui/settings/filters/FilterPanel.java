@@ -32,7 +32,7 @@ public class FilterPanel extends UpDownButtonsPanel {
     }
 
     public FilterPanel(String name, List<String> parameters) {
-        this(name, Streamex.ofStream(parameters.stream()).mapToString().joined(" "));
+        this(name, Streamex.ofCollection(parameters).mapToString().joined(" "));
     }
 
     public FilterPanel(String name, String parameters) {
@@ -53,7 +53,7 @@ public class FilterPanel extends UpDownButtonsPanel {
         Component parametersComponent;
         if (info.isPaletteArgument()) {
             this.parameters = null;
-            List<String> strings = Streamex.ofStream(Palette.allNames().stream()).collect(Collectors.toList());
+            List<String> strings = Streamex.ofCollection(Palette.allNames()).collect(Collectors.toList());
             this.paletteParameter = new JComboBox<>(strings.toArray(new String[0]));
             this.paletteParameter.setEditable(true);
             if (parameters.trim().split(" ").length == 1) {

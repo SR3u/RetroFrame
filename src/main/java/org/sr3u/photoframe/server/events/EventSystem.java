@@ -23,7 +23,7 @@ public class EventSystem {
     }
 
     public void fireEvent(Event event) {
-        executor.execute(() -> Streamex.ofStream(eventHandlers.stream())
+        executor.execute(() -> Streamex.ofCollection(eventHandlers)
                 .forEach(e -> {
                     try {
                         e.accept(event);

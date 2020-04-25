@@ -79,7 +79,7 @@ public class FiltersWindow extends ScrollableWindow {
         @Override
         public void apply() {
             try {
-                String newFilterChain = Streamex.ofStream(allPanels.stream())
+                String newFilterChain = Streamex.ofCollection(allPanels)
                         .filter(p -> p instanceof FilterPanel)
                         .map(p -> (FilterPanel) p)
                         .map(FilterPanel::toFilterDescriptor)

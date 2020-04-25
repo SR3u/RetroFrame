@@ -111,7 +111,7 @@ public class Repository {
     private void cleanup() {
         long cleanupTimestamp = DateUtil.timestamp(new Date());
         try {
-            Streamex.ofStream(dao.queryBuilder().where().lt("validUntil", cleanupTimestamp).query().stream())
+            Streamex.ofCollection(dao.queryBuilder().where().lt("validUntil", cleanupTimestamp).query())
                     .forEach(item -> eventSystem.fireEvent(new DeletedItemEvent(item, gClient, dao)));
             DeleteBuilder<Item, String> deleteBuilder = dao.deleteBuilder();
             deleteBuilder.where().lt("validUntil", cleanupTimestamp);

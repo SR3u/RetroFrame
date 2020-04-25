@@ -80,7 +80,7 @@ public class SettingsWindow extends ScrollableWindow {
     }
 
     private void fillSettings() {
-        settingPanels = Streamex.ofStream(settings.keySet().stream())
+        settingPanels = Streamex.ofCollection(settings.keySet())
                 .mapToString()
                 .map(k -> new Pair<>(k, settings.getProperty(k)))
                 .map(p -> {
