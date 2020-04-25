@@ -29,6 +29,10 @@ public class ImageWithMetadata {
     private Image image;
     private Map<String, Object> metadata;
 
+    public ImageWithMetadata(Image image) {
+        this(image, new HashMap<>());
+    }
+
     public String jsonMetadata() {
         return GSON.toJson(metadata);
     }

@@ -8,6 +8,7 @@ import com.j256.ormlite.dao.DaoManager;
 import com.j256.ormlite.jdbc.JdbcConnectionSource;
 import com.j256.ormlite.stmt.DeleteBuilder;
 import com.j256.ormlite.table.TableUtils;
+import lombok.Setter;
 import lombok.SneakyThrows;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -17,6 +18,7 @@ import org.sr3u.photoframe.server.data.ImageWithMetadata;
 import org.sr3u.photoframe.server.data.Item;
 import org.sr3u.photoframe.server.data.MediaType;
 import org.sr3u.photoframe.server.events.*;
+import sr3u.streamz.optionals.Optionalex;
 import sr3u.streamz.streams.Streamex;
 
 import javax.imageio.ImageIO;
@@ -39,6 +41,9 @@ public class Repository {
     private final Dao<Item, String> dao;
     private Dimension defaultSize = new Dimension(1024, 1024);
     private EventSystem eventSystem;
+
+    @Setter
+    private MediaBackupRepository mediaBackupRepository;
 
     @SneakyThrows
     public Repository(PhotosLibraryClient gClient, EventSystem eventSystem) {
@@ -68,10 +73,14 @@ public class Repository {
                             .eq("mediaType", MediaType.IMAGE)
                             .queryForFirst();
                 }
-                MediaItem mediaItem = gClient.getMediaItem(random.getGoogleID());
-                BufferedImage image = ImageIO.read(new URL(mediaItem.getBaseUrl() + ImageUtil.googlePhotoSize(size)));
-                MediaMetadata metadata = mediaItem.getMediaMetadata();
-                return new ImageWithMetadata(image, ImageWithMetadata.convert(metadata));
+                return Optionalex.ofNullable(mediaBackupRepository)
+                        .map(m->m.getItem(size, random))
+                        .orElseGet(()->{
+                            MediaItem mediaItem = gClient.getMediaItem(random.getGoogleID());
+                            BufferedImage image = ImageIO.read(new URL(mediaItem.getBaseUrl() + ImageUtil.googlePhotoSize(size)));
+                            MediaMetadata metadata = mediaItem.getMediaMetadata();
+                            return new ImageWithMetadata(image, ImageWithMetadata.convert(metadata));
+                        });
             } catch (Exception e) {
                 log.error(e);
                 e.printStackTrace();

@@ -26,7 +26,7 @@
         <dependency>
             <groupId>com.github.SR3u</groupId>
             <artifactId>streamz</artifactId>
-            <version>v1.8.0.1-e</version>
+            <version>v1.8.0.1-f</version>
         </dependency>
         <dependency>
             <groupId>com.j256.ormlite</groupId>

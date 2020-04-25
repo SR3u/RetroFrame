@@ -48,8 +48,10 @@ public class Main {
         System.setProperty("com.j256.ormlite.*", "ERROR");
         System.setProperty("log4j.com.j256.ormlite.*", "ERROR");
         String credentialsPath = new File("credentials/credentials.json").getAbsolutePath();
+        MediaBackup mediaBackup = null;
         if (settings.getMedia().isBackup()) {
-            eventsSystem.registerHandler(new MediaBackup());
+            mediaBackup = new MediaBackup();
+            eventsSystem.registerHandler(mediaBackup);
         }
         try {
             if (settings.getServer().isEnabled()) {
@@ -60,6 +62,7 @@ public class Main {
                     log.info(item);
                 }*/
                 Repository repository = new Repository(client, eventsSystem);
+                repository.setMediaBackupRepository(mediaBackup);
                 scheduleRefresh(repository);
                 new ServerThread(repository, settings.getServer().getPort()).start();
             }
