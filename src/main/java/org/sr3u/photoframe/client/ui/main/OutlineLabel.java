@@ -90,4 +90,9 @@ public class OutlineLabel extends JLabel {
         forceTransparent = false;
 
     }
+
+    public void setFontSize(int fontSize) {
+        Font labelFont = getFont();
+        this.setFont(new Font(labelFont.getName(), Font.PLAIN, fontSize));
+    }
 }

@@ -13,7 +13,12 @@ import org.sr3u.photoframe.server.Main;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
+import java.awt.event.InputEvent;
+import java.awt.event.KeyEvent;
+import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
 import java.io.BufferedInputStream;
 import java.io.InputStream;
@@ -38,6 +43,7 @@ public class ImageWindow extends ClientWindow {
 
     private Dimension regularSize = new Dimension(320, 240);
     private Point regularLocation = centerPoint();
+    public static final double LABEL_HEIGHT_RATIO = 1.0 / 20;
 
     public ImageWindow(boolean fullScreen, ImageFilter imageFilter, ClientThread clientThread) {
         super();
@@ -70,6 +76,9 @@ public class ImageWindow extends ClientWindow {
         }
         imagePanel.add(metadataLabel, BorderLayout.SOUTH);
         frame.setTitle(TITLE_NAME);
+        int h = (int) (frame.getSize().getHeight() * LABEL_HEIGHT_RATIO);
+        metadataLabel.setSize(h, frame.getWidth());
+        metadataLabel.setFontSize(h);
         frame.addComponentListener(new ComponentAdapter() {
             @Override
             public void componentResized(ComponentEvent evt) {
@@ -79,6 +88,9 @@ public class ImageWindow extends ClientWindow {
                 }
                 frame.repaint();
                 imagePanel.setSize(frame.getSize());
+                int h = (int) (frame.getSize().getHeight() * LABEL_HEIGHT_RATIO);
+                metadataLabel.setSize(h, frame.getWidth());
+                metadataLabel.setFontSize(h);
                 forceRedraw();
             }
 
