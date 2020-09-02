@@ -130,9 +130,12 @@ To do so, just add properties with names like `client.imageFilterChain.alias.<al
 * `client.imageFilterChain.alias.atkinsonWebSafe=atkinson websafe`
 * `client.imageFilterChain.alias.atkinsonWebSafeLowRes=resize 512 256 | atkinson websafe`
 * `client.imageFilterChain.alias.speccy=resize 348 256 | atkinson ZXFULL | buffer | Spectrum 32 24 | scale 3 3 | tv`
+* `client.imageFilterChain.alias.c64_tv=Commodore64 | scale 3 3 | tv`
 <br>
 Then you can refer to them in your filter chain as if they were defined out of the box:
-* `client.imageFilterChain=speccy`
+* `client.imageFilterChain=c64_tv`<br>
+or
+* `client.imageFilterChain=speccy`<br>
 or   
-* `client.imageFilterChain=mac`
+* `client.imageFilterChain=mac`<br>
 
