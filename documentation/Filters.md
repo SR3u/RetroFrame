@@ -121,3 +121,16 @@ Insert `scale 3 3` or `OriginalSize` between it and previous filters for best re
 *WARNING:* Don't upscale if you are using *HD* filter.<br>
 *Example:* `Commodore64 | scale 3 3 | Trinitron`, `IbmPcCga | OriginalSize | Trinitron`.
 * `ZxSpectrum` and `Spectrum` filter is very *very* slow. 
+
+## Aliases
+You can add an alias to a filter combination for simpler use in your filter chain.
+To do so, just add properties with names like `client.imageFilterChain.alias.<alias_name>` to settings.properties.<br>
+*Examples:*<br>
+* `client.imageFilterChain.alias.mac=resize 512 342 | Atkinson Monochrome`
+* `client.imageFilterChain.alias.atkinsonWebSafe=atkinson websafe`
+* `client.imageFilterChain.alias.atkinsonWebSafeLowRes=resize 512 256 | atkinson websafe`
+* `client.imageFilterChain.alias.ZxSpectrum=resize 348 256 | atkinson ZXFULL | buffer | Spectrum 32 24`
+<br>
+Then you can refer to them in your filter chain as if they were defined out of the box:   
+* `client.imageFilterChain=mac`
+
