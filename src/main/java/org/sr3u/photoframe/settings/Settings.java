@@ -3,8 +3,13 @@ package org.sr3u.photoframe.settings;
 import lombok.Builder;
 import lombok.Data;
 import lombok.Value;
+import org.sr3u.photoframe.client.filters.ImageFilters;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.Map;
 import java.util.Properties;
 
@@ -111,6 +116,7 @@ public class Settings implements Fillable {
     @Data
     @Builder
     public static class Client implements Fillable {
+        public static final String CLIENT_IMAGE_FILTER_CHAIN_ALIAS = "client.imageFilterChain.alias.";
         @Builder.Default
         @PropertyMap("client.enable")
         boolean enable = true;
@@ -144,6 +150,15 @@ public class Settings implements Fillable {
 
         public static Client load(Properties properties) {
             Client build = builder().build();
+            properties.keySet().stream()
+                    .filter(k -> k instanceof String)
+                    .map(k -> (String) k)
+                    .filter(k -> k.startsWith(CLIENT_IMAGE_FILTER_CHAIN_ALIAS))
+                    .forEach(k -> {
+                        String aliasName = k.substring(CLIENT_IMAGE_FILTER_CHAIN_ALIAS.length());
+                        String aliasChain = properties.getProperty(k);
+                        ImageFilters.INSTANCE.addAlias(aliasName, aliasChain);
+                    });
             build.fill(properties);
             return build;
         }

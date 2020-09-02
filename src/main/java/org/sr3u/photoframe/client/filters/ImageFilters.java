@@ -7,7 +7,14 @@ import sr3u.streamz.functionals.Supplierex;
 import sr3u.streamz.optionals.Optionalex;
 
 import java.lang.reflect.Modifier;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -67,7 +74,7 @@ public enum ImageFilters {
         return INSTANCE.get(filterDescriptor.toString()) != null;
     }
 
-    private void addAlias(String alias, String value) {
+    public void addAlias(String alias, String value) {
         byAlias.put(alias.toLowerCase(), () -> parse(value));
     }
 
