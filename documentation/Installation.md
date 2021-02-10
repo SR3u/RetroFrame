@@ -11,7 +11,7 @@
 
 * Create script `update.sh` in the desired installation directory with following contents:<br>
 ```bash
-#!/bin/bash
+#!/usr/bin/env bash
 DIR=$(cd -P -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd -P)
 cd "$DIR"
 git clone https://github.com/SR3u/RetroFrame.git
@@ -33,7 +33,7 @@ rm -f ./mediaItems.db
     * Put `credentials.json` to `/path/to/Photo/Frame/Installation/RetroFrame/credentials/` (here `<......>/credentials/` is a folder, so final file path should be `/path/to/Photo/Frame/Installation/RetroFrame/credentials/credentials.json`)
 * Create script named start.sh in the desired installation directory with following contents:<br>
 ```bash
-#!/bin/bash
+#!/usr/bin/env bash
 DIR=$(cd -P -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd -P)
 cd "$DIR"
 cd ./RetroFrame
