@@ -9,13 +9,12 @@ import org.sr3u.photoframe.misc.util.ImageUtil;
 import org.sr3u.photoframe.server.data.ImageWithMetadata;
 import org.sr3u.photoframe.server.data.Item;
 import org.sr3u.photoframe.server.data.MediaType;
-import org.sr3u.photoframe.server.events.*;
 import org.sr3u.photoframe.server.events.Event;
+import org.sr3u.photoframe.server.events.*;
 import sr3u.streamz.functionals.Consumerex;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
-import java.awt.image.BufferedImage;
 import java.io.*;
 import java.net.URL;
 import java.nio.channels.Channels;
@@ -27,8 +26,6 @@ import java.nio.file.Paths;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Objects;
 
 public class MediaBackup implements Consumerex<Event>, MediaBackupRepository {
