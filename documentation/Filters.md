@@ -11,7 +11,7 @@ It consists of filter descriptors separated by `|` character:<br>
 `<filter0> | <filter1> | <filter2> | ..... | <filterN>`<br>
 Each filter descriptor consists of filter name and optional parameters:<br>
 `<filter_name> <param0> <param1> <param2> ... <paramN>`<br>
-Filters are be applied from left to right.
+Filters are applied from left to right.
 
 ## Available filters:
 * `identity` -- does nothing, is a default option<br>
@@ -43,8 +43,8 @@ Filters are be applied from left to right.
             *Examples:*<br>`grayscale`<br>`grayscale 0.4 0.3 0.2`<br>
 * `dot` -- apply a 2x2 channel filtering pattern, has no parameters<br>
         *Examples:*<br>`dot`<br>
-* `TrinitronH` -- [Sony Trinitron](https://en.wikipedia.org/wiki/Trinitron) (kinda) with horizontal grid<br>
-* `TrinitronV` -- [Sony Trinitron](https://en.wikipedia.org/wiki/Trinitron) (kinda) with vertical grid<br>
+* `TrinitronH` -- [Sony Trinitron](https://en.wikipedia.org/wiki/Trinitron) (kinda) with a horizontal grid<br>
+* `TrinitronV` -- [Sony Trinitron](https://en.wikipedia.org/wiki/Trinitron) (kinda) with a vertical grid<br>
 * `cmyk2x2` -- apply 2x2 channel filtering palette pattern:<br>
               `grayscale` `cyan`<br>
                `magenta` `yellow`<br>
@@ -52,7 +52,7 @@ Filters are be applied from left to right.
                For more info see [Palettes.md](https://github.com/SR3u/gphotorepo/blob/master/documentation/Palettes.md).<br>
                 *Example:* <br>`cmyk2x2`
 * `applyPalette` -- converts an image to a palette. Has 1 parameter.
-                * `palette` -- representation of a palette. Can be either an identifier of existing palette (case insensitive), 
+                * `palette` -- representation of a palette. Can be either an identifier of existing palette (case-insensitive), 
                 or a color list with color picker algorithm. For more info see [Palettes.md](https://github.com/SR3u/gphotorepo/blob/master/documentation/Palettes.md).<br>
                 By default is `monochrome`<br>See [Palettes.md](https://github.com/SR3u/gphotorepo/blob/master/documentation/Palettes.md) for more info.<br>
                 *Examples:* <br>`applyPalette CGA`<br>`applypalette #000000 #ffffff #FF0000 #00FF00 #0000FF`<br>

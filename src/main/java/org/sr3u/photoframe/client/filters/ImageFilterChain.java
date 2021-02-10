@@ -10,7 +10,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 @Value
-public final class ImageFilterChain implements ImageFilter {
+public class ImageFilterChain implements ImageFilter {
 
     List<ImageFilter> filters;
     ImageFilter.Context context = new ImageFilter.Context();

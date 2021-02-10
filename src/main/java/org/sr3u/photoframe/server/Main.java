@@ -28,7 +28,6 @@ public class Main {
 
     private static final Logger log = LogManager.getLogger(Main.class);
 
-    public static final String DISPLAY_SERVERS_JSON = "displayServers.json";
     public static final Settings settings;
     private static final EventSystem eventsSystem;
 
@@ -56,11 +55,6 @@ public class Main {
         try {
             if (settings.getServer().isEnabled()) {
                 PhotosLibraryClient client = PhotosLibraryClientFactory.createClient(credentialsPath, Resources.REQUIRED_SCOPES);
-               /* InternalPhotosLibraryClient.ListMediaItemsPagedResponse response = client.listMediaItems();
-                for (MediaItem item : response.iterateAll()) {
-                    // Get some properties of a media item
-                    log.info(item);
-                }*/
                 Repository repository = new Repository(client, eventsSystem);
                 repository.setMediaBackupRepository(mediaBackup);
                 scheduleRefresh(repository);

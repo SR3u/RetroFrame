@@ -7,6 +7,7 @@ import org.sr3u.photoframe.client.filters.rgb.GreenChannel;
 import org.sr3u.photoframe.client.filters.rgb.RedChannel;
 
 import java.awt.image.BufferedImage;
+import java.util.Arrays;
 import java.util.List;
 
 public abstract class Trinitron implements FastImageFilter {
@@ -31,9 +32,7 @@ public abstract class Trinitron implements FastImageFilter {
 
     @Override
     public void reset() {
-        for (int i = 0; i < scanlineFilters.length; i++) {
-            scanlineFilters[i].reset();
-        }
+        Arrays.stream(scanlineFilters).forEach(ImageFilter::reset);
     }
 
     @Override
@@ -41,7 +40,7 @@ public abstract class Trinitron implements FastImageFilter {
         return this;
     }
 
-    private class Context {
+    private static class Context {
         private final Object[] contexts;
 
         public Context(BufferedImage image, FastImageFilter[] scanlineFilters) {
