@@ -1,7 +1,6 @@
 package org.sr3u.photoframe.server;
 
 import com.google.photos.library.v1.PhotosLibraryClient;
-import com.j256.ormlite.logger.LocalLog;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.sr3u.photoframe.client.ClientThread;
@@ -35,15 +34,15 @@ public class Main {
 
     static { // HIDE DOCK ICON (if any)
         settings = Settings.load(SETTINGS_PROPERTIES);
-        System.setProperty("com.j256.ormlite.logger.type", "ERROR");
-        System.setProperty(LocalLog.LOCAL_LOG_LEVEL_PROPERTY, "ERROR");
+        System.setProperty("com.j256.ormlite.logger.type", "LOCAL");
+        System.setProperty("com.j256.ormlite.logger.level", "ERROR");
         System.setProperty("java.awt.headless", String.valueOf(settings.isJava_awt_headless()));
         log.info("java.awt.headless: " + java.awt.GraphicsEnvironment.isHeadless());
         eventsSystem = new EventSystem();
     }
 
     public static void main(String[] args) {
-        System.setProperty(LocalLog.LOCAL_LOG_LEVEL_PROPERTY, "ERROR");
+        System.setProperty("com.j256.ormlite.logger.level", "ERROR");
         System.setProperty("com.j256.ormlite.*", "ERROR");
         System.setProperty("log4j.com.j256.ormlite.*", "ERROR");
         String credentialsPath = new File("credentials/credentials.json").getAbsolutePath();
