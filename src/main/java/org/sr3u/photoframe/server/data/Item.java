@@ -1,6 +1,6 @@
 package org.sr3u.photoframe.server.data;
 
-import com.google.photos.library.v1.proto.MediaItem;
+import com.google.photos.types.proto.MediaItem;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 import lombok.Data;

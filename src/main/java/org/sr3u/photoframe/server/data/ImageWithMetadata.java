@@ -3,7 +3,7 @@ package org.sr3u.photoframe.server.data;
 import com.google.gson.FieldNamingStrategy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.google.photos.library.v1.proto.MediaMetadata;
+import com.google.photos.types.proto.MediaMetadata;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.apache.logging.log4j.LogManager;

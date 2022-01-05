@@ -2,7 +2,14 @@ package org.sr3u.photoframe.server;
 
 import com.google.photos.library.v1.PhotosLibraryClient;
 import com.google.photos.library.v1.internal.InternalPhotosLibraryClient;
-import com.google.photos.library.v1.proto.*;
+import com.google.photos.library.v1.proto.ContentFilter;
+import com.google.photos.library.v1.proto.DateFilter;
+import com.google.photos.library.v1.proto.Filters;
+import com.google.photos.library.v1.proto.MediaTypeFilter;
+import com.google.photos.types.proto.Album;
+import com.google.photos.types.proto.DateRange;
+import com.google.photos.types.proto.MediaItem;
+import com.google.photos.types.proto.MediaMetadata;
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.dao.DaoManager;
 import com.j256.ormlite.jdbc.JdbcConnectionSource;
@@ -39,8 +46,8 @@ public class Repository {
     private final PhotosLibraryClient gClient;
     private final Image defaultImage;
     private final Dao<Item, String> dao;
-    private Dimension defaultSize = new Dimension(1024, 1024);
-    private EventSystem eventSystem;
+    private final Dimension defaultSize = new Dimension(1024, 1024);
+    private final EventSystem eventSystem;
 
     @Setter
     private MediaBackupRepository mediaBackupRepository;
@@ -48,7 +55,7 @@ public class Repository {
     @SneakyThrows
     public Repository(PhotosLibraryClient gClient, EventSystem eventSystem) {
         this.gClient = gClient;
-        defaultImage = ImageUtil.scaledImage(ImageIO.read(Repository.class.getResource("picture.png")), defaultSize);
+        defaultImage = ImageUtil.scaledImage(ImageIO.read(Objects.requireNonNull(Repository.class.getResource("picture.png"))), defaultSize);
         Class.forName("org.sqlite.JDBC");
         JdbcConnectionSource connectionSource = new JdbcConnectionSource("jdbc:sqlite:" + Main.settings.getMedia().getDatabasePath());
         TableUtils.createTableIfNotExists(connectionSource, Item.class);

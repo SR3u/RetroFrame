@@ -1,7 +1,7 @@
 package org.sr3u.photoframe.server.events;
 
 import com.google.photos.library.v1.PhotosLibraryClient;
-import com.google.photos.library.v1.proto.MediaItem;
+import com.google.photos.types.proto.MediaItem;
 import com.j256.ormlite.dao.Dao;
 import lombok.Getter;
 import org.apache.logging.log4j.LogManager;

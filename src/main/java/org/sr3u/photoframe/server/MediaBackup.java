@@ -1,8 +1,8 @@
 package org.sr3u.photoframe.server;
 
 import com.google.gson.Gson;
-import com.google.photos.library.v1.proto.MediaItem;
-import com.google.photos.library.v1.proto.MediaMetadata;
+import com.google.photos.types.proto.MediaItem;
+import com.google.photos.types.proto.MediaMetadata;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.sr3u.photoframe.misc.util.ImageUtil;
