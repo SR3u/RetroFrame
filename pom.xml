@@ -154,13 +154,13 @@
             <artifactId>lombok</artifactId>
             <version>1.18.22</version>
         </dependency>
-        <dependency>
+       <!-- <dependency>
             <groupId>com.google.cloud</groupId>
             <artifactId>google-cloud-pom</artifactId>
             <version>0.32.0-alpha</version>
             <type>pom</type>
             <scope>import</scope>
-        </dependency>
+        </dependency>-->
         <dependency>
             <groupId>com.google.code.gson</groupId>
             <artifactId>gson</artifactId>
@@ -209,7 +209,7 @@
             </plugin>
             <plugin>
                 <artifactId>maven-dependency-plugin</artifactId>
-                <version>2.10</version>
+                <version>3.2.0</version>
                 <executions>
                     <execution>
                         <id>get-jetty-alpn-agent</id>
@@ -232,7 +232,7 @@
                         <configuration>
                             <excludeScope>system</excludeScope>
                             <excludes>META-INF/*.SF,META-INF/*.DSA,META-INF/*.RSA</excludes>
-                            <excludeGroupIds>junit,org.mockito,org.hamcrest</excludeGroupIds>
+                            <excludeGroupIds>junit,org.mockito,org.hamcrest,com.google.cloud.google-cloud-pom</excludeGroupIds>
                             <outputDirectory>${project.build.directory}/classes</outputDirectory>
                         </configuration>
                     </execution>
