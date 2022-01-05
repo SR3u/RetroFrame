@@ -189,7 +189,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-shade-plugin</artifactId>
-                <version>3.2.1</version>
+                <version>3.2.4</version>
                 <executions>
                     <execution>
                         <phase>package</phase>
@@ -197,6 +197,16 @@
                             <goal>shade</goal>
                         </goals>
                         <configuration>
+                            <filters>
+                                <filter>
+                                    <artifact>*:*</artifact>
+                                    <excludes>
+                                        <exclude>META-INF/*.SF</exclude>
+                                        <exclude>META-INF/*.DSA</exclude>
+                                        <exclude>META-INF/*.RSA</exclude>
+                                    </excludes>
+                                </filter>
+                            </filters>
                             <transformers>
                                 <transformer
                                         implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
@@ -223,7 +233,7 @@
                             <version>${jetty.alpnAgent.version}</version>
                         </configuration>
                     </execution>
-                    <execution>
+                    <!--<execution>
                         <id>unpack-dependencies</id>
                         <phase>package</phase>
                         <goals>
@@ -235,7 +245,7 @@
                             <excludeGroupIds>junit,org.mockito,org.hamcrest,com.google.cloud.google-cloud-pom</excludeGroupIds>
                             <outputDirectory>${project.build.directory}/classes</outputDirectory>
                         </configuration>
-                    </execution>
+                    </execution>-->
                 </executions>
             </plugin>
             <plugin>
