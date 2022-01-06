@@ -22,10 +22,11 @@ public enum ImageFilters {
 
     INSTANCE;
 
-    private Map<String, Class<? extends ImageFilter>> bySimpleName = new HashMap<>();
-    private Map<String, Class<? extends ImageFilter>> byFullName = new HashMap<>();
-    private Map<String, Supplierex<ImageFilter>> byAlias = new HashMap<>();
-    private Set<Class<? extends ImageFilter>> excludedClasses = new HashSet<>(Arrays.asList(
+    private final Map<String, Class<? extends ImageFilter>> bySimpleName = new HashMap<>();
+    private final Map<String, Class<? extends ImageFilter>> byFullName = new HashMap<>();
+    private final Map<String, Supplierex<ImageFilter>> byAlias = new HashMap<>();
+    @SuppressWarnings("FieldCanBeLocal")
+    private final Set<Class<? extends ImageFilter>> excludedClasses = new HashSet<>(Arrays.asList(
             ImageFilterChain.class, FastImageFilterChain.class
     ));
 
