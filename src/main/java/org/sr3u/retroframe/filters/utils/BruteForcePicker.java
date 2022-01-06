@@ -2,7 +2,6 @@ package org.sr3u.retroframe.filters.utils;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.sr3u.retroframe.server.Main;
 
 import java.awt.*;
 import java.util.Map;
@@ -12,10 +11,15 @@ import java.util.concurrent.atomic.AtomicLong;
 public class BruteForcePicker implements ColorPicker {
 
     private static final Logger log = LogManager.getLogger(BruteForcePicker.class);
+    private final long colorCacheSize;
 
     private Map<Integer, Color> selectionCache = new ConcurrentHashMap<>();
     private AtomicLong cleanupsCount = new AtomicLong(0);
     private AtomicLong resetsCount = new AtomicLong(0);
+
+    public BruteForcePicker() {
+        colorCacheSize = getColorCacheSize();
+    }
 
     @Override
     public Color closestColor(int rgb, Color[] palette) {
@@ -39,11 +43,20 @@ public class BruteForcePicker implements ColorPicker {
     @Override
     public void reset() {
         long resetsCount = this.resetsCount.incrementAndGet();
-        if (selectionCache.size() > Main.settings.getClient().getColorCacheSize()) {
-            log.warn("clearing selectionCache, as it was larger than the threshold (" + selectionCache.size() + " > " + Main.settings.getClient().getColorCacheSize() + ")");
+        if (selectionCache.size() > colorCacheSize) {
+            log.warn("clearing selectionCache, as it was larger than the threshold (" + selectionCache.size() + " > " + colorCacheSize + ")");
             selectionCache.clear();
             long cleanupsCount = this.cleanupsCount.incrementAndGet();
             log.warn("Color cache cleanups: " + cleanupsCount + " / " + resetsCount + " (" + (cleanupsCount * 100) / resetsCount + "%)");
+        }
+    }
+
+    private long getColorCacheSize() {
+        try {
+            String property = System.getProperty("org.sr3u.retroframe.colorCacheSize");
+            return Long.parseLong(property);
+        } catch (Exception e) {
+            return 1024;
         }
     }
 

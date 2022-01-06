@@ -45,6 +45,7 @@ public class Main {
         System.setProperty("com.j256.ormlite.logger.level", "ERROR");
         System.setProperty("com.j256.ormlite.*", "ERROR");
         System.setProperty("log4j.com.j256.ormlite.*", "ERROR");
+        System.setProperty("org.sr3u.retroframe.colorCacheSize", String.valueOf(settings.getClient().getColorCacheSize()));
         String credentialsPath = new File("credentials/credentials.json").getAbsolutePath();
         MediaBackup mediaBackup = null;
         if (settings.getMedia().isBackup()) {
