@@ -2,9 +2,9 @@ package org.sr3u.retroframe.client.ui.settings.filters;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.sr3u.retroframe.client.filters.FilterDescriptor;
-import org.sr3u.retroframe.client.filters.ImageFilter;
-import org.sr3u.retroframe.client.filters.ImageFilters;
+import org.sr3u.retroframe.filters.FilterDescriptor;
+import org.sr3u.retroframe.filters.ImageFilter;
+import org.sr3u.retroframe.filters.ImageFilters;
 import org.sr3u.retroframe.client.ui.main.ImageWindow;
 import org.sr3u.retroframe.client.ui.settings.ScrollableWindow;
 import org.sr3u.retroframe.server.Main;

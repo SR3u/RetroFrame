@@ -5,7 +5,7 @@ import com.google.photos.types.proto.MediaItem;
 import com.google.photos.types.proto.MediaMetadata;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.sr3u.retroframe.misc.util.ImageUtil;
+import org.sr3u.retroframe.filters.utils.ImageUtil;
 import org.sr3u.retroframe.server.data.ImageWithMetadata;
 import org.sr3u.retroframe.server.data.Item;
 import org.sr3u.retroframe.server.data.MediaType;

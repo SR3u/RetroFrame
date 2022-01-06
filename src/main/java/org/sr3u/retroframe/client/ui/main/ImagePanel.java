@@ -3,10 +3,10 @@ package org.sr3u.retroframe.client.ui.main;
 import com.twelvemonkeys.image.ConvolveWithEdgeOp;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.sr3u.retroframe.client.filters.Identity;
-import org.sr3u.retroframe.client.filters.ImageFilter;
+import org.sr3u.retroframe.filters.Identity;
+import org.sr3u.retroframe.filters.ImageFilter;
 import org.sr3u.retroframe.misc.util.DroppingExecutor;
-import org.sr3u.retroframe.misc.util.ImageUtil;
+import org.sr3u.retroframe.filters.utils.ImageUtil;
 
 import javax.swing.*;
 import java.awt.*;

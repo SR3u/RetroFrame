@@ -3,9 +3,9 @@ package org.sr3u.retroframe.client;
 import com.google.gson.Gson;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.sr3u.retroframe.client.filters.Identity;
-import org.sr3u.retroframe.client.filters.ImageFilter;
-import org.sr3u.retroframe.client.filters.ImageFilters;
+import org.sr3u.retroframe.filters.Identity;
+import org.sr3u.retroframe.filters.ImageFilter;
+import org.sr3u.retroframe.filters.ImageFilters;
 import org.sr3u.retroframe.client.ui.main.ImageWindow;
 import org.sr3u.retroframe.server.Main;
 

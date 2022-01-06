@@ -5,7 +5,7 @@ import lombok.Getter;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.sr3u.retroframe.client.ClientThread;
-import org.sr3u.retroframe.client.filters.ImageFilter;
+import org.sr3u.retroframe.filters.ImageFilter;
 import org.sr3u.retroframe.client.ui.ClientWindow;
 import org.sr3u.retroframe.client.ui.menu.PopupClickListener;
 import org.sr3u.retroframe.server.Main;

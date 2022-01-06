@@ -8,7 +8,7 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 import org.sr3u.retroframe.misc.util.DateUtil;
-import org.sr3u.retroframe.misc.util.ImageUtil;
+import org.sr3u.retroframe.filters.utils.ImageUtil;
 
 import java.util.Date;
 

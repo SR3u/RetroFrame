@@ -3,7 +3,7 @@ package org.sr3u.retroframe.settings;
 import lombok.Builder;
 import lombok.Data;
 import lombok.Value;
-import org.sr3u.retroframe.client.filters.ImageFilters;
+import org.sr3u.retroframe.filters.ImageFilters;
 
 import java.io.File;
 import java.io.FileNotFoundException;

@@ -2,10 +2,10 @@ package org.sr3u.retroframe.client.ui.settings.filters;
 
 
 import lombok.Setter;
-import org.sr3u.retroframe.client.filters.FilterDescriptor;
-import org.sr3u.retroframe.client.filters.ImageFilter;
-import org.sr3u.retroframe.client.filters.ImageFilters;
-import org.sr3u.retroframe.client.filters.utils.Palette;
+import org.sr3u.retroframe.filters.FilterDescriptor;
+import org.sr3u.retroframe.filters.ImageFilter;
+import org.sr3u.retroframe.filters.ImageFilters;
+import org.sr3u.retroframe.filters.utils.Palette;
 import sr3u.streamz.streams.Streamex;
 
 import javax.swing.*;

@@ -4,7 +4,7 @@ import com.google.photos.library.v1.PhotosLibraryClient;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.sr3u.retroframe.client.ClientThread;
-import org.sr3u.retroframe.misc.util.ImageUtil;
+import org.sr3u.retroframe.filters.utils.ImageUtil;
 import org.sr3u.retroframe.server.data.ImageWithMetadata;
 import org.sr3u.retroframe.server.events.EventSystem;
 import org.sr3u.retroframe.settings.Settings;

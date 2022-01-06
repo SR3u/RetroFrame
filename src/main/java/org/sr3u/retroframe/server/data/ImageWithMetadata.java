@@ -8,7 +8,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.sr3u.retroframe.misc.util.ImageUtil;
+import org.sr3u.retroframe.filters.utils.ImageUtil;
 
 import java.awt.*;
 import java.lang.reflect.Field;
