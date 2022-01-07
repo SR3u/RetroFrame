@@ -69,7 +69,7 @@ public class Main {
         }
     }
 
-    public static void sendMetadata(PrintStream out, ImageWithMetadata random) throws IOException {
+    public static void sendMetadata(PrintStream out, ImageWithMetadata random) {
         String json = random.jsonMetadata();
         byte[] jsonBytes = json.getBytes(StandardCharsets.UTF_8);
         byte[] buf = intToByteArray(jsonBytes.length);

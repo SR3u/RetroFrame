@@ -18,7 +18,6 @@ public class ServerThread extends Thread {
 
     private final int port;
     private final Repository repository;
-    private boolean run = true;
 
     public ServerThread(Repository repository, int port) {
         this.repository = repository;
@@ -28,13 +27,14 @@ public class ServerThread extends Thread {
     @Override
     public void run() {
 
-        ServerSocket server = null;
+        ServerSocket server;
         try {
             server = new ServerSocket(port);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        while (run) {
+        //noinspection InfiniteLoopStatement
+        while (true) {
             try {
                 Socket clientSocket = server.accept();
                 handleClient(clientSocket);
