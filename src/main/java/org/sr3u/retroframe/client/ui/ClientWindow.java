@@ -35,7 +35,7 @@ public class ClientWindow {
         try {
             //this is new since JDK 9
             final Taskbar taskbar = Taskbar.getTaskbar();
-            //set icon for mac os (and other systems which do support this method)
+            //set icon for macOS (and other systems which do support this method)
             taskbar.setIconImage(img);
         } catch (UnsupportedOperationException e) {
             log.error("The os does not support: 'Taskbar.setIconImage'");

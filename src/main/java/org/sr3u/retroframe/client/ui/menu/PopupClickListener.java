@@ -7,6 +7,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 public class PopupClickListener extends MouseAdapter {
+    @SuppressWarnings("FieldCanBeLocal")
     private final ImageWindow mainWindow;
     private final PopupMenu menu;
 

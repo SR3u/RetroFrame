@@ -26,7 +26,7 @@ class ImagePanel extends JComponent {
     private Image originalImage;
     private Image blurryBackgroundImage;
     BufferedImageOp blur = createBlurOp();
-    private Executor executor = new DroppingExecutor(1, 2);
+    private final Executor executor = new DroppingExecutor(1, 2);
 
     int previousWidth = 0;
     int previousHeight = 0;

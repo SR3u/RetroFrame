@@ -17,7 +17,7 @@ public class ServerThread extends Thread {
     private static final Logger log = LogManager.getLogger(ServerThread.class);
 
     private final int port;
-    private Repository repository;
+    private final Repository repository;
     private boolean run = true;
 
     public ServerThread(Repository repository, int port) {

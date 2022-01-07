@@ -72,9 +72,10 @@ public class Main {
     public static void sendMetadata(PrintStream out, ImageWithMetadata random) throws IOException {
         String json = random.jsonMetadata();
         byte[] jsonBytes = json.getBytes(StandardCharsets.UTF_8);
-        out.write(intToByteArray(jsonBytes.length));
+        byte[] buf = intToByteArray(jsonBytes.length);
+        out.write(buf, 0, buf.length);
         out.flush();
-        out.write(jsonBytes);
+        out.write(jsonBytes, 0, jsonBytes.length);
         out.flush();
     }
 
@@ -85,9 +86,10 @@ public class Main {
         baos.flush();
         byte[] bytes = baos.toByteArray();
         log.info("bytes.length = " + bytes.length);
-        out.write(intToByteArray(bytes.length));
+        byte[] buf = intToByteArray(bytes.length);
+        out.write(buf, 0, buf.length);
         out.flush();
-        out.write(bytes);
+        out.write(bytes, 0, bytes.length);
         out.flush();
     }
 

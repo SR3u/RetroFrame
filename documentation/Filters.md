@@ -68,7 +68,7 @@ Filters are applied from left to right.
 <br>* `fA` -- alpha channel intensity multiplier
 <br>*Examples:* <br>`channelintensity 1.0 0.5 1.2`<br>`channelintensity 1.0 0.5 1.2 0.9`
 * `Spectrum` -- spectrum-like effect. Has 2 parameters: `columns` and `rows`.<br>
-        * `columns` -- how many columns does the attributes map have. If `rows` <= 0, then it is interpretted as character width and height (*default:* `8`)<br>
+        * `columns` -- how many columns does the attributes map have. If `rows` <= 0, then it is interpreted as character width and height (*default:* `8`)<br>
         * `rows` -- how many rows does the attributes map have (*default:* `-1`)<br>
         
 ### Dithering            
@@ -86,8 +86,8 @@ All dithering filters have the same `palette` parameter, as `applyPalette`.
 * `ColorPrinter` -- Lo-Fi color printer emulation (`Atkinson CMYK`)<br>
 * `CRT` -- Old Cathode Ray Tube screen (kinda) (`Trinitron`)<br>
 * `Drawing`  -- Drawing effect (`applyPalette Crayola`)<br>
-* `GameBoy` -> [Original Nintendo GameBoy](https://en.wikipedia.org/wiki/List_of_video_game_console_palettes#Game_Boy) (`size 160 144 | Atkinson GameBoy`)<br>
-* `GameBoyHD` -> [Original Nintendo GameBoy](https://en.wikipedia.org/wiki/List_of_video_game_console_palettes#Game_Boy), but without downscaling (`Atkinson GameBoy`)<br>
+* `GameBoy` -> [Original Nintendo Game Boy](https://en.wikipedia.org/wiki/List_of_video_game_console_palettes#Game_Boy) (`size 160 144 | Atkinson GameBoy`)<br>
+* `GameBoyHD` -> [Original Nintendo Game Boy](https://en.wikipedia.org/wiki/List_of_video_game_console_palettes#Game_Boy), but without downscaling (`Atkinson GameBoy`)<br>
 * `IbmPcCga` -- IBM PC CGA mode emulation (320x200, 4 colors from first palette) (`resize 320 200 | atkinson CGA`)<br>
 * `ImPcCgaHD` -- IBM PC CGA mode emulation without downscaling (4 colors from CGA first palette) (`atkinson CGA`)<br>
 * `IBM_PC_CGA` -- IBM PC CGA mode emulation (320x200, 4 colors from first palette) (`resize 320 200 | atkinson CGA`)<br>
@@ -116,7 +116,7 @@ All dithering filters have the same `palette` parameter, as `applyPalette`.
 * `client.imageFilterChain=sierra3 LUMINANCE #000000 #111111 #222222 #333333 #444444 #555555 #666666 #777777 #888888 #999999 #AAAAAA #BBBBBB #CCCCCC #DDDDDD #EEEEEE #FFFFFF | DOT`<br>
 
 ## Important notes: 
-* `TV`, `Trinitron`, `TrinitronV` and `TrinitronH` may require additional 3x upscaling if applied after low-res filters (`Commodore`, `IbmPcCga`, etc).
+* `TV`, `Trinitron`, `TrinitronV` and `TrinitronH` may require additional 3x upscaling if applied after low-res filters (`Commodore`, `IbmPcCga`, etc.).
 Insert `scale 3 3` or `OriginalSize` between it and previous filters for best result or if you experience any weird color issues.<br>
 *WARNING:* Don't upscale if you are using *HD* filter.<br>
 *Example:* `Commodore64 | scale 3 3 | Trinitron`, `IbmPcCga | OriginalSize | Trinitron`.

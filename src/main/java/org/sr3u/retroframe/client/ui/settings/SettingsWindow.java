@@ -21,7 +21,6 @@ import java.util.stream.Stream;
 public class SettingsWindow extends ScrollableWindow {
     private static final Logger log = LogManager.getLogger(SettingsWindow.class);
 
-    private final Settings currentSettings;
     private final Properties settings;
     private final Map<String, Class<?>> settingsClasses;
 
@@ -39,7 +38,6 @@ public class SettingsWindow extends ScrollableWindow {
 
     public SettingsWindow(Settings currentSettings) {
         super(ImageWindow.TITLE_NAME + " Settings");
-        this.currentSettings = currentSettings;
         this.settings = currentSettings.getProperties();
         settingsClasses = currentSettings.getPropertiesClasses();
         fillSettings();

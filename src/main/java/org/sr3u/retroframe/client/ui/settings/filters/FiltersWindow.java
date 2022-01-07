@@ -24,7 +24,7 @@ public class FiltersWindow extends ScrollableWindow {
     private final TechnicalFilterPanel technicalFilterPanel;
     private final ImageWindow imageWindow;
 
-    private PanelDelegate panelDelegate = new PanelDelegate() {
+    private final PanelDelegate panelDelegate = new PanelDelegate() {
         @Override
         public void add(TechnicalFilterPanel panel) {
             scrollPaneContent.remove(technicalFilterPanel);

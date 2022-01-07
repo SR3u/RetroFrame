@@ -32,7 +32,7 @@ public class Settings implements Fillable {
     public static Settings load(String fileName) {
         Properties properties = new Properties();
         try {
-            properties.load(new FileReader(new File(fileName)));
+            properties.load(new FileReader(fileName));
         } catch (FileNotFoundException e) {
             Settings defaultSettings = builder().build();
             defaultSettings.save(fileName);
@@ -46,7 +46,7 @@ public class Settings implements Fillable {
     public void save(String fileName) {
         Properties properties = getProperties();
         try {
-            properties.store(new FileOutputStream(new File(fileName)), null);
+            properties.store(new FileOutputStream(fileName), null);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
