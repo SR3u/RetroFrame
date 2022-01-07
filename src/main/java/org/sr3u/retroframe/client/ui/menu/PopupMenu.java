@@ -19,15 +19,14 @@ public class PopupMenu extends JPopupMenu {
         addItem("Next", e -> async.execute(clientThread::updateImageOnce));
         addItem("Filters", e -> new FiltersWindow(mainWindow));
         addItem("Settings", e -> new SettingsWindow(Main.settings));
+        JMenuItem item;
         if (mainWindow.isFullScreen()) {
-            JMenuItem item = createItem("Exit FullScreen", e -> exitFullscreen(mainWindow));
-            item.setAccelerator(ImageWindow.ALT_ENTER);
-            add(item);
+            item = createItem("Exit FullScreen", e -> exitFullscreen(mainWindow));
         } else {
-            JMenuItem item = createItem("FullScreen", e -> enterFullscreen(mainWindow));
-            item.setAccelerator(ImageWindow.ALT_ENTER);
-            add(item);
+            item = createItem("FullScreen", e -> enterFullscreen(mainWindow));
         }
+        item.setAccelerator(ImageWindow.ALT_ENTER);
+        add(item);
         addItem("About", e -> JOptionPane.showMessageDialog(null,
                 "Authors:\n" +
                         "   SR3u    -- code\n" +
@@ -44,10 +43,9 @@ public class PopupMenu extends JPopupMenu {
         mainWindow.enterFullScreen();
     }
 
-    private JMenuItem addItem(String name, MouseReleaseListener mouseReleaseListener) {
+    private void addItem(String name, MouseReleaseListener mouseReleaseListener) {
         JMenuItem item = createItem(name, mouseReleaseListener);
         add(item);
-        return item;
     }
 
     private JMenuItem createItem(String name, MouseReleaseListener mouseReleaseListener) {
