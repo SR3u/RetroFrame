@@ -5,7 +5,6 @@ import lombok.Data;
 import lombok.Value;
 import org.sr3u.retroframe.filters.ImageFilters;
 
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileReader;
