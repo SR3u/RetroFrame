@@ -12,6 +12,7 @@ import org.sr3u.retroframe.client.ui.menu.PopupClickListener;
 import org.sr3u.retroframe.filters.ImageFilter;
 import org.sr3u.retroframe.server.Main;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -20,6 +21,8 @@ import java.awt.event.ComponentEvent;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowEvent;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
 import java.lang.reflect.Method;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -140,8 +143,8 @@ public class ImageWindow extends ClientWindow implements UltimateImageReceiver {
         return frame.getSize();
     }
 
-    public void displayImageAndMetadata(ImageAndMetadata imageAndMetadata) {
-        Image img = imageAndMetadata.getImage();
+    public void displayImageAndMetadata(ImageAndMetadata imageAndMetadata) throws IOException {
+        Image img = ImageIO.read(imageAndMetadata.getImageStream());
         Map<String, Object> metaData = imageAndMetadata.getMetaData();
         if (img == null) {
             log.error("Failed to receive image!");
@@ -250,7 +253,7 @@ public class ImageWindow extends ClientWindow implements UltimateImageReceiver {
     }
 
     @Override
-    public void onReceive(ImageAndMetadata imageAndMetadata) {
+    public void onReceive(ImageAndMetadata imageAndMetadata) throws IOException {
         this.displayImageAndMetadata(imageAndMetadata);
     }
 
