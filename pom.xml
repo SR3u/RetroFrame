@@ -34,6 +34,11 @@
             <version>v1.0.2</version>
         </dependency>
         <dependency>
+            <groupId>com.github.SR3u</groupId>
+            <artifactId>retroframe-client</artifactId>
+            <version>v1.0.4</version>
+        </dependency>
+        <dependency>
             <groupId>com.j256.ormlite</groupId>
             <artifactId>ormlite-core</artifactId>
             <version>6.1</version>
