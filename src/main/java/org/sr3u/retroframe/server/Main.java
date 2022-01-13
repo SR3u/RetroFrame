@@ -3,7 +3,7 @@ package org.sr3u.retroframe.server;
 import com.google.photos.library.v1.PhotosLibraryClient;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.sr3u.retroframe.client.ClientThread;
+import org.sr3u.retroframe.client.DesktopClient;
 import org.sr3u.retroframe.filters.utils.ImageUtil;
 import org.sr3u.retroframe.server.data.ImageWithMetadata;
 import org.sr3u.retroframe.server.events.EventSystem;
@@ -61,7 +61,7 @@ public class Main {
                 new ServerThread(repository, settings.getServer().getPort()).start();
             }
             if (settings.isClientEnabled()) {
-                new ClientThread(settings.getClient().getServerAddress(), settings.getClient().getServerPort()).start();
+                new DesktopClient(settings.getClient().getServerAddress(), settings.getClient().getServerPort()).start();
             }
         } catch (Exception e) {
             log.error(e);

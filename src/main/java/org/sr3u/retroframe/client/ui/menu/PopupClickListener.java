@@ -1,19 +1,25 @@
 package org.sr3u.retroframe.client.ui.menu;
 
-import org.sr3u.retroframe.client.ClientThread;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.sr3u.retroframe.client.RetroframeClient;
 import org.sr3u.retroframe.client.ui.main.ImageWindow;
 
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
 
 public class PopupClickListener extends MouseAdapter {
     @SuppressWarnings("FieldCanBeLocal")
     private final ImageWindow mainWindow;
-    private final PopupMenu menu;
+    private final CompletableFuture<RetroframeClient> clientThread;
 
-    public PopupClickListener(ImageWindow mainWindow, ClientThread clientThread) {
+    private static final Logger log = LogManager.getLogger(PopupClickListener.class);
+
+    public PopupClickListener(ImageWindow mainWindow, CompletableFuture<RetroframeClient> clientThread) {
         this.mainWindow = mainWindow;
-        this.menu = new PopupMenu(mainWindow, clientThread);
+        this.clientThread = clientThread;
     }
 
     @Override
@@ -31,6 +37,13 @@ public class PopupClickListener extends MouseAdapter {
     }
 
     private void doPop(MouseEvent e) {
-        menu.show(e.getComponent(), e.getX(), e.getY());
+        try {
+            RetroframeClient retroframeClient = this.clientThread.get();
+            PopupMenu menu = new PopupMenu(mainWindow, retroframeClient);
+            menu.show(e.getComponent(), e.getX(), e.getY());
+        } catch (InterruptedException | ExecutionException ex) {
+            ex.printStackTrace();
+            log.error(e);
+        }
     }
 }

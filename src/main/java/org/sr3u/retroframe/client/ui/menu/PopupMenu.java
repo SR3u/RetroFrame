@@ -1,6 +1,6 @@
 package org.sr3u.retroframe.client.ui.menu;
 
-import org.sr3u.retroframe.client.ClientThread;
+import org.sr3u.retroframe.client.RetroframeClient;
 import org.sr3u.retroframe.client.ui.MouseReleaseListener;
 import org.sr3u.retroframe.client.ui.main.ImageWindow;
 import org.sr3u.retroframe.client.ui.settings.SettingsWindow;
@@ -15,8 +15,8 @@ public class PopupMenu extends JPopupMenu {
 
     private final Executor async = Executors.newSingleThreadScheduledExecutor();
 
-    public PopupMenu(ImageWindow mainWindow, ClientThread clientThread) {
-        addItem("Next", e -> async.execute(clientThread::updateImageOnce));
+    public PopupMenu(ImageWindow mainWindow, RetroframeClient retroframeClient) {
+        addItem("Next", e -> async.execute(retroframeClient::updateImageOnce));
         addItem("Filters", e -> new FiltersWindow(mainWindow));
         addItem("Settings", e -> new SettingsWindow(Main.settings));
         JMenuItem item;

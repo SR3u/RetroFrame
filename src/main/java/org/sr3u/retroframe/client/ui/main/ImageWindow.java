@@ -4,13 +4,14 @@ import com.google.common.base.Preconditions;
 import lombok.Getter;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.sr3u.retroframe.client.ClientThread;
+import org.sr3u.retroframe.client.RetroframeClient;
+import org.sr3u.retroframe.client.ImageAndMetadata;
+import org.sr3u.retroframe.client.UltimateImageReceiver;
 import org.sr3u.retroframe.filters.ImageFilter;
 import org.sr3u.retroframe.client.ui.ClientWindow;
 import org.sr3u.retroframe.client.ui.menu.PopupClickListener;
 import org.sr3u.retroframe.server.Main;
 
-import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -19,21 +20,19 @@ import java.awt.event.ComponentEvent;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowEvent;
-import java.awt.image.BufferedImage;
-import java.io.BufferedInputStream;
-import java.io.InputStream;
 import java.lang.reflect.Method;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Map;
 import java.util.Optional;
+import java.util.concurrent.CompletableFuture;
 
 @Getter
-public class ImageWindow extends ClientWindow {
+public class ImageWindow extends ClientWindow implements UltimateImageReceiver {
     public static final String TITLE_NAME = "Retro Frame ";
     public static final KeyStroke ALT_ENTER = KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, InputEvent.ALT_DOWN_MASK);
     private static final Object FULLSCREEN_ACTION = ImageWindow.class.getCanonicalName() + ".fullScreenAction";
-    private final ClientThread clientThread;
+    private final CompletableFuture<RetroframeClient> clientThread;
     private ImageFilter imageFilter;
     ImagePanel imagePanel;
     OutlineLabel metadataLabel;
@@ -45,7 +44,7 @@ public class ImageWindow extends ClientWindow {
     private Point regularLocation = centerPoint();
     public static final double LABEL_HEIGHT_RATIO = 1.0 / 20;
 
-    public ImageWindow(boolean fullScreen, ImageFilter imageFilter, ClientThread clientThread) {
+    public ImageWindow(boolean fullScreen, ImageFilter imageFilter, CompletableFuture<RetroframeClient> clientThread) {
         super();
         this.imageFilter = imageFilter;
         this.clientThread = clientThread;
@@ -141,8 +140,9 @@ public class ImageWindow extends ClientWindow {
         return frame.getSize();
     }
 
-    public void displayImageAndMetadata(InputStream imgStream, Map<String, Object> metaData) throws Exception {
-        BufferedImage img = ImageIO.read(new BufferedInputStream(imgStream));
+    public void displayImageAndMetadata(ImageAndMetadata imageAndMetadata) {
+        Image img = imageAndMetadata.getImage();
+        Map<String, Object> metaData = imageAndMetadata.getMetaData();
         if (img == null) {
             log.error("Failed to receive image!");
         } else {
@@ -241,5 +241,20 @@ public class ImageWindow extends ClientWindow {
     public void setImageFilter(ImageFilter imageFilter) {
         this.imageFilter = imageFilter;
         this.imagePanel.setImageFilter(imageFilter).thenAccept(v -> forceRedraw());
+    }
+
+    @Override
+    public Dimension getImageDimension() {
+        return getSize();
+    }
+
+    @Override
+    public void onReceive(ImageAndMetadata imageAndMetadata) {
+        this.displayImageAndMetadata(imageAndMetadata);
+    }
+
+    @Override
+    public Integer getRefreshDelay() {
+        return Main.settings.getClient().getRefreshDelay();
     }
 }

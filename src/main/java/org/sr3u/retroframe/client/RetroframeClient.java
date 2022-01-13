@@ -3,13 +3,10 @@ package org.sr3u.retroframe.client;
 import com.google.gson.Gson;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.sr3u.retroframe.filters.Identity;
-import org.sr3u.retroframe.filters.ImageFilter;
-import org.sr3u.retroframe.filters.ImageFilters;
-import org.sr3u.retroframe.client.ui.main.ImageWindow;
-import org.sr3u.retroframe.server.Main;
 
+import javax.imageio.ImageIO;
 import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.io.BufferedInputStream;
 import java.io.BufferedWriter;
 import java.io.InputStream;
@@ -20,14 +17,16 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
-public class ClientThread extends Thread {
+public class RetroframeClient {
 
-    private static final Logger log = LogManager.getLogger(ClientThread.class);
+    private static final Logger log = LogManager.getLogger(RetroframeClient.class);
 
     public static final Gson GSON = new Gson();
-
     private final ScheduledExecutorService execService = Executors.newSingleThreadScheduledExecutor();
-    private final ImageWindow imageWindow;
+
+    private final ImageSizeProvider imageSizeProvider;
+    private final OnReceiveHandler onReceive;
+    private final RefreshDelayProvider refreshDelayProvider;
 
     private Socket clientSocket;
     private InputStream in;
@@ -36,27 +35,25 @@ public class ClientThread extends Thread {
     private final int port;
     private final String host;
 
-    public ClientThread(String host, int port) {
+    public RetroframeClient(String host, int port, OnReceiveHandler onReceive, RefreshDelayProvider refreshDelayProvider, ImageSizeProvider imageSizeProvider) {
         this.port = port;
         this.host = host;
-        ImageFilter imageFilter;
-        try {
-            imageFilter = ImageFilters.parse(Main.settings.getClient().getImageFitlerChain());
-        } catch (Exception e) {
-            log.error(e);
-            e.printStackTrace();
-            imageFilter = new Identity();
-        }
-        imageWindow = new ImageWindow(Main.settings.getClient().isFullScreen(), imageFilter, this);
+        this.onReceive = onReceive;
+        this.imageSizeProvider = imageSizeProvider;
+        this.refreshDelayProvider = refreshDelayProvider;
     }
 
-    @Override
-    public void run() {
-        updateImageAndSchedule();
+    public RetroframeClient(String host, int port, UltimateImageReceiver ultimateImageReceiver) {
+        this(host, port, ultimateImageReceiver, ultimateImageReceiver, ultimateImageReceiver);
+    }
+
+    public void start() {
+        this.updateImageOnce();
+        scheduleRefresh();
     }
 
     private void scheduleRefresh() {
-        execService.schedule(this::updateImageAndSchedule, Main.settings.getClient().getRefreshDelay(), TimeUnit.MILLISECONDS);
+        execService.schedule(this::updateImageAndSchedule, refreshDelayProvider.getRefreshDelay(), TimeUnit.MILLISECONDS);
     }
 
     private void updateImageAndSchedule() {
@@ -74,17 +71,24 @@ public class ClientThread extends Thread {
                 in = new BufferedInputStream(clientSocket.getInputStream());
                 out = new BufferedWriter(new OutputStreamWriter(clientSocket.getOutputStream()));
                 out.flush();
-                Dimension size = imageWindow.getSize();
+                Dimension size = imageSizeProvider.getImageDimension();
                 out.write(size.width + "x" + size.height + "x" + 32);
                 out.write(0);
                 out.flush();
-                int metadataSize = Main.intFromByteArray(in.readNBytes(4));
+                int metadataSize = intFromByteArray(in.readNBytes(4));
                 String json = new String(in.readNBytes(metadataSize));
                 Map<String, Object> metaData = parseMetadata(json);
-                int imageSize = Main.intFromByteArray(in.readNBytes(4));
+                int imageSize = intFromByteArray(in.readNBytes(4));
                 metaData.put("mem_size", imageSize);
                 log.info("Metadata: " + json);
-                imageWindow.displayImageAndMetadata(in, metaData);
+                BufferedImage img = ImageIO.read(new BufferedInputStream(in));
+                ImageAndMetadata imageAndMetadata = ImageAndMetadata.builder()
+                        .metadataByteSize(metadataSize)
+                        .metaData(metaData)
+                        .imageByteSize(imageSize)
+                        .image(img)
+                        .build();
+                onReceive.onReceive(imageAndMetadata);
             } catch (Exception e) {
                 log.error(e);
                 e.printStackTrace();
@@ -124,8 +128,21 @@ public class ClientThread extends Thread {
         }
     }
 
+    private static byte[] intToByteArray(int value) {
+        return new byte[]{
+                (byte) (value >>> 24),
+                (byte) (value >>> 16),
+                (byte) (value >>> 8),
+                (byte) value};
+    }
+
+    private static int intFromByteArray(byte[] bytes) {
+        return bytes[0] << 24 | (bytes[1] & 0xFF) << 16 | (bytes[2] & 0xFF) << 8 | (bytes[3] & 0xFF);
+    }
+
     @SuppressWarnings("unchecked")
     private Map<String, Object> parseMetadata(String json) {
         return GSON.fromJson(json, Map.class);
     }
+
 }
