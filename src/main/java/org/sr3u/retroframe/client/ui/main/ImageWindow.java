@@ -4,12 +4,12 @@ import com.google.common.base.Preconditions;
 import lombok.Getter;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.sr3u.retroframe.client.RetroframeClient;
 import org.sr3u.retroframe.client.ImageAndMetadata;
+import org.sr3u.retroframe.client.RetroframeClient;
 import org.sr3u.retroframe.client.UltimateImageReceiver;
-import org.sr3u.retroframe.filters.ImageFilter;
 import org.sr3u.retroframe.client.ui.ClientWindow;
 import org.sr3u.retroframe.client.ui.menu.PopupClickListener;
+import org.sr3u.retroframe.filters.ImageFilter;
 import org.sr3u.retroframe.server.Main;
 
 import javax.swing.*;
@@ -244,8 +244,9 @@ public class ImageWindow extends ClientWindow implements UltimateImageReceiver {
     }
 
     @Override
-    public Dimension getImageDimension() {
-        return getSize();
+    public org.sr3u.retroframe.client.Dimension getImageDimension() {
+        Dimension size = getSize();
+        return new org.sr3u.retroframe.client.Dimension(size.width, size.height);
     }
 
     @Override
