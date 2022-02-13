@@ -14,6 +14,7 @@ public class DesktopClient {
 
     private static final Logger log = LogManager.getLogger(DesktopClient.class);
     private final RetroframeClient retroframeClient;
+    private static final Logger retroframeClientLogger = LogManager.getLogger(RetroframeClient.class);
 
 
     public DesktopClient(String host, int port) {
@@ -26,7 +27,18 @@ public class DesktopClient {
             imageFilter = new Identity();
         }
         CompletableFuture<RetroframeClient> clientThreadCf = new CompletableFuture<>();
-        retroframeClient = new RetroframeClient(host, port, new ImageWindow(Main.settings.getClient().isFullScreen(), imageFilter, clientThreadCf));
+        retroframeClient = new RetroframeClient(
+                new org.sr3u.retroframe.client.Logger() {
+                    @Override
+                    public void error(Exception e) {
+                        retroframeClientLogger.error(e);
+                    }
+
+                    @Override
+                    public void info(String s) {
+                        retroframeClientLogger.info(s);
+                    }
+                }, host, port, new ImageWindow(Main.settings.getClient().isFullScreen(), imageFilter, clientThreadCf));
         clientThreadCf.complete(retroframeClient);
     }
 
