@@ -92,10 +92,11 @@ public class MediaBackup implements Consumerex<Event>, MediaBackupRepository {
             oldJson = Files.readString(Path.of(metadataFile.getAbsolutePath()), StandardCharsets.UTF_8);
         }
         if (!Objects.equals(oldJson, newJson)) {
-            FileWriter fileWriter = new FileWriter(metadataFile, StandardCharsets.UTF_8);
-            fileWriter.write(newJson);
-            fileWriter.flush();
-            log.info("Saved item metadata " + metadataFile.getAbsolutePath());
+            try (FileWriter fileWriter = new FileWriter(metadataFile, StandardCharsets.UTF_8)) {
+                fileWriter.write(newJson);
+                fileWriter.flush();
+                log.info("Saved item metadata " + metadataFile.getAbsolutePath());
+            }
         }
     }
 
@@ -133,9 +134,10 @@ public class MediaBackup implements Consumerex<Event>, MediaBackupRepository {
             }
             URL itemUrl = new URL(itemUrlString);
             ReadableByteChannel rbc = Channels.newChannel(itemUrl.openStream());
-            FileOutputStream fos = new FileOutputStream(file);
-            fos.getChannel().transferFrom(rbc, 0, Long.MAX_VALUE);
-            log.info("Saved item " + file.getAbsolutePath());
+            try (FileOutputStream fos = new FileOutputStream(file)) {
+                fos.getChannel().transferFrom(rbc, 0, Long.MAX_VALUE);
+                log.info("Saved item " + file.getAbsolutePath());
+            }
         } else {
             log.info("Item already saved " + file.getAbsolutePath());
         }
@@ -168,7 +170,7 @@ public class MediaBackup implements Consumerex<Event>, MediaBackupRepository {
             log.error(e);
             e.printStackTrace();
         }
-        if(metadata != null) {
+        if (metadata != null) {
             return new ImageWithMetadata(image, ImageWithMetadata.convert(metadata));
         } else {
             return new ImageWithMetadata(image);

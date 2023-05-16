@@ -26,22 +26,19 @@ public class ServerThread extends Thread {
 
     @Override
     public void run() {
-
-        ServerSocket server;
-        try {
-            server = new ServerSocket(port);
+        try (ServerSocket server = new ServerSocket(port)) {
+            //noinspection InfiniteLoopStatement
+            while (true) {
+                try {
+                    Socket clientSocket = server.accept();
+                    handleClient(clientSocket);
+                } catch (IOException e) {
+                    log.error(e);
+                    e.printStackTrace();
+                }
+            }
         } catch (IOException e) {
             throw new RuntimeException(e);
-        }
-        //noinspection InfiniteLoopStatement
-        while (true) {
-            try {
-                Socket clientSocket = server.accept();
-                handleClient(clientSocket);
-            } catch (IOException e) {
-                log.error(e);
-                e.printStackTrace();
-            }
         }
     }
 
